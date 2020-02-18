@@ -1,0 +1,53 @@
+#table_activity thead  th,
+#table_manpower thead  th,
+#table_material thead  th {
+    text-align: center;
+    background-color: #28a745;
+    color: white;
+    font-weight: 500 !important;
+    font-size: 15px !important;
+}
+
+#table_activity tbody td,
+#table_manpower tbody td,
+#table_material tbody td {
+    font-weight: 400 !important;
+    font-size: 13px !important;
+}
+
+#table_material tbody td:nth-child(3), 
+#table_material tbody td:nth-child(4) {
+    text-align: right;
+} 
+
+#table_activity>tbody tr:hover,
+#table_manpower>tbody tr:hover,
+#table_material>tbody tr:hover {
+    background-color: #b6ffb2 !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .10);
+}
+
+#act_packed_qty,
+#act_downtime,
+#act_remarks,
+.remarks {
+    background-color: transparent !important;
+    border-radius: 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #9B8864;
+    font-size: 13px !important;
+}
+
+#act_remarks,
+.remarks {
+    resize: none;
+}
+
+td, th {
+    border: 1px solid #8a8575 !important;
+}

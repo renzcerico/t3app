@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+input:focus,
+select:focus,
+textarea:focus {
+    border-bottom: 2px solid #28a745 !important;
+    box-shadow: #28a745 !important;
+}

@@ -1,0 +1,59 @@
+<div class="container-fluid mt-4" id="container_manpower">
+    <div class="table-responsive">
+        <h6 class="text-center text-muted text-uppercase">Manpower</h6>
+        <table class="table table-bordered table-sm table-hover text-center" id="table_manpower">
+            <thead class="text-uppercase">
+                <tr>
+                    <th rowspan="2" class="align-middle">Position</th>
+                    <th rowspan="2" class="align-middle" width="25%">Name <i class="text-danger font-weight-bold">*</i></th>
+                    <th colspan="2">Time</th>
+                    <th rowspan="2" class="align-middle">Remarks <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle" width="15%">Last <br />Updated By</th>
+                    <th colspan="2">Date</th>
+                </tr>
+                <tr>
+                    <th width="5%">From <i class="text-danger font-weight-bold">*</i></th>
+                    <th width="5%">To <i class="text-danger font-weight-bold">*</i></th >
+                    <th>Entered</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let position of positions">
+                    <td class="align-middle">{{ position }}</td>
+                    <td class="align-bottom">
+                        <select class="form-control manpower_list" max="10">
+                            <option></option>
+                            <option *ngFor="let manpower of manpowers" 
+                                    value="{{ manpower.PERSON_ID }}">
+                                    {{ manpower.FULLNAME }}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="align-bottom">
+                        <input type="text" 
+                               class="form-control start_time" 
+                               #startTime 
+                               (blur)="time(startTime.value)"
+                               (keyup.enter)="time(startTime.value)"
+                               placeholder="HHmm" />
+                    </td>
+                    <td class="align-bottom">
+                        <input type="text" 
+                        class="form-control end_time" 
+                        #endTime 
+                        (blur)="time(endTime.value)"
+                        (keyup.enter)="time(endTime.value)"
+                        placeholder="HHmm" />
+                    </td>
+                    <td class="align-bottom">
+                         <textarea class="form-control remarks" autosize rows="1"></textarea>
+                    </td>
+                    <td class="align-middle"></td>
+                    <td class="align-middle"></td>
+                    <td class="align-middle"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

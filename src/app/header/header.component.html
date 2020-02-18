@@ -1,0 +1,109 @@
+    <div class="container-fluid mt-2" id="header_production_order">
+        <form #headerForm>
+            <div class="form-row">
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <div class="form-label-group">
+                        <input readonly type="text" id="barcode" class="form-control" [(ngModel)]="barcodeNumber" name="barcode" placeholder="#" required>
+                        <label for="barcode">Barcode</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                    <div class="form-label-group">
+                        <input readonly type="text" id="start_time" class="form-control" value="{{ startTime }}" placeholder="MM/DD/YYYY HH:mm" required>
+                        <label for="start_time">Start Time</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                    <div class="form-label-group">
+                        <input readonly type="text" id="end_time" class="form-control" placeholder="MM/DD/YYYY HH:mm" required>
+                        <label for="end_time">End Time</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <button class="btn btn-dark border-100 font-weight-500 pl-5 pr-5">Save</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <div class="form-label-group">
+                        <input readonly type="text" id="po_num" class="form-control" placeholder="#" required>
+                        <label for="po_num">PO Number</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                    <div class="form-label-group">
+                        <input readonly type="text" id="control_num" class="form-control" placeholder="#" required>
+                        <label for="control_num">Control Number</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                    <div class="form-label-group">
+                        <input readonly type="text" id="shipping_date" class="form-control" placeholder="MM/DD/YYYY" required>
+                        <label for="shipping_date">Shipping Date</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                    <div class="form-label-group">
+                        <input readonly type="text" id="order_qty" class="form-control" placeholder="0" required>
+                        <label for="order_qty">Order Quantity</label>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="seeResult == 'See less'">
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                        <div class="form-label-group">
+                            <input readonly type="text" id="customer" class="form-control" placeholder="Name" required>
+                            <label for="customer">Customer</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                        <div class="form-label-group">
+                            <input readonly type="text" id="customer_code" class="form-control" placeholder="Code" required>
+                            <label for="customer_code">Customer Code</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">                
+                        <div class="form-label-group">
+                            <input readonly type="text" id="customer_specs" class="form-control" placeholder="Specification" required>
+                            <label for="customer_specs">Customer Specification</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                        <div class="form-label-group">
+                            <input readonly type="text" id="old_code" class="form-control" placeholder="Code" required>
+                            <label for="old_code">Old Code</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
+                        <div class="form-label-group">
+                            <input readonly type="text" id="internal_code" class="form-control" placeholder="Code" required>
+                            <label for="internal_code">Internal Code</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">                
+                        <div class="form-label-group">
+                            <input readonly type="text" id="product_desc" class="form-control" placeholder="Description" required>
+                            <label for="product_desc">Product Description</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="d-none w-100" id="container_see_more">
+        <div id="blur-container" class="blurred-bg p-3"></div>
+        <button class="btn btn-light text-muted border-radius-0 font-weight-500 btn-sm form-control" 
+            id="btn_see_more"
+            (click)="btnSee()">
+            {{ seeResult }}&nbsp; 
+            <fa-icon [icon]="iconResult"></fa-icon>
+        </button>
+    </div>
+
+    <app-activity></app-activity>
+    <app-material></app-material>
+    <app-manpower></app-manpower>

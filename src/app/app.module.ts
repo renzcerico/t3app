@@ -1,18 +1,48 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ApiService } from './services/api.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { HeaderComponent } from './header/header.component';
+import { MaterialComponent } from './material/material.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ManpowerComponent } from './manpower/manpower.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FooterComponent } from './footer/footer.component';
+import { AutosizeModule } from 'ngx-autosize';
+import { ActivityComponent } from './activity/activity.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+declarations: [
+AppComponent,
+TopBarComponent,
+HeaderComponent,
+MaterialComponent,
+ManpowerComponent,
+FooterComponent,
+ActivityComponent,
+],
+imports: [
+AutosizeModule,
+BrowserModule,
+FontAwesomeModule,
+AppRoutingModule,
+FormsModule,
+ReactiveFormsModule,
+BrowserAnimationsModule,
+HttpClientModule,
+NgbModule,
+],
+providers: [
+ApiService,
+{ provide: LocationStrategy, useClass: HashLocationStrategy }
+],
+bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

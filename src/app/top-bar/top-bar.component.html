@@ -1,0 +1,87 @@
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img src="/assets/img/logo.png" class="img-fluid" width="35px" 
+            tooltip="Tailin Abrasives Corporation" 
+            placement="bottom" /> &nbsp;
+        <a class="navbar-brand font-weight-bold text-green" href="#">T3 APPLICATION</a>
+        <button class="navbar-toggler" type="button" 
+            (click)="toggleNavbar()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02"
+            [ngClass]="{ 'show': navbarOpen }">
+            <ul class="navbar-nav ml-auto mr-3">
+                <li class="nav-item active">
+                    <a class="nav-link font-weight-500 small" href="#">DASHBOARD</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-500 small" href="#">TRANSACTION</a>
+                </li>
+                <!-- <li class="nav-item" ngbDropdown>
+                    <a class="nav-link" ngbDropdownToggle id="navbarDropdown3" role="button">
+                        <fa-icon [icon]="faUser"></fa-icon>
+                        {{ username }}
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+                        <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Change Password</a>
+                        <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Logout</a>
+                    </div>
+                </li> -->
+            </ul>
+            <div>
+                <div id="user_profile" *ngIf="userProfile">
+                    <div display="dynamic" ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-none text-green" id="user_profile_dropdown" ngbDropdownToggle>
+                            <fa-icon [icon]="faUser"></fa-icon>
+                            {{ username }}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="user_profile_dropdown" class="dropdown-menu dropdown-menu-left">
+                            <a href="#" ngbDropdownItem class="text-muted">Change Password</a>
+                            <a href="" ngbDropdownItem class="text-muted">Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <button type="button"
+                        *ngIf="btnLogin" 
+                        class="btn btn-success my-2 my-sm-0 border-100 pl-5 pr-5 font-weight-bold"
+                        (click)="openLoginModal(loginModal)"
+                        >
+                        LOGIN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <ng-template #loginModal let-modal>
+        <div class="modal-header">
+            <h6 class="modal-title pull-left text-muted">LOGIN</h6>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modal.dismiss()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body m-4">
+            <form id="form_login" [formGroup]="loginForm">    
+                <div class="form-label-group">
+                    <input type="text" 
+                           id="username" 
+                           class="form-control" 
+                           formControlName="username"
+                           #username
+                           placeholder="" required autofocus>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-label-group">
+                    <input type="password" 
+                           id="password" 
+                           class="form-control" 
+                           formControlName="password"
+                           placeholder="" required>
+                    <label for="password">Password</label>
+                </div>
+                <ngb-alert class="alert-danger font-weight-500" [dismissible]="false" [hidden]="loginHidden">Invalid username or password.</ngb-alert>
+                <button class="btn btn-success border-100 form-control font-weight-bold mt-2"
+                        (click)="login()">LOGIN
+                </button>
+            </form>
+        </div>
+    </ng-template>

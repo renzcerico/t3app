@@ -1,0 +1,44 @@
+<div class="container-fluid mt-4" id="container_material">
+    <div class="table-responsive">
+        <h6 class="text-center text-muted text-uppercase">Material</h6>
+        <table class="table table-bordered table-sm table-hover text-center" id="table_material">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="align-middle">ITEM</th>
+                    <th rowspan="2" class="align-middle">MATERIAL CODE</th>
+                    <th rowspan="2" class="align-middle">QUANTITY</th>
+                    <th rowspan="2" class="align-middle">STANDARD</th>
+                    <th rowspan="2" class="align-middle">REQUIREMENTS</th>
+                    <th rowspan="2" class="align-middle">USED</th>
+                    <th rowspan="2" class="align-middle">REJECT</th>
+                    <th rowspan="2" class="align-middle">REMARKS <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle">LAST <br /> UPDATED BY</th>
+                    <th colspan="2">DATE</th>
+                </tr>
+                <tr>
+                    <th>ENTERED</th>
+                    <th>UPDATED</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let material of materials">
+                    <td class="align-middle">{{ material.id }}</td>
+                    <td class="align-middle">{{ material.material_code }}</td>
+                    <td class="align-middle">{{ material.quantity }}</td>
+                    <td class="align-middle">{{ material.standard }}</td>
+                    <td class="align-middle">{{ material.requirements }}</td>
+                    <td class="align-middle">{{ material.used }}</td>
+                    <td class="align-middle" contenteditable="true">{{ material.reject }}</td>
+                    <td class="align-middle">
+                        <textarea class="form-control remarks" autosize rows="1">{{ material.remarks }}</textarea>
+                   </td>
+                    <td class="align-middle">{{ material.manpower }}</td>
+                    <td class="align-middle">{{ material.entered }}</td>
+                    <td class="align-middle">{{ material.updated }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+<!-- <button class="border-100 btn btn-primary pr-5 pl-5 font-weight-bold" (click)="consume()">CONSUME</button> -->

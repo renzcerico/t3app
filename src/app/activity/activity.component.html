@@ -1,0 +1,63 @@
+<div class="container-fluid mt-4" id="container_activity">
+    <p class="small font-weight-500">
+        <span class="font-weight-bold text-danger">* &nbsp;</span>
+        <i class="text-underline small">Indicates column can be filled up.</i>
+    </p>
+    <div class="table-responsive">
+        <h6 class="text-center text-muted text-uppercase">Activity</h6>
+        <table class="table table-bordered table-sm table-hover text-center" id="table_activity">
+            <thead class="text-uppercase">
+                <tr>
+                    <th colspan="2" class="align-middle">Time</th>
+                    <th colspan="3" class="align-middle">Quantity</th>
+                    <th rowspan="2" class="align-middle">Downtime <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle">Remarks <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle">Last <br /> Updated By</th>
+                    <th colspan="2" class="align-middle">Date</th>
+                </tr>
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Packed <i class="text-danger font-weight-bold">*</i></th>
+                    <th>Adjustment <i class="text-danger font-weight-bold">*</i></th>
+                    <th>Total</th>
+                    <th>Entered</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="align-bottom">
+                        <input type="text" id="act_packed_qty" class="form-control" />
+                    </td>
+                    <td>
+                    </td>
+                    <td></td>
+                    <td class="align-bottom">
+                        <input type="text" id="act_downtime" class="form-control" [ngClass]="{ 'blue': blue, 'red': red }" />
+                    </td>
+                    <td class="align-bottom">
+                        <textarea id="act_remarks" rows="1" autosize class="form-control"></textarea>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let activity of activities">
+                    <td>{{ activity.start_time }}</td>
+                    <td>{{ activity.end_time }}</td>
+                    <td contenteditable="true">{{ activity.packed | number: '' }}</td>
+                    <td contenteditable="true">{{ activity.adjustment | number: '' }}</td>
+                    <td>{{ activity.packed + activity.adjustment | number: '' }}</td>
+                    <td contenteditable="true">{{ activity.downtime }}</td>
+                    <td contenteditable="true">{{ activity.remarks }}</td>
+                    <td>{{ activity.last_updated_by }}</td>
+                    <td>{{ activity.date_entered }}</td>
+                    <td>{{ activity.date_updated }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
