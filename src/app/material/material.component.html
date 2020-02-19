@@ -28,7 +28,7 @@
                     <td class="align-middle">{{ material.standard }}</td>
                     <td class="align-middle">{{ material.requirements }}</td>
                     <td class="align-middle">{{ material.used }}</td>
-                    <td class="align-middle td-editable" contenteditable="true">
+                    <td class="align-middle td-editable" contenteditable="true" (keyup)="onKeyUp($event)">
                         <div class="td-indicator"></div>
                         {{ material.reject }}
                     </td>

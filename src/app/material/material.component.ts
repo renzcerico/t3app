@@ -82,4 +82,11 @@ export class MaterialComponent implements OnInit {
     //         }
     //     )
     // }
+
+    onKeyUp(event) {
+        if (event.keyCode === 13) {
+            const td = document.getElementsByTagName('td') as  any;
+            td.next('contenteditable', true).focus();
+        }
+    }
 }
