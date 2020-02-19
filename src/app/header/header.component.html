@@ -20,7 +20,11 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                    <button class="btn btn-dark border-100 font-weight-500 pl-5 pr-5">Save</button>
+                    <div class="form-label-group">
+                        <input readonly type="text" id="status" class="form-control" placeholder="-" required>
+                        <label for="status">Status</label>
+                    </div>
+                    <!-- <button class="btn btn-dark border-100 font-weight-500 pl-5 pr-5">Save</button> -->
                 </div>
             </div>
             <div class="form-row">
@@ -102,6 +106,10 @@
             {{ seeResult }}&nbsp; 
             <fa-icon [icon]="iconResult"></fa-icon>
         </button>
+    </div>
+
+    <div class="m-3 position-absolute right-0">
+        <button class="btn btn-dark border-100 font-weight-500 pl-5 pr-5 text-uppercase">Save</button>
     </div>
 
     <app-activity></app-activity>

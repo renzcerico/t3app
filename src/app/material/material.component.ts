@@ -82,36 +82,4 @@ export class MaterialComponent implements OnInit {
     //         }
     //     )
     // }
-
-    loginModal() {
-        // this.modalService.open(template);
-    }
-
-    consume() {
-        fetch('http://localhost:3000/api/header', {
-            method: 'GET',
-            headers: { 'Content-type' : 'application/json' }
-        })
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-
-        this.materials.push(        {
-            id:  '4',
-            material_code: '789',
-            quantity: '654',
-            standard: '100',
-            requirements: 'Any',
-            used: '45',
-            reject: '89',
-            remarks: 'This is a remarks.',
-            manpower: 'R. Cerico',
-            entered: '10/23/19 08:00',
-            updated: null
-        });
-    }
 }

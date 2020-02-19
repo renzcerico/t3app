@@ -15,8 +15,10 @@
     font-size: 13px !important;
 }
 
+#table_material tbody td:nth-child(2),
 #table_material tbody td:nth-child(3), 
-#table_material tbody td:nth-child(4) {
+#table_material tbody td:nth-child(5),
+#table_material tbody td:nth-child(6) {
     text-align: right;
 } 
 
@@ -26,20 +28,16 @@
     background-color: #b6ffb2 !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, .10);
-}
-
-#act_packed_qty,
-#act_downtime,
-#act_remarks,
+#actPackedQty,
+#actDowntime,
+#actRemarks,
 .remarks {
     background-color: transparent !important;
     border-radius: 0;
     border-top: 0;
     border-left: 0;
     border-right: 0;
-    border-bottom: 1px solid #9B8864;
+    border-bottom: 1px #9B8864 solid ;
     font-size: 13px !important;
 }
 
@@ -49,5 +47,6 @@
 }
 
 td, th {
-    border: 1px solid #8a8575 !important;
+    border: 1px solid #9B8864 !important;
+    background-color: rgba(155, 136, 100, 0.123);
 }

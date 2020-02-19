@@ -5,15 +5,15 @@
             <thead class="text-uppercase">
                 <tr>
                     <th rowspan="2" class="align-middle">Position</th>
-                    <th rowspan="2" class="align-middle" width="25%">Name <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle" width="25%">Name</th>
                     <th colspan="2">Time</th>
-                    <th rowspan="2" class="align-middle">Remarks <i class="text-danger font-weight-bold">*</i></th>
+                    <th rowspan="2" class="align-middle">Remarks</th>
                     <th rowspan="2" class="align-middle" width="15%">Last <br />Updated By</th>
                     <th colspan="2">Date</th>
                 </tr>
                 <tr>
-                    <th width="5%">From <i class="text-danger font-weight-bold">*</i></th>
-                    <th width="5%">To <i class="text-danger font-weight-bold">*</i></th >
+                    <th width="6%">From</th>
+                    <th width="6%">To</th >
                     <th>Entered</th>
                     <th>Updated</th>
                 </tr>
@@ -21,7 +21,8 @@
             <tbody>
                 <tr *ngFor="let position of positions">
                     <td class="align-middle">{{ position }}</td>
-                    <td class="align-bottom">
+                    <td class="align-bottom td-editable">
+                        <div class="td-indicator"></div>
                         <select class="form-control manpower_list" max="10">
                             <option></option>
                             <option *ngFor="let manpower of manpowers" 
@@ -30,7 +31,8 @@
                             </option>
                         </select>
                     </td>
-                    <td class="align-bottom">
+                    <td class="align-bottom td-editable">
+                        <div class="td-indicator"></div>
                         <input type="text" 
                                class="form-control start_time" 
                                #startTime 
@@ -38,7 +40,8 @@
                                (keyup.enter)="time(startTime.value)"
                                placeholder="HHmm" />
                     </td>
-                    <td class="align-bottom">
+                    <td class="align-bottom td-editable">
+                        <div class="td-indicator"></div>
                         <input type="text" 
                         class="form-control end_time" 
                         #endTime 
@@ -46,8 +49,9 @@
                         (keyup.enter)="time(endTime.value)"
                         placeholder="HHmm" />
                     </td>
-                    <td class="align-bottom">
-                         <textarea class="form-control remarks" autosize rows="1"></textarea>
+                    <td class="align-bottom td-editable">
+                        <div class="td-indicator"></div>
+                        <textarea class="form-control remarks" autosize rows="1"></textarea>
                     </td>
                     <td class="align-middle"></td>
                     <td class="align-middle"></td>
