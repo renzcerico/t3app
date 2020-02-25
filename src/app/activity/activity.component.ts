@@ -13,13 +13,9 @@ import {
   styleUrls: ['./activity.component.css', '../material/material.component.css']
 })
 export class ActivityComponent {
-  @ViewChild('elActLotNumber', {static: true}) elActLotNumber: ElementRef;
-  @ViewChild('elActDowntime', {static: true}) elActDowntime: ElementRef;
-  @ViewChild('elActPackedQty', {static: true}) elActPackedQty: ElementRef;
-  @ViewChild('elActRemarks', {static: true}) elActRemarks: ElementRef;
   @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
   @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
-  elements = [this.elActDowntime, this.elActPackedQty, this.elActRemarks ];
+  @ViewChildren('headerInput') headerInput !: QueryList<ElementRef>;
 
   actLotNumber: any;
   actPackedQty: any;
@@ -64,12 +60,15 @@ export class ActivityComponent {
   constructor() { }
 
   handleKeyUp(event) {
-    const element = event.target.name.toString();
-    event.preventDefault();
-
+    const elArr = this.headerInput.toArray();
+    const active = elArr.findIndex(index => {
+      return (index.nativeElement.parentElement === event.target.parentElement);
+    });
+    console.log(event.target.attributes);
     const newActivity = {
       start_time: '11:00',
       end_time: '12:00',
+      lot_number: this.actLotNumber,
       packed: this.actPackedQty,
       adjustment: 0,
       downtime: this.actDowntime,
@@ -78,35 +77,16 @@ export class ActivityComponent {
       date_entered: '12/17 11:08',
       date_updated: ''
     };
-
-    if (!this.actPackedQty) {
-      this.elActPackedQty.nativeElement.focus();
+    if (event.target.attributes.required && !event.target.value) {
       return;
     }
-
-    if (!this.actDowntime) {
-      if (element === 'packedQty') {
-        this.elActDowntime.nativeElement.focus();
-        return;
-      } else if (element === 'downtime') {
-        this.elActRemarks.nativeElement.focus();
-        return;
-      }
+    if (active < elArr.length - 1) {
+      elArr[active + 1].nativeElement.focus();
+    } else {
+      this.addActivity(newActivity);
+      this.clearInputs();
     }
 
-    if (!this.actRemarks) {
-      if (element !== 'remarks') {
-        this.elActRemarks.nativeElement.focus();
-        return;
-      } else {
-        this.addActivity(newActivity);
-        this.clearInputs();
-        return;
-      }
-    }
-
-    this.addActivity(newActivity);
-    this.clearInputs();
   }
 
   handleKeyDown(event) {
@@ -121,7 +101,8 @@ export class ActivityComponent {
     this.actDowntime = '';
     this.actPackedQty = '';
     this.actRemarks = '';
-    this.elActPackedQty.nativeElement.focus();
+    this.actLotNumber = '';
+    this.headerInput.toArray()[0].nativeElement.focus();
   }
 
   handleTrKeyUp(event) {

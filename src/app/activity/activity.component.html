@@ -34,22 +34,58 @@
                     <td></td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="number" name="lotNumber" [(ngModel)]="actLotNumber" id="actLotNumber" #elActLotNumber class="form-control" />
+                        <input
+                            id="actLotNumber"
+                            name="lotNumber"
+                            type="number"
+                            required
+                            #headerInput
+                            [(ngModel)]="actLotNumber"
+                            (keyup.enter)="handleKeyUp($event)"
+                            class="form-control" />
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="number" name="packedQty" min="0" [(ngModel)]="actPackedQty" id="actPackedQty" (keyup.enter)="handleKeyUp($event)" #elActPackedQty class="form-control" />
+                        <input
+                            id="actPackedQty"
+                            name="packedQty"
+                            type="number"
+                            min="0"
+                            required
+                            #headerInput
+                            [(ngModel)]="actPackedQty"
+                            (keyup.enter)="handleKeyUp($event)"
+                            class="form-control" />
                     </td>
                     <td>
                     </td>
                     <td></td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="number" value="0" name="downtime" min="0" [(ngModel)]="actDowntime" id="actDowntime" (keyup.enter)="handleKeyUp($event)" #elActDowntime class="form-control"/>
+                        <input
+                            id="actDowntime"
+                            name="downtime"
+                            type="number"
+                            min="0"
+                            value="0"
+                            #headerInput
+                            [(ngModel)]="actDowntime"
+                            (keyup.enter)="handleKeyUp($event)"
+                            class="form-control"/>
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <textarea [(ngModel)]="actRemarks" name="remarks" id="actRemarks" (keyup.enter)="handleKeyUp($event)" (keydown.enter)="handleKeyDown($event)" #elActRemarks rows="1" autosize class="form-control"></textarea>
+                        <textarea
+                            id="actRemarks"
+                            name="remarks"
+                            rows="1"
+                            autosize
+                            #headerInput
+                            [(ngModel)]="actRemarks"
+                            (keyup.enter)="handleKeyUp($event)"
+                            (keydown.enter)="handleKeyDown($event)"
+                            class="form-control">
+                        </textarea>
                     </td>
                     <td></td>
                     <td></td>
@@ -58,7 +94,7 @@
                 <tr #contentTr *ngFor="let activity of activities; let i = index;">
                     <td class="align-middle">{{ activity.start_time }}</td>
                     <td class="align-middle">{{ activity.end_time }}</td>
-                    <td class="align-middle">130022520</td>
+                    <td class="align-middle">{{ activity.lot_number}}</td>
                     <td class="align-middle">
                         {{ activity.packed | number: '' }}
                     </td>
