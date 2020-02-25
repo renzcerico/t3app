@@ -21,3 +21,8 @@
 .downtime{
     background-color: transparent;
 }
+
+tfoot td {
+    font-weight: 500 !important;
+    font-size: 14px;
+}
