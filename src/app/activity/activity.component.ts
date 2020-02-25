@@ -20,12 +20,13 @@ export class ActivityComponent {
   actLotNumber: any;
   actPackedQty: any;
   actDowntime: any;
-  actRemarks: any = '';
+  actRemarks: any;
 
   activities = [
     {
       start_time: '11:00',
       end_time: '12:00',
+      lot_number: 141111119,
       packed: 37,
       adjustment: 0,
       downtime: 0,
@@ -37,6 +38,7 @@ export class ActivityComponent {
     {
       start_time: '09:00',
       end_time: '10:00',
+      lot_number: 141111119,
       packed: 79,
       adjustment: 0,
       downtime: 0,
@@ -48,6 +50,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 51,
       adjustment: 0,
       downtime: 0,
@@ -59,6 +62,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 178,
       adjustment: 0,
       downtime: 0,
@@ -70,6 +74,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 42,
       adjustment: 0,
       downtime: 0,
@@ -81,6 +86,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 29,
       adjustment: 0,
       downtime: 0,
@@ -92,6 +98,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 60,
       adjustment: 0,
       downtime: 0,
@@ -103,6 +110,7 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
+      lot_number: 141111119,
       packed: 2074,
       adjustment: 0,
       downtime: 0,
@@ -174,7 +182,9 @@ export class ActivityComponent {
     const active = elArr.findIndex(index => {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
-
+    if (event.target.attributes.required && !event.target.value) {
+      return;
+    }
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
     } else {

@@ -103,7 +103,20 @@
                 <tr #contentTr *ngFor="let activity of activities; let i = index;">
                     <td class="align-middle">{{ activity.start_time }}</td>
                     <td class="align-middle">{{ activity.end_time }}</td>
-                    <td class="align-middle">{{ activity.lot_number}}</td>
+                    <td class="align-middle td-editable">
+                        <div class="td-indicator-required"></div>
+                        <input 
+                            type="number"
+                            name="lot_number"
+                            id="lot_number"
+                            class="form-control editable-content text-right"
+                            required
+                            [(ngModel)]="activities[i].lot_number"
+                            (focus)="$event.target.select();"
+                            (keydown.enter)="handleKeyDown($event)"
+                            (keyup.enter)="handleTrKeyUp($event)"
+                            #editableTd >
+                    </td>
                     <td class="align-middle">
                         {{ activity.packed | number: '' }}
                     </td>
@@ -115,8 +128,6 @@
                             id="adjustment"
                             class="form-control editable-content text-right"
                             [(ngModel)]="activities[i].adjustment"
-                            [attr.trIndex]="i"
-                            [attr.columnIndex]="0"
                             (focus)="$event.target.select();"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
@@ -129,8 +140,7 @@
                             name="downtime"
                             id="downtime"
                             class="form-control editable-content text-right"
-                            [value]="activity.downtime" [attr.trIndex]="i"
-                            [attr.columnIndex]="1"
+                            [value]="activity.downtime"
                             (focus)="$event.target.select();"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
@@ -143,8 +153,6 @@
                             id="remarks"
                             class="form-control editable-content"
                             [value]="activity.remarks"
-                            [attr.trIndex]="i"
-                            [attr.columnIndex]="2"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
                             #editableTd 
