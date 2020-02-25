@@ -1,10 +1,19 @@
 <div class="container-fluid mt-4" id="container_activity">
-    <p class="small font-weight-500 m-0 w-50 position-relative">
-        <span class="font-weight-bold text-danger">
-            <div class="td-indicator"></div>
-        </span>
-        <i class="text-underline legend-editable    ">&nbsp; &nbsp; Indicates can be filled up.</i>
-    </p>
+    <div class="w-50">
+        <span class="small text-muted font-weight-light">Legends: &nbsp;&nbsp;</span>
+        <p class="small font-weight-500 m-0 position-relative d-inline-block mr-2">
+            <span class="font-weight-bold text-danger">
+                <div class="td-indicator"></div>
+            </span>
+            <i class="text-underline legend-editable">&nbsp; &nbsp; optional &nbsp; &nbsp;</i>
+        </p>
+        <p class="small font-weight-500 m-0 position-relative d-inline-block">
+            <span class="font-weight-bold text-danger">
+                <div class="td-indicator-required"></div>
+            </span>
+            <i class="text-underline legend-editable">&nbsp; &nbsp; required &nbsp; &nbsp;</i>
+        </p>
+    </div>
     <div class="table-responsive">
         <h6 class="text-center text-muted text-uppercase">Activity</h6>
         <table class="table table-bordered table-sm table-hover text-center" id="table_activity">
