@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef, QueryList, Input } from '@angular/core';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -7,9 +7,9 @@ import { ApiService } from '../services/api.service';
     styleUrls: ['./material.component.css']
 })
 
-export class MaterialComponent implements OnInit, AfterViewInit {
+export class MaterialComponent implements  AfterViewInit {
     @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
-
+    @Input() actTotal: number;
     materials = [
         {
             id:  '1',
@@ -55,12 +55,8 @@ export class MaterialComponent implements OnInit, AfterViewInit {
     apiResponse: any;
     constructor(public apis: ApiService) { }
 
-    ngOnInit() {
-    }
-
     ngAfterViewInit() {
-        const editable = this.tdEditable;
-        console.log(editable);
+        // console.log(this.actTotal);
     }
 
     makeApiCallGET() {

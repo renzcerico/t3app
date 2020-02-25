@@ -42,7 +42,7 @@
                     <td></td>
                     <td></td>
                     <td class="align-bottom td-editable">
-                        <div class="td-indicator"></div>
+                        <div class="td-indicator-required"></div>
                         <input
                             id="actLotNumber"
                             name="lotNumber"
@@ -54,7 +54,7 @@
                             class="form-control" />
                     </td>
                     <td class="align-bottom td-editable">
-                        <div class="td-indicator"></div>
+                        <div class="td-indicator-required"></div>
                         <input
                             id="actPackedQty"
                             name="packedQty"
@@ -156,6 +156,19 @@
                     <td class="align-middle">{{ activity.last_updated_by }}</td>
                     <td class="align-middle">{{ activity.date_entered }}</td>
                     <td class="align-middle">{{ activity.date_updated }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Sub total:</td>
+                    <td>{{subTotal | number: '' }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>

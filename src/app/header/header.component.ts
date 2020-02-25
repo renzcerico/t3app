@@ -1,9 +1,10 @@
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewInit} from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ScannerDetector from 'js-scanner-detection';
 import * as moment from 'moment';
+import { ActivityComponent } from '../activity/activity.component';
 
 @Component({
     selector: 'app-home',
@@ -11,7 +12,7 @@ import * as moment from 'moment';
     styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewInit {
     seeResult = 'See more';
     faAngleUp = faAngleUp;
     faAngleDown = faAngleDown;
@@ -30,7 +31,8 @@ export class HeaderComponent implements OnInit {
     oldCode: any;
     internalCode: any;
     productDesc: any;
-
+    @ViewChild(ActivityComponent, {static: true}) actComponent;
+    actTotal = 0 ;
     materials = [
         {
             id:  '1',
@@ -66,6 +68,14 @@ export class HeaderComponent implements OnInit {
 
     apiResponse: any;
     constructor(public apis: ApiService) { }
+
+    ngAfterContentChecked() {
+        this.actTotal = this.actComponent.subTotal;
+    }
+
+    ngAfterViewInit() {
+        this.actTotal = this.actComponent.subTotal;
+    }
 
     ngOnInit() {
         this.barcode();

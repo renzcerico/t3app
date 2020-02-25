@@ -29,7 +29,7 @@
                     <td class="align-middle">{{ material.quantity }}</td>
                     <td class="align-middle">{{ material.standard }}</td>
                     <td class="align-middle">{{ material.requirements }}</td>
-                    <td class="align-middle">{{ material.used }}</td>
+                    <td class="align-middle">{{ actTotal / material.standard | number : '1.0-0'}}</td>
                     <td class="align-middle td-editable" width="6%">
                         <div class="td-indicator"></div>
                         <input 
@@ -43,7 +43,7 @@
                             #tdEditable />
                     </td>
                     <td class="align-middle">
-                        {{ material.used + material.reject }}
+                        {{ (actTotal / material.standard) + material.reject | number : '1.0-0'}}
                     </td>
                     <td class="align-middle td-editable">
                         <div class="td-indicator"></div>

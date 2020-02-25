@@ -26,7 +26,7 @@ export class ActivityComponent {
     {
       start_time: '11:00',
       end_time: '12:00',
-      packed: 1600,
+      packed: 37,
       adjustment: 0,
       downtime: 0,
       remarks: '',
@@ -37,8 +37,8 @@ export class ActivityComponent {
     {
       start_time: '09:00',
       end_time: '10:00',
-      packed: 1300,
-      adjustment: -153,
+      packed: 79,
+      adjustment: 0,
       downtime: 0,
       remarks: '',
       last_updated_by: 'R. Cerico',
@@ -48,8 +48,63 @@ export class ActivityComponent {
     {
       start_time: '08:00',
       end_time: '09:00',
-      packed: 1200,
-      adjustment: 1,
+      packed: 51,
+      adjustment: 0,
+      downtime: 0,
+      remarks: '',
+      last_updated_by: 'R. Cerico',
+      date_entered: '12/17 09:02',
+      date_updated: ''
+    },
+    {
+      start_time: '08:00',
+      end_time: '09:00',
+      packed: 178,
+      adjustment: 0,
+      downtime: 0,
+      remarks: '',
+      last_updated_by: 'R. Cerico',
+      date_entered: '12/17 09:02',
+      date_updated: ''
+    },
+    {
+      start_time: '08:00',
+      end_time: '09:00',
+      packed: 42,
+      adjustment: 0,
+      downtime: 0,
+      remarks: '',
+      last_updated_by: 'R. Cerico',
+      date_entered: '12/17 09:02',
+      date_updated: ''
+    },
+    {
+      start_time: '08:00',
+      end_time: '09:00',
+      packed: 29,
+      adjustment: 0,
+      downtime: 0,
+      remarks: '',
+      last_updated_by: 'R. Cerico',
+      date_entered: '12/17 09:02',
+      date_updated: ''
+    },
+    {
+      start_time: '08:00',
+      end_time: '09:00',
+      packed: 60,
+      adjustment: 0,
+      downtime: 0,
+      remarks: '',
+      last_updated_by: 'R. Cerico',
+      date_entered: '12/17 09:02',
+      date_updated: ''
+    },
+    {
+      start_time: '08:00',
+      end_time: '09:00',
+      packed: 2074,
+      adjustment: 0,
       downtime: 0,
       remarks: '',
       last_updated_by: 'R. Cerico',
@@ -57,6 +112,15 @@ export class ActivityComponent {
       date_updated: ''
     }
   ];
+
+  get subTotal() {
+    let subTotal = 0;
+    this.activities.forEach( (el) => {
+      subTotal += el.packed + el.adjustment;
+    });
+    return subTotal;
+  }
+
   constructor() { }
 
   handleKeyUp(event) {
@@ -64,7 +128,7 @@ export class ActivityComponent {
     const active = elArr.findIndex(index => {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
-    console.log(event.target.attributes);
+
     const newActivity = {
       start_time: '11:00',
       end_time: '12:00',
