@@ -20,7 +20,7 @@ export class ActivityComponent {
   actLotNumber: any;
   actPackedQty: any;
   actDowntime: any;
-  actRemarks: any;
+  actRemarks: any = '';
 
   activities = [
     {
