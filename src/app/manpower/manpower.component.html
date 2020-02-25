@@ -23,9 +23,17 @@
                     <td class="align-middle">{{ position }}</td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <select class="form-control manpower_list" max="10">
+                        <select 
+                            class="form-control manpower_list" 
+                            max="10" 
+                            name="manpowerID" 
+                            #manpowerID 
+                            (focus)="manpowerFocus(manpowerID.value)" 
+                            (change)="manpower($event)"
+                            #tdEditable >
                             <option></option>
                             <option *ngFor="let manpower of manpowers" 
+                                    [disabled]="manpower.disabled"
                                     value="{{ manpower.PERSON_ID }}">
                                     {{ manpower.FULLNAME }}
                             </option>
@@ -33,25 +41,37 @@
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="text" 
+                        <input type="number" 
                                class="form-control start_time" 
+                               name="startTime"
                                #startTime 
-                               (blur)="time(startTime.value)"
-                               (keyup.enter)="time(startTime.value)"
-                               placeholder="HHmm" />
+                               (focus)="$event.target.select();"
+                               (keydown)="limit(startTime.value, $event.key)"
+                               (keyup.enter)="time(startTime.value, $event)"
+                               (keydown.enter)="preventEnter($event)"
+                               placeholder="HHmm"
+                               #tdEditable />
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="text" 
-                        class="form-control end_time" 
-                        #endTime 
-                        (blur)="time(endTime.value)"
-                        (keyup.enter)="time(endTime.value)"
-                        placeholder="HHmm" />
+                        <input type="tel" 
+                                class="form-control end_time"
+                                name="endTime" 
+                                #endTime 
+                                (focus)="$event.target.select();"
+                                (keydown)="limit(endTime.value, $event.key)"
+                                (keyup.enter)="time(endTime.value, $event)"
+                                (keydown.enter)="preventEnter($event)"
+                                placeholder="HHmm"
+                                #tdEditable />
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <textarea class="form-control remarks" autosize rows="1"></textarea>
+                        <textarea class="form-control remarks" 
+                                  (keyup.enter)="time('', $event)"
+                                  (keydown.enter)="preventEnter($event)" 
+                                  autosize rows="1" 
+                                  #tdEditable></textarea>
                     </td>
                     <td class="align-middle"></td>
                     <td class="align-middle"></td>
@@ -61,3 +81,15 @@
         </table>
     </div>
 </div>
+
+<ng-template #loginModal let-modal>
+    <div class="modal-header">
+        <h6 class="modal-title pull-left text-muted">INVALID</h6>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body m-4">
+        <ngb-alert type="danger">Manpower was already assigned.</ngb-alert>
+    </div>
+</ng-template>

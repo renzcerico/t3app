@@ -9,32 +9,54 @@
                     <th rowspan="2" class="align-middle">QUANTITY</th>
                     <th rowspan="2" class="align-middle">STANDARD</th>
                     <th rowspan="2" class="align-middle">REQUIREMENTS</th>
-                    <th rowspan="2" class="align-middle">USED</th>
-                    <th rowspan="2" class="align-middle">REJECT</th>
+                    <th colspan="3" class="align-middle">CONSUMPTION</th>
                     <th rowspan="2" class="align-middle">REMARKS</th>
                     <th rowspan="2" class="align-middle">LAST <br /> UPDATED BY</th>
                     <th colspan="2">DATE</th>
                 </tr>
                 <tr>
+                    <th>USED</th>
+                    <th>REJECT</th>
+                    <th>TOTAL</th>
                     <th>ENTERED</th>
                     <th>UPDATED</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let material of materials">
+                <tr *ngFor="let material of materials; let i = index;">
                     <!-- <td class="align-middle">{{ material.id }}</td> -->
                     <td class="align-middle">{{ material.material_code }}</td>
                     <td class="align-middle">{{ material.quantity }}</td>
                     <td class="align-middle">{{ material.standard }}</td>
                     <td class="align-middle">{{ material.requirements }}</td>
                     <td class="align-middle">{{ material.used }}</td>
-                    <td class="align-middle td-editable" contenteditable="true" (keyup)="onKeyUp($event)">
+                    <td class="align-middle td-editable" width="6%">
                         <div class="td-indicator"></div>
-                        {{ material.reject }}
+                        <input 
+                            type="number" 
+                            name="reject" 
+                            [(ngModel)]="materials[i].reject"
+                            [attr.m-id]="material.id"
+                            class="form-control text-right"
+                            (focus)="$event.target.select();"
+                            (keydown.enter)="onKeyDown($event)"
+                            #tdEditable />
+                    </td>
+                    <td class="align-middle">
+                        {{ material.used + material.reject }}
                     </td>
                     <td class="align-middle td-editable">
                         <div class="td-indicator"></div>
-                        <textarea class="form-control remarks" autosize rows="1">{{ material.remarks }}</textarea>
+                        <textarea                             
+                            [(ngModel)]="materials[i].remarks"
+                            name="remarks"
+                            class="form-control remarks"
+                            [attr.m-id]="material.id"
+                            #tdEditable
+                            autosize rows="1"
+                            (keydown.enter)="onKeyDown($event)">
+                            {{ material.remarks }}
+                        </textarea>
                    </td>
                     <td class="align-middle">{{ material.manpower }}</td>
                     <td class="align-middle">{{ material.entered }}</td>

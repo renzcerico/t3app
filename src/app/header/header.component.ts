@@ -16,8 +16,20 @@ export class HeaderComponent implements OnInit {
     faAngleUp = faAngleUp;
     faAngleDown = faAngleDown;
     iconResult = faAngleDown;
-    barcodeNumber = '';
-    startTime = '';
+    barcodeNumber: any;
+    startTime: any;
+    endTime: any;
+    status: any;
+    poNumber: any;
+    controlNumber: any;
+    shippingDate: any;
+    orderQuantity: any;
+    customer: any;
+    customerCode: any;
+    customerSpecs: any;
+    oldCode: any;
+    internalCode: any;
+    productDesc: any;
 
     materials = [
         {
@@ -81,11 +93,54 @@ export class HeaderComponent implements OnInit {
         const onComplete = (val) => {
             this.barcodeNumber = val;
             this.startTime = moment().format('MM/DD/Y HH:mm');
+            this.getData();
         };
 
         const options = { onComplete };
 
         const scannerDetector = new ScannerDetector(options);
+    }
+
+    getData() {
+        this.apis.getData(this.barcodeNumber)
+            .subscribe(
+              res => {
+                const jsonRes = res[0];
+                (
+                    jsonRes.ACTUAL_START !== null ?
+                    this.startTime = moment(jsonRes.ACTUAL_START, 'DD-MMM-YYYY HH:mm').format('MM/DD/Y HH:mm') :
+                    this.startTime = ''
+                );
+                (
+                    jsonRes.ACTUAL_END !== null ?
+                    this.endTime = moment(jsonRes.ACTUAL_END, 'DD-MMM-YYYY HH:mm').format('MM/DD/Y HH:mm') :
+                    this.endTime =  ''
+                );
+                (
+                    jsonRes.MNFG_DATE !== null ?
+                    this.shippingDate = moment(jsonRes.MNFG_DATE, 'DD-MMM-YYYY HH:mm').format('MM/DD/Y HH:mm') :
+                    this.shippingDate =  ''
+                );
+                this.status = jsonRes.STATUS;
+                this.poNumber = jsonRes.HEADER_ID;
+                this.controlNumber = jsonRes.BATCH_NO;
+                this.orderQuantity = jsonRes.STD_OUTPUT;
+                this.customer = jsonRes.LINE_LEADER;
+                this.customerCode = jsonRes.BATCH_ID;
+                this.customerSpecs = jsonRes.PRODUCTION_NO;
+                this.oldCode = jsonRes.LOT_NUMBER;
+                this.internalCode = jsonRes.PRODUCT_CODE;
+                this.productDesc = jsonRes.PRODUCT_DESC;
+              },
+              err => {
+                this.apiResponse = err;
+                console.log(err);
+              }
+            );
+    }
+
+    handleBarcodeChange() {
+        this.getData();
     }
 
 }

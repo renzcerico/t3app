@@ -9,6 +9,16 @@ textarea:focus {
     right: 0;
 }
 
+.legend-editable {
+    background-color: bisque;
+    padding: 2.5px;
+    /* font-weight: 500; */
+}
+
+span .td-indicator {
+    margin-left: 1px;
+}
+
 .td-editable {
     position: relative;
     background-color: bisque !important;
@@ -22,4 +32,14 @@ textarea:focus {
     left: 1px;
     border-top: 7px solid #ff7873;
     border-right: 7px solid transparent;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
 }

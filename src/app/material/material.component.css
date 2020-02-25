@@ -10,9 +10,33 @@
 
 #table_activity tbody td,
 #table_manpower tbody td,
-#table_material tbody td {
+#table_material tbody td,
+#table_material tbody input,
+#table_material tbody textarea,
+.editable-content {
     font-weight: 400 !important;
     font-size: 13px !important;
+}
+
+#table_material>tbody input,
+#table_material>tbody textarea,
+#table_manpower>tbody input,
+#table_manpower>tbody select,
+#table_manpower>tbody textarea,
+.editable-content {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+#table_activity>tbody input:focus,
+#table_activity>tbody textarea:focus,
+#table_manpower>tbody input:focus,
+#table_manpower>tbody select:focus,
+#table_manpower>tbody textarea:focus,
+#table_material>tbody input:focus,
+#table_material>tbody textarea:focus {
+    box-shadow: none;
 }
 
 #table_material tbody td:nth-child(2),

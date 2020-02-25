@@ -14,3 +14,7 @@
 .remarks {
     resize: none;
 }
+
+option:disabled {
+    color: #c9c7c6;
+}

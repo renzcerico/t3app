@@ -3,7 +3,7 @@
         <span class="font-weight-bold text-danger">
             <div class="td-indicator"></div>
         </span>
-        <i class="text-underline">&nbsp; &nbsp; Indicates can be filled up.</i>
+        <i class="text-underline legend-editable    ">&nbsp; &nbsp; Indicates can be filled up.</i>
     </p>
     <div class="table-responsive">
         <h6 class="text-center text-muted text-uppercase">Activity</h6>
@@ -11,6 +11,7 @@
             <thead class="text-uppercase">
                 <tr>
                     <th colspan="2" class="align-middle">Time</th>
+                    <th rowspan="2" class="align-middle">Lot Number</th>
                     <th colspan="3" class="align-middle">Quantity</th>
                     <th rowspan="2" class="align-middle">Downtime</th>
                     <th rowspan="2" class="align-middle">Remarks</th>
@@ -33,46 +34,83 @@
                     <td></td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="number" name="packedQty" min="0" [(ngModel)]="actPackedQty" id="actPackedQty" (keyup.enter)="onKeyUp($event)" #elActPackedQty class="form-control" />
+                        <input type="number" name="lotNumber" [(ngModel)]="actLotNumber" id="actLotNumber" #elActLotNumber class="form-control" />
+                    </td>
+                    <td class="align-bottom td-editable">
+                        <div class="td-indicator"></div>
+                        <input type="number" name="packedQty" min="0" [(ngModel)]="actPackedQty" id="actPackedQty" (keyup.enter)="handleKeyUp($event)" #elActPackedQty class="form-control" />
                     </td>
                     <td>
                     </td>
                     <td></td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <input type="number" value="0" name="downtime" min="0" [(ngModel)]="actDowntime" id="actDowntime" (keyup.enter)="onKeyUp($event)" #elActDowntime class="form-control"/>
+                        <input type="number" value="0" name="downtime" min="0" [(ngModel)]="actDowntime" id="actDowntime" (keyup.enter)="handleKeyUp($event)" #elActDowntime class="form-control"/>
                     </td>
                     <td class="align-bottom td-editable">
                         <div class="td-indicator"></div>
-                        <textarea [(ngModel)]="actRemarks" name="remarks" id="actRemarks" (keyup.enter)="onKeyUp($event)" (keydown.enter)="onKeyDown($event)" #elActRemarks rows="1" autosize class="form-control"></textarea>
+                        <textarea [(ngModel)]="actRemarks" name="remarks" id="actRemarks" (keyup.enter)="handleKeyUp($event)" (keydown.enter)="handleKeyDown($event)" #elActRemarks rows="1" autosize class="form-control"></textarea>
                     </td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr *ngFor="let activity of activities">
-                    <td>{{ activity.start_time }}</td>
-                    <td>{{ activity.end_time }}</td>
-                    <td class="td-editable" contenteditable="true">
-                        <div class="td-indicator"></div>
+                <tr #contentTr *ngFor="let activity of activities; let i = index;">
+                    <td class="align-middle">{{ activity.start_time }}</td>
+                    <td class="align-middle">{{ activity.end_time }}</td>
+                    <td class="align-middle">130022520</td>
+                    <td class="align-middle">
                         {{ activity.packed | number: '' }}
                     </td>
-                    <td class="td-editable" contenteditable="true">
+                    <td class="align-middle td-editable">
                         <div class="td-indicator"></div>
-                        {{ activity.adjustment | number: '' }}
+                        <input 
+                            type="number"
+                            name="adjustment"
+                            id="adjustment"
+                            class="form-control editable-content text-right"
+                            [(ngModel)]="activities[i].adjustment"
+                            [attr.trIndex]="i"
+                            [attr.columnIndex]="0"
+                            (focus)="$event.target.select();"
+                            (keydown.enter)="handleKeyDown($event)"
+                            (keyup.enter)="handleTrKeyUp($event)"
+                            #editableTd >
                     </td>
-                    <td>{{ activity.packed + activity.adjustment | number: '' }}</td>
-                    <td class="td-editable" contenteditable="true">
+                    <td class="align-middle">{{ activity.packed + activity.adjustment | number: '' }}</td>
+                    <td class="align-middle td-editable">
+                        <input
+                            type="number"
+                            name="downtime"
+                            id="downtime"
+                            class="form-control editable-content text-right"
+                            [value]="activity.downtime" [attr.trIndex]="i"
+                            [attr.columnIndex]="1"
+                            (focus)="$event.target.select();"
+                            (keydown.enter)="handleKeyDown($event)"
+                            (keyup.enter)="handleTrKeyUp($event)"
+                            #editableTd >
                         <div class="td-indicator"></div>
-                        {{ activity.downtime }}
                     </td>
-                    <td class="td-editable" contenteditable="true">
+                    <td class="align-middle td-editable">
+                        <textarea
+                            name="remarks"
+                            id="remarks"
+                            class="form-control editable-content"
+                            [value]="activity.remarks"
+                            [attr.trIndex]="i"
+                            [attr.columnIndex]="2"
+                            (keydown.enter)="handleKeyDown($event)"
+                            (keyup.enter)="handleTrKeyUp($event)"
+                            #editableTd 
+                            autosize
+                            rows="1">
+                        </textarea>
                         <div class="td-indicator"></div>
-                        {{ activity.remarks }}
                     </td>
-                    <td>{{ activity.last_updated_by }}</td>
-                    <td>{{ activity.date_entered }}</td>
-                    <td>{{ activity.date_updated }}</td>
+                    <td class="align-middle">{{ activity.last_updated_by }}</td>
+                    <td class="align-middle">{{ activity.date_entered }}</td>
+                    <td class="align-middle">{{ activity.date_updated }}</td>
                 </tr>
             </tbody>
         </table>

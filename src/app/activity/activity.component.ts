@@ -1,20 +1,30 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  QueryList,
+  AfterViewInit,
+  ViewChildren,
+} from '@angular/core';
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css', '../material/material.component.css']
 })
-export class ActivityComponent implements OnInit {
+export class ActivityComponent {
+  @ViewChild('elActLotNumber', {static: true}) elActLotNumber: ElementRef;
   @ViewChild('elActDowntime', {static: true}) elActDowntime: ElementRef;
   @ViewChild('elActPackedQty', {static: true}) elActPackedQty: ElementRef;
   @ViewChild('elActRemarks', {static: true}) elActRemarks: ElementRef;
+  @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
+  @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
+  elements = [this.elActDowntime, this.elActPackedQty, this.elActRemarks ];
 
-  elements = [ this.elActDowntime, this.elActPackedQty, this.elActRemarks ];
-
+  actLotNumber: any;
   actPackedQty: any;
   actDowntime: any;
-  actRemarks: any;
+  actRemarks: any = '';
 
   activities = [
     {
@@ -22,7 +32,7 @@ export class ActivityComponent implements OnInit {
       end_time: '12:00',
       packed: 1600,
       adjustment: 0,
-      downtime: '',
+      downtime: 0,
       remarks: '',
       last_updated_by: 'R. Cerico',
       date_entered: '12/17 11:08',
@@ -33,7 +43,7 @@ export class ActivityComponent implements OnInit {
       end_time: '10:00',
       packed: 1300,
       adjustment: -153,
-      downtime: '',
+      downtime: 0,
       remarks: '',
       last_updated_by: 'R. Cerico',
       date_entered: '12/17 10:15',
@@ -44,7 +54,7 @@ export class ActivityComponent implements OnInit {
       end_time: '09:00',
       packed: 1200,
       adjustment: 1,
-      downtime: '',
+      downtime: 0,
       remarks: '',
       last_updated_by: 'R. Cerico',
       date_entered: '12/17 09:02',
@@ -53,11 +63,8 @@ export class ActivityComponent implements OnInit {
   ];
   constructor() { }
 
-  ngOnInit() {
-  }
-
-  onKeyUp(event) {
-    const element = event.srcElement.name.toString();
+  handleKeyUp(event) {
+    const element = event.target.name.toString();
     event.preventDefault();
 
     const newActivity = {
@@ -102,7 +109,7 @@ export class ActivityComponent implements OnInit {
     this.clearInputs();
   }
 
-  onKeyDown(event) {
+  handleKeyDown(event) {
     event.preventDefault();
   }
 
@@ -117,4 +124,16 @@ export class ActivityComponent implements OnInit {
     this.elActPackedQty.nativeElement.focus();
   }
 
+  handleTrKeyUp(event) {
+    const elArr = this.editableTd.toArray();
+    const active = elArr.findIndex(index => {
+      return (index.nativeElement.parentElement === event.target.parentElement);
+    });
+
+    if (active < elArr.length - 1) {
+      elArr[active + 1].nativeElement.focus();
+    } else {
+      event.target.blur();
+    }
+  }
 }

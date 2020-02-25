@@ -33,4 +33,9 @@ export class ApiService {
     getManpower(): Observable<any> {
         return this.http.get(`${this.url}` + '/api/personnel');
     }
+
+    getData(barcode): Observable<any> {
+        const testBarcode = 'SO01-022020-818454';
+        return this.http.get('http://t2apps.tailinsubic.com/api/t2_header?prodno=' + testBarcode);
+    }
 }

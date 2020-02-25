@@ -3,25 +3,25 @@
             <div class="form-row">
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                     <div class="form-label-group">
-                        <input readonly type="text" id="barcode" class="form-control" [(ngModel)]="barcodeNumber" name="barcode" placeholder="#" required>
+                        <input name="barcode" type="text" id="barcode" class="form-control" [ngModel]="barcodeNumber" name="barcode" placeholder="#" required (change)="handleBarcodeChange()">
                         <label for="barcode">Barcode</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                     <div class="form-label-group">
-                        <input readonly type="text" id="start_time" class="form-control" value="{{ startTime }}" placeholder="MM/DD/YYYY HH:mm" required>
-                        <label for="start_time">Start Time</label>
+                        <input readonly name="start_time" type="text" id="start_time" class="form-control" [ngModel]="startTime" placeholder="MM/DD/YYYY HH:mm" required>
+                        <label for="start_time">Actual Start</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                     <div class="form-label-group">
-                        <input readonly type="text" id="end_time" class="form-control" placeholder="MM/DD/YYYY HH:mm" required>
-                        <label for="end_time">End Time</label>
+                        <input readonly name="end_time" type="text" id="end_time" class="form-control" [ngModel]="endTime" placeholder="MM/DD/YYYY HH:mm" required>
+                        <label for="end_time">Actual End</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                     <div class="form-label-group">
-                        <input readonly type="text" id="status" class="form-control" placeholder="-" required>
+                        <input readonly name="status" type="text" id="status" class="form-control" [ngModel]="status" placeholder="-" required>
                         <label for="status">Status</label>
                     </div>
                     <!-- <button class="btn btn-dark border-100 font-weight-500 pl-5 pr-5">Save</button> -->
@@ -30,25 +30,25 @@
             <div class="form-row">
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                     <div class="form-label-group">
-                        <input readonly type="text" id="po_num" class="form-control" placeholder="#" required>
+                        <input readonly name="po_num" type="text" id="po_num" class="form-control" [ngModel]="poNumber" placeholder="#" required>
                         <label for="po_num">PO Number</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                     <div class="form-label-group">
-                        <input readonly type="text" id="control_num" class="form-control" placeholder="#" required>
+                        <input readonly name="control_num" type="text" id="control_num" class="form-control" [ngModel]="controlNumber" placeholder="#" required>
                         <label for="control_num">Control Number</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                     <div class="form-label-group">
-                        <input readonly type="text" id="shipping_date" class="form-control" placeholder="MM/DD/YYYY" required>
+                        <input readonly name="shipping_date" type="text" id="shipping_date" class="form-control" [ngModel]="shippingDate" placeholder="MM/DD/YYYY" required>
                         <label for="shipping_date">Shipping Date</label>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                     <div class="form-label-group">
-                        <input readonly type="text" id="order_qty" class="form-control" placeholder="0" required>
+                        <input readonly name="order_qty" type="text" id="order_qty" class="form-control" [ngModel]="orderQuantity" placeholder="0" required>
                         <label for="order_qty">Order Quantity</label>
                     </div>
                 </div>
@@ -57,19 +57,19 @@
                 <div class="form-row">
                     <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <div class="form-label-group">
-                            <input readonly type="text" id="customer" class="form-control" placeholder="Name" required>
+                            <input readonly name="customer" type="text" id="customer" class="form-control" [ngModel]="customer" placeholder="Name" required>
                             <label for="customer">Customer</label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                         <div class="form-label-group">
-                            <input readonly type="text" id="customer_code" class="form-control" placeholder="Code" required>
+                            <input readonly name="customer_code" type="text" id="customer_code" class="form-control" [ngModel]="customerCode" placeholder="Code" required>
                             <label for="customer_code">Customer Code</label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">                
                         <div class="form-label-group">
-                            <input readonly type="text" id="customer_specs" class="form-control" placeholder="Specification" required>
+                            <input readonly name="customer_specs" type="text" id="customer_specs" class="form-control" [ngModel]="customerSpecs" placeholder="Specification" required>
                             <label for="customer_specs">Customer Specification</label>
                         </div>
                     </div>
@@ -77,19 +77,19 @@
                 <div class="form-row">
                     <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <div class="form-label-group">
-                            <input readonly type="text" id="old_code" class="form-control" placeholder="Code" required>
+                            <input readonly name="old_code" type="text" id="old_code" class="form-control" [ngModel]="oldCode" placeholder="Code" required>
                             <label for="old_code">Old Code</label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">                
                         <div class="form-label-group">
-                            <input readonly type="text" id="internal_code" class="form-control" placeholder="Code" required>
+                            <input readonly name="internal_code" type="text" id="internal_code" class="form-control" [ngModel]="internalCode" placeholder="Code" required>
                             <label for="internal_code">Internal Code</label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">                
                         <div class="form-label-group">
-                            <input readonly type="text" id="product_desc" class="form-control" placeholder="Description" required>
+                            <input readonly name="product_desc" type="text" id="product_desc" class="form-control" [ngModel]="productDesc" placeholder="Description" required>
                             <label for="product_desc">Product Description</label>
                         </div>
                     </div>
