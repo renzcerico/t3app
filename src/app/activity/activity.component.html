@@ -101,9 +101,9 @@
                     <td></td>
                 </tr>
                 <tr #contentTr *ngFor="let activity of activities; let i = index;">
-                    <td class="align-middle">{{ activity.start_time }}</td>
-                    <td class="align-middle">{{ activity.end_time }}</td>
-                    <td class="align-middle td-editable">
+                    <td class="align-middle" data-label="Start">{{ activity.start_time }}</td>
+                    <td class="align-middle" data-label="End">{{ activity.end_time }}</td>
+                    <td class="align-middle td-editable" data-label="Lot Number">
                         <div class="td-indicator-required"></div>
                         <input 
                             type="number"
@@ -117,10 +117,10 @@
                             (keyup.enter)="handleTrKeyUp($event)"
                             #editableTd >
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle" data-label="Packed">
                         {{ activity.packed | number: '' }}
                     </td>
-                    <td class="align-middle td-editable">
+                    <td class="align-middle td-editable" data-label="Adjustment">
                         <div class="td-indicator"></div>
                         <input 
                             type="number"
@@ -133,8 +133,8 @@
                             (keyup.enter)="handleTrKeyUp($event)"
                             #editableTd >
                     </td>
-                    <td class="align-middle">{{ activity.packed + activity.adjustment | number: '' }}</td>
-                    <td class="align-middle td-editable">
+                    <td class="align-middle" data-label="Total">{{ activity.packed + activity.adjustment | number: '' }}</td>
+                    <td class="align-middle td-editable" data-label="Downtime">
                         <input
                             type="number"
                             name="downtime"
@@ -147,7 +147,7 @@
                             #editableTd >
                         <div class="td-indicator"></div>
                     </td>
-                    <td class="align-middle td-editable">
+                    <td class="align-middle td-editable" data-label="Remarks">
                         <textarea
                             name="remarks"
                             id="remarks"
@@ -161,24 +161,17 @@
                         </textarea>
                         <div class="td-indicator"></div>
                     </td>
-                    <td class="align-middle">{{ activity.last_updated_by }}</td>
-                    <td class="align-middle">{{ activity.date_entered }}</td>
-                    <td class="align-middle">{{ activity.date_updated }}</td>
+                    <td class="align-middle" data-label="Updated By">{{ activity.last_updated_by }}</td>
+                    <td class="align-middle" data-label="Date Entered">{{ activity.date_entered }}</td>
+                    <td class="align-middle" data-label="Date Updated">{{ activity.date_updated }}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="text-uppercase">
-                    <!-- <td></td>
-                    <td></td>
-                    <td></td> -->
                     <td colspan="4"></td>
                     <td class="text-right">Sub total:</td>
                     <td class="text-right">{{ subTotal | number: '' }}</td>
                     <td colspan="5"></td>
-                    <!-- <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td> -->
                 </tr>
             </tfoot>
         </table>
