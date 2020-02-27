@@ -20,8 +20,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let position of positions">
-                    <td class="align-middle">{{ position }}</td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-middle" data-label="Position">{{ position }}</td>
+                    <td class="align-bottom td-editable" data-label="Manpower">
                         <div class="td-indicator-required"></div>
                         <select 
                             class="form-control manpower_list" 
@@ -39,7 +39,7 @@
                             </option>
                         </select>
                     </td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-bottom td-editable" data-label="Start">
                         <div class="td-indicator"></div>
                         <input type="number" 
                                class="form-control start_time" 
@@ -52,7 +52,7 @@
                                placeholder="HHmm"
                                #tdEditable />
                     </td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-bottom td-editable" data-label="End">
                         <div class="td-indicator"></div>
                         <input type="tel" 
                                 class="form-control end_time"
@@ -65,7 +65,7 @@
                                 placeholder="HHmm"
                                 #tdEditable />
                     </td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-bottom td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea class="form-control remarks" 
                                   (keyup.enter)="time('', $event)"
@@ -73,9 +73,9 @@
                                   autosize rows="1" 
                                   #tdEditable></textarea>
                     </td>
-                    <td class="align-middle"></td>
-                    <td class="align-middle"></td>
-                    <td class="align-middle"></td>
+                    <td class="align-middle" data-label="Updated By"></td>
+                    <td class="align-middle" data-label="Date Entered"></td>
+                    <td class="align-middle" data-label="Date Updated"></td>
                 </tr>
             </tbody>
         </table>
