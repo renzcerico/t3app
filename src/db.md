@@ -15,7 +15,6 @@ old_code
 internal_code
 product_description
 
-
 tbl_activity
 * id
 header_id
@@ -32,6 +31,7 @@ date_updated
 
 tbl_material
 * id
+material_code
 quantity
 standard
 requirements

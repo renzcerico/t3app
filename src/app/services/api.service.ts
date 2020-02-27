@@ -15,9 +15,9 @@ export class ApiService {
 
     setHeaders() {
         const httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type':  'application/json',
-        })
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
         };
         return httpOptions;
     }
@@ -37,5 +37,9 @@ export class ApiService {
     getData(barcode): Observable<any> {
         const testBarcode = 'SO01-022020-818454';
         return this.http.get('http://t2apps.tailinsubic.com/api/t2_header?prodno=' + testBarcode);
+    }
+
+    header(data): Observable<any> {
+        return this.http.post(`${ this.url }` + '/api/header', data, this.setHeaders());
     }
 }

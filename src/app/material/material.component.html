@@ -25,12 +25,12 @@
             <tbody>
                 <tr *ngFor="let material of materials; let i = index;">
                     <!-- <td class="align-middle">{{ material.id }}</td> -->
-                    <td class="align-middle">{{ material.material_code }}</td>
-                    <td class="align-middle">{{ material.quantity }}</td>
-                    <td class="align-middle">{{ material.standard }}</td>
-                    <td class="align-middle">{{ material.requirements }}</td>
-                    <td class="align-middle">{{ actTotal / material.standard | number : '1.0-0'}}</td>
-                    <td class="align-middle td-editable" width="6%">
+                    <td class="align-middle" data-label="Code">{{ material.material_code }}</td>
+                    <td class="align-middle" data-label="Quantity">{{ material.quantity }}</td>
+                    <td class="align-middle" data-label="Standard">{{ material.standard }}</td>
+                    <td class="align-middle" data-label="Requirements">{{ material.requirements }}</td>
+                    <td class="align-middle" data-label="Used">{{ actTotal / material.standard | number : '1.0-0'}}</td>
+                    <td class="align-middle td-editable" width="6%" data-label="Reject">
                         <div class="td-indicator"></div>
                         <input 
                             type="number" 
@@ -42,10 +42,10 @@
                             (keydown.enter)="onKeyDown($event)"
                             #tdEditable />
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle" data-label="Total">
                         {{ (actTotal / material.standard) + material.reject | number : '1.0-0'}}
                     </td>
-                    <td class="align-middle td-editable">
+                    <td class="align-middle td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea                             
                             [(ngModel)]="materials[i].remarks"
@@ -58,9 +58,9 @@
                             {{ material.remarks }}
                         </textarea>
                    </td>
-                    <td class="align-middle">{{ material.manpower }}</td>
-                    <td class="align-middle">{{ material.entered }}</td>
-                    <td class="align-middle">{{ material.updated }}</td>
+                    <td class="align-middle" data-label="Manpower">{{ material.manpower }}</td>
+                    <td class="align-middle" data-label="Date Entered">{{ material.entered }}</td>
+                    <td class="align-middle" data-label="Date Updated">{{ material.updated }}</td>
                 </tr>
             </tbody>
         </table>

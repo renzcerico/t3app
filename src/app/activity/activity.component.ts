@@ -123,9 +123,11 @@ export class ActivityComponent {
 
   get subTotal() {
     let subTotal = 0;
+
     this.activities.forEach( (el) => {
       subTotal += el.packed + el.adjustment;
     });
+
     return subTotal;
   }
 
@@ -133,6 +135,7 @@ export class ActivityComponent {
 
   handleKeyUp(event) {
     const elArr = this.headerInput.toArray();
+
     const active = elArr.findIndex(index => {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
@@ -149,9 +152,11 @@ export class ActivityComponent {
       date_entered: '12/17 11:08',
       date_updated: ''
     };
+
     if (event.target.attributes.required && !event.target.value) {
       return;
     }
+
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
     } else {
@@ -178,17 +183,22 @@ export class ActivityComponent {
   }
 
   handleTrKeyUp(event) {
+    // console.log(event);
     const elArr = this.editableTd.toArray();
+
     const active = elArr.findIndex(index => {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
+
     if (event.target.attributes.required && !event.target.value) {
       return;
     }
+
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
     } else {
       event.target.blur();
     }
   }
+
 }

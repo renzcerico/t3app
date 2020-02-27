@@ -5,6 +5,7 @@ import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ScannerDetector from 'js-scanner-detection';
 import * as moment from 'moment';
 import { ActivityComponent } from '../activity/activity.component';
+import { MaterialComponent } from './../material/material.component';
 
 @Component({
     selector: 'app-home',
@@ -32,49 +33,24 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     internalCode: any;
     productDesc: any;
     @ViewChild(ActivityComponent, {static: true}) actComponent;
-    actTotal = 0 ;
-    materials = [
-        {
-            id:  '1',
-            material_code: '123',
-            quantity: '100',
-            standard: '1200',
-            requirements: 'Many',
-            used: '500',
-            reject: '100',
-            remarks: 'Remarks'
-        },
-        {
-            id:  '2',
-            material_code: '456',
-            quantity: '800',
-            standard: '450',
-            requirements: 'None',
-            used: '45',
-            reject: '16',
-            remarks: 'My Remarks'
-        },
-        {
-            id:  '3',
-            material_code: '789',
-            quantity: '654',
-            standard: '100',
-            requirements: 'Any',
-            used: '45',
-            reject: '89',
-            remarks: 'Another Remarks'
-        }
-    ];
+    @ViewChild(MaterialComponent, {static: true}) matComponent;
+    actTotal = 0;
+    matArr: any;
+    actArr: any;
 
     apiResponse: any;
     constructor(public apis: ApiService) { }
 
     ngAfterContentChecked() {
         this.actTotal = this.actComponent.subTotal;
+        this.actArr = this.actComponent.activities;
+        this.matArr = this.matComponent.materials;
     }
 
     ngAfterViewInit() {
         this.actTotal = this.actComponent.subTotal;
+        this.actArr = this.actComponent.activities;
+        this.matArr = this.matComponent.materials;
     }
 
     ngOnInit() {
@@ -151,6 +127,39 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
 
     handleBarcodeChange() {
         this.getData();
+    }
+
+    header() {
+        const json = {
+            start_time: this.startTime,
+            end_time: this.endTime,
+            shipping_date: this.shippingDate,
+            status: this.status,
+            po_number: this.poNumber,
+            control_number: this.controlNumber,
+            order_qty: this.orderQuantity,
+            customer: this.customer,
+            customer_code: this.customerCode,
+            customer_specs: this.customerSpecs,
+            old_code: this.oldCode,
+            internal_code: this.internalCode,
+            product_desc: this.productDesc
+        };
+
+        this.apis.header(json)
+            .subscribe(
+                res => {
+                    console.log(res);
+                },
+                err => {
+                    console.log(err);
+                }
+                );
+
+        console.log(this.matArr);
+        console.log(this.actArr);
+        // console.log(json);
+        // return json;
     }
 
 }

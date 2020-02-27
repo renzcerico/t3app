@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef, QueryList, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef, QueryList, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { ApiService } from '../services/api.service';
 export class MaterialComponent implements  AfterViewInit {
     @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
     @Input() actTotal: number;
+
     materials = [
         {
             id:  '1',

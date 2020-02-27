@@ -1,5 +1,5 @@
 <div class="container-fluid mt-4" id="container_activity">
-    <div class="w-50">
+    <div class="w-100 text-center text-md-left mb-3">
         <span class="small text-muted font-weight-light">Legends: &nbsp;&nbsp;</span>
         <p class="small font-weight-500 m-0 position-relative d-inline-block mr-2">
             <span class="font-weight-bold text-danger">
@@ -39,9 +39,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td class="align-bottom td-editable">
+                    <td data-label="Start"></td>
+                    <td data-label="End"></td>
+                    <td class="align-bottom td-editable" data-label="Lot Number">
                         <div class="td-indicator-required"></div>
                         <input
                             id="actLotNumber"
@@ -53,7 +53,7 @@
                             (keyup.enter)="handleKeyUp($event)"
                             class="form-control" />
                     </td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-bottom td-editable" data-label="Packed">
                         <div class="td-indicator-required"></div>
                         <input
                             id="actPackedQty"
@@ -66,10 +66,10 @@
                             (keyup.enter)="handleKeyUp($event)"
                             class="form-control" />
                     </td>
-                    <td>
+                    <td data-label="Adjustment">
                     </td>
-                    <td></td>
-                    <td class="align-bottom td-editable">
+                    <td data-label="Total"></td>
+                    <td class="align-bottom td-editable" data-label="Downtime">
                         <div class="td-indicator"></div>
                         <input
                             id="actDowntime"
@@ -82,7 +82,7 @@
                             (keyup.enter)="handleKeyUp($event)"
                             class="form-control"/>
                     </td>
-                    <td class="align-bottom td-editable">
+                    <td class="align-bottom td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea
                             id="actRemarks"
@@ -96,9 +96,9 @@
                             class="form-control">
                         </textarea>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-label="Updated By"></td>
+                    <td data-label="Date Entered"></td>
+                    <td data-label="Date Updated"></td>
                 </tr>
                 <tr #contentTr *ngFor="let activity of activities; let i = index;">
                     <td class="align-middle" data-label="Start">{{ activity.start_time }}</td>

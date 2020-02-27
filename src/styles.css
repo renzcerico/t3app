@@ -53,3 +53,42 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield; /* Firefox */
 }
+
+/* @media screen and (max-width: 600px) { */
+@media screen and (max-width: 850px) {
+    table thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+    
+    table tr {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    table td {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: .8em;
+      text-align: right;
+      min-height: 32px !important;
+      width: 100%;
+    }
+    
+    table td::before {
+      content: attr(data-label);
+      float: left;
+      font-weight: 500;
+    }
+
+    .btn-save-container {
+      position: relative !important;
+      text-align: center;
+    }
+  }
