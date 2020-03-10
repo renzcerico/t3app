@@ -1,27 +1,6 @@
 const t3 = require('../db_apis/t3.js');
 
 const storeAll = async (req = {}, res, next = null) => {
-    const header_obj = {
-        ID                  : null,
-        BARCODE             : 'testjkhj;12345',
-        ACTUAL_START        : '12/FEB/20',
-        ACTUAL_END          : '12/FEB/20',
-        STATUS              : 'test',
-        PO_NUMBER           : '12345ll',
-        CONTROL_NUMBER      : '54321ll',
-        SHIPPING_DATE       : '12/FEB/20',
-        ORDER_QUANTITY      : 11,
-        CUSTOMER            : 'renz',
-        CUSTOMER_CODE       : 'martin',
-        CUSTOMER_SPEC       : 'cerico',
-        OLD_CODE            : 'hehez',
-        INTERNAL_CODE       : '123ll45',
-        PRODUCT_DESCRIPTION : '54321ll'
-    }
-    const activity_collection = [
-        { ID: null, HEADER_ID: 1, START_TIME : '29/FEB/20', END_TIME : '29/FEB/20', LOT_NUMBER : '1231313', PACKED_QTY : 0, ADJ_QTY : 100, DOWNTIME : 10, REMARKS : 'WELP', LAST_UPDATED_BY : 1, DATE_ENTERED : '29/FEB/20', DATE_UPDATED : '29/FEB/20', IS_NEW: 1, IS_CHANGED: 0 },
-        { ID: null, HEADER_ID: 1, START_TIME : '29/FEB/20', END_TIME : '29/FEB/20', LOT_NUMBER : '1231313', PACKED_QTY : 500, ADJ_QTY : 100, DOWNTIME : 10, REMARKS : 'WELP', LAST_UPDATED_BY : 1, DATE_ENTERED : '29/FEB/20', DATE_UPDATED : '29/FEB/20', IS_NEW: 1, IS_CHANGED: 0 }
-    ];
     const manpower_collection = [
         {ID : null, POSITION_ID : 1, MANPOWER_ID : 1, START_TIME : '29/FEB/20', END_TIME : '29/FEB/20', REMARKS : 'REMARKS', LAST_UPDATED_BY : 1, DATE_ENTERED : '29/FEB/20', DATE_UPDATED :'29/FEB/20'},
         {ID : null, POSITION_ID : 1, MANPOWER_ID : 1, START_TIME : '29/FEB/20', END_TIME : '29/FEB/20', REMARKS : 'REMARKS', LAST_UPDATED_BY : 1,DATE_ENTERED : '29/FEB/20',DATE_UPDATED :'29/FEB/20'}
@@ -30,15 +9,21 @@ const storeAll = async (req = {}, res, next = null) => {
         {ID: null, QUANTITY: 500, STANDARD: 1, REQUIREMENTS: 500, USED: 500, REJECT: 0, REMARKS: 'remarks', LAST_UPDATED_BY: 1, DATE_ENTERED: '29/FEB/20', DATE_UPDATED: '29/FEB/20', MATERIAL_CODE: '1231313'},
         {ID: null, QUANTITY: 500, STANDARD: 1, REQUIREMENTS: 500, USED: 500, REJECT: 0, REMARKS: 'remarks', LAST_UPDATED_BY: 1, DATE_ENTERED: '29/FEB/20', DATE_UPDATED: '29/FEB/20', MATERIAL_CODE: '1231313'}
     ]
+    let activities = req.body.activity_collection;
+    activities.forEach((element, index) => {
+        activities[index].END_TIME = element._END_TIME;
+        activities[index].START_TIME = element._START_TIME;
+    });
 
     const data = {
         header_obj          : req.body.header_obj,
-        dummy_header        : header_obj,
+        // dummy_header        : header_obj,
         activity_collection : req.body.activity_collection,
-        dummy_activity_collection : activity_collection,
+        // dummy_activity_collection : activity_collection,
         manpower_collection : manpower_collection,
         material_collection : material_collection
     };
+    console.log('data: ', req.body.activity_collection[3].ACTIVITY_DETAILS);
     const request = await t3.storeAll(data)
     .catch(error => { console.log('caught', error.message); });
     res.status(201).json(request);

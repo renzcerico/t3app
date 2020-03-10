@@ -5,7 +5,6 @@ import {
   QueryList,
   OnInit
 } from '@angular/core';
-import {ActivityService} from '../activity.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -21,12 +20,7 @@ export class ActivityDetailsComponent implements OnInit {
   selectedActivityIndex: number;
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
-  constructor(private activityService: ActivityService, public activeModal: NgbActiveModal) {
-    activityService.activities$.subscribe(
-      activities => {
-        this.activities = activities;
-      }
-    );
+  constructor(public activeModal: NgbActiveModal) {
   }
 
   ngOnInit() {
@@ -36,7 +30,6 @@ export class ActivityDetailsComponent implements OnInit {
 
   modalEnter(event) {
     const elArr = this.modalHeaderInput.toArray();
-    console.log(elArr);
     const active = elArr.findIndex(index => {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
@@ -47,12 +40,14 @@ export class ActivityDetailsComponent implements OnInit {
 
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
+      console.log('mpacked: ', this.mLotNumber);
     } else {
-
       const newActivityDetail = {
         LOT_NUMBER      : this.mLotNumber,
         PACKED_QTY      : this.mPacked,
-        ADJ_QTY         : 0
+        ADJ_QTY         : 0,
+        IS_NEW          : 1,
+        IS_CHANGED      : 0
       };
       this.activities[this.selectedActivityIndex].ACTIVITY_DETAILS.unshift(newActivityDetail);
       this.mPacked = 0;
@@ -60,6 +55,11 @@ export class ActivityDetailsComponent implements OnInit {
       elArr[0].nativeElement.focus();
     }
 
+  }
+
+  setIsChanged(index: number) {
+    this.activities[this.selectedActivityIndex].IS_CHANGED = 1;
+    this.activities[this.selectedActivityIndex].ACTIVITY_DETAILS[index].IS_CHANGED = 1;
   }
 
 }

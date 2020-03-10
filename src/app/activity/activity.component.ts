@@ -38,7 +38,7 @@ export class ActivityComponent {
     let subTotal = 0;
     if (this.activities.length) {
       this.activities.forEach( (el) => {
-        subTotal += el.PACKED_QTY + el.ADJ_QTY;
+        subTotal += el.TOTAL_BOXES;
       });
     }
     return subTotal;
@@ -130,12 +130,13 @@ export class ActivityComponent {
   }
 
   valueChanged(index) {
-    this.activities[index].IS_CHANGED = true;
+    this.activities[index].IS_CHANGED = 1;
   }
 
   openModal(event, index) {
     const modalRef = this.modalService.open(ActivityDetailsComponent, {size: 'lg'});
     modalRef.componentInstance.selectedActivityIndex = index;
+    modalRef.componentInstance.activities = this.activities;
   }
 
 }

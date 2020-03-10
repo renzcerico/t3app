@@ -21,7 +21,7 @@
             <thead class="text-uppercase">
                 <tr>
                     <th colspan="2">time</th>
-                    <th colspan="3">quantity</th>
+                    <th class="align-middle" rowspan="2">quantity</th>
                     <th class="align-middle" rowspan="2">downtime</th>
                     <th class="align-middle" rowspan="2">remarks</th>
                     <th class="align-middle" rowspan="2">last updated by</th>
@@ -30,9 +30,9 @@
                 <tr>
                     <th>start</th>
                     <th>end</th>
-                    <th>packed</th>
+                    <!-- <th>packed</th>
                     <th>adjustment</th>
-                    <th>total</th>
+                    <th>total</th> -->
                     <th>entered</th>
                     <th>updated</th>
                 </tr>
@@ -79,12 +79,12 @@
                     <td class="align-middle" data-label="Start">{{ activity.START_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="End">{{ activity.END_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="Packed">
-                        {{ activity.PACKED_QTY | number: '' }}
+                        {{ activity.TOTAL_BOXES | number: '' }}
                     </td>
-                    <td class="align-middle" data-label="Adjustment">
+                    <!-- <td class="align-middle" data-label="Adjustment">
                         {{ activity.ADJ_QTY | number: '' }}
                     </td>
-                    <td class="align-middle" data-label="Total">{{ activity.TOTAL }}</td>
+                    <td class="align-middle" data-label="Total">{{ activity.TOTAL }}</td> -->
                     <td class="align-middle td-editable" data-label="Downtime">
                         <input
                             type="number"
@@ -120,8 +120,7 @@
             </tbody>
             <tfoot>
                 <tr class="text-uppercase">
-                    <td colspan="3"></td>
-                    <td class="text-right">Sub total:</td>
+                    <td colspan="2" class="text-right">Sub total:</td>
                     <td class="text-right">{{ subTotal | number: '' }}</td>
                     <td colspan="5"></td>
                 </tr>
@@ -129,7 +128,3 @@
         </table>
     </div>
 </div>
-
-<ng-template #activityDetailsModal let-modal>
-
-</ng-template>

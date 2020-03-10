@@ -13,8 +13,8 @@ const storeAll = async (data) => {
                     , :output
                 );
             end;`;
-        console.log('activity: ', data.activity_collection[1]);
-        console.log('activity: ', data.dummy_activity_collection[0]);
+        // console.log('activity: ', data.activity_collection[1]);
+        // console.log('activity: ', data.dummy_activity_collection[0]);
         const headerObj = await connect.getDbObjectClass('T3.HEADER_OBJ');
         const header_obj = new headerObj(data.header_obj);
         const activityCollection = await connect.getDbObjectClass('T3.ACTIVITY_COLLECTION');
@@ -74,7 +74,7 @@ const getAllByBarcode = async (data) => {
             materials_collection : materials,
         }
     }
-    console.log(res.activity_collection);
+    // console.log(res.activity_collection);
     return res;
 }
 
@@ -97,8 +97,6 @@ const getDataByHeaderId = async (table ,headerid) => {
             const activity_deatils = await getActivityDetails(res[i].ID);
             res[i].ACTIVITY_DETAILS = activity_deatils;
         }
-        res[i].IS_NEW = false;
-        res[i].IS_CHANGED = false;
     });
     return res;
 }
@@ -114,9 +112,5 @@ const getActivityDetails = async (activity_id) => {
     }
     let res = await database.resultsetExecute(q, binds)
     .catch(error => { console.log('caught', error.message); });
-    res.forEach((el, i) => {
-        res[i].IS_NEW = false;
-        res[i].IS_CHANGED = false;
-    });
     return res;
 }

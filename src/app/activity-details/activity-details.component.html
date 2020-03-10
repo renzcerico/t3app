@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <h5 class="modal-title">Activity Details</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
+    <h5 class="modal-title">Activity Details - <span class="text-danger">{{ activities[selectedActivityIndex].START_TIME | date : 'HH:mm'}} to {{ activities[selectedActivityIndex].END_TIME | date : 'HH:mm'}}</span></h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -24,11 +24,12 @@
         <thead class="text-uppercase">
             <tr>
                 <th class="align-middle" rowspan="2">lot number</th>
-                <th colspan="2">quantity</th>
+                <th colspan="3">quantity</th>
             </tr>
             <tr>
                 <th>Packed</th>
                 <th>Adjustment</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,7 @@
                         type="text"
                         class="form-control input-sm editable-content text-right"
                         #modalHeaderInput
+                        required
                         [(ngModel)]="mLotNumber"
                         (keyup.enter)="modalEnter($event)">
                 </td>
@@ -49,15 +51,15 @@
                         min="0"
                         class="form-control input-sm editable-content text-right"
                         #modalHeaderInput
-                        [(ngModel)]="mPacked">
+                        required
+                        [(ngModel)]="mPacked"
+                        (keyup.enter)="modalEnter($event)">
                 </td>
-                <td class="align-bottom">
-                    <!-- <div class="td-indicator"></div>
-                    <input
-                        type="text"
-                        class="form-control input-sm editable-content text-right"
-                        #modalHeaderInput
-                        [(ngModel)]="mAdjustment"> -->
+                <td class="align-middle text-right px-3">
+                    0
+                </td>
+                <td class="align-middle text-right px-3">
+                    {{ mPacked | number: '' }}
                 </td>
             </tr>
             <tr *ngFor="let val of activities[selectedActivityIndex].ACTIVITY_DETAILS; let i = index">
@@ -66,10 +68,10 @@
                     <input
                         type="text"
                         class="form-control input-sm editable-content text-right"
-                        #modalHeaderInput
+                        (ngModelChange)="setIsChanged(i)"
                         [(ngModel)]="activities[selectedActivityIndex].ACTIVITY_DETAILS[i].LOT_NUMBER">
                 </td>
-                <td class="text-right">
+                <td class="text-right align-middle">
                     {{ val.PACKED_QTY | number: ''}}
                 </td>
                 <td class="text-right td-editable">
@@ -78,10 +80,19 @@
                         type="number"
                         min="0"
                         class="form-control input-sm editable-content text-right"
-                        #modalHeaderInput
+                        (ngModelChange)="setIsChanged(i)"
                         [(ngModel)]="activities[selectedActivityIndex].ACTIVITY_DETAILS[i].ADJ_QTY">
+                </td>
+                <td class="align-middle text-right px-3">
+                    {{ val.PACKED_QTY + val.ADJ_QTY | number: '' }}
                 </td>
             </tr>
         </tbody>
+        <tfoot class="text-right">
+            <th>Subtotal</th>
+            <th>{{ activities[selectedActivityIndex].PACKED_QTY | number: '' }}</th>
+            <th>{{ activities[selectedActivityIndex].ADJ_QTY | number: '' }}</th>
+            <th>{{ activities[selectedActivityIndex].TOTAL | number: '' }}</th>
+        </tfoot>
     </table>
 </div>

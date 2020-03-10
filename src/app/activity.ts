@@ -1,18 +1,20 @@
 import * as moment from 'moment';
+
 export default class Activity {
     ID: number;
     HEADER_ID: number;
-    START_TIME: any;
-    END_TIME: any;
+    _START_TIME: any;
+    _END_TIME: any;
     LOT_NUMBER: string;
     DOWNTIME: number;
-    REMARKS: string;
+    REMARKS = '';
     LAST_UPDATED_BY: number;
     DATE_ENTERED: string;
     DATE_UPDATED: string;
     ACTIVITY_DETAILS: any[];
     IS_NEW: number;
     IS_CHANGED: number;
+
     get PACKED_QTY() {
         let totalPacked = 0;
         this.ACTIVITY_DETAILS.forEach(element => {
@@ -30,6 +32,26 @@ export default class Activity {
     get TOTAL() {
         return this.ADJ_QTY + this.PACKED_QTY;
     }
+    get TOTAL_BOXES() {
+        return this.TOTAL / 50;
+    }
+
+    set END_TIME(endTime: any) {
+        this._END_TIME = moment(endTime).format('DD-MMM-YYYY HH:mm:ss');
+    }
+
+    get END_TIME() {
+        return this._END_TIME;
+    }
+
+    set START_TIME(startTime: any) {
+        this._START_TIME = moment(startTime).format('DD-MMM-YYYY HH:mm:ss');
+    }
+
+    get START_TIME() {
+        return this._START_TIME;
+    }
+
     constructor(jsonObj) {
         this.ID = jsonObj.ID || null;
         this.HEADER_ID = jsonObj.HEADER_ID || null;
@@ -42,7 +64,7 @@ export default class Activity {
         this.DATE_ENTERED = moment(jsonObj.DATE_ENTERED).format() || '';
         this.DATE_UPDATED = moment(jsonObj.DATE_UPDATED).format() || '';
         this.ACTIVITY_DETAILS = jsonObj.ACTIVITY_DETAILS || [];
-        this.IS_NEW = jsonObj.IS_NEW || 1;
+        this.IS_NEW = jsonObj.IS_NEW || 0;
         this.IS_CHANGED = jsonObj.IS_CHANGED || 0;
     }
     getJson() {
