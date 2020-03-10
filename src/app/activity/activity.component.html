@@ -14,61 +14,36 @@
             <i class="text-underline legend-editable">&nbsp; &nbsp; required &nbsp; &nbsp;</i>
         </p>
     </div>
+
     <div class="table-responsive">
         <h6 class="text-center text-muted text-uppercase">Activity</h6>
         <table class="table table-bordered table-sm table-hover text-center" id="table_activity">
             <thead class="text-uppercase">
                 <tr>
-                    <th colspan="2" class="align-middle">Time</th>
-                    <th rowspan="2" class="align-middle">Lot Number</th>
-                    <th colspan="3" class="align-middle">Quantity</th>
-                    <th rowspan="2" class="align-middle">Downtime</th>
-                    <th rowspan="2" class="align-middle">Remarks</th>
-                    <th rowspan="2" class="align-middle">Last <br /> Updated By</th>
-                    <th colspan="2" class="align-middle">Date</th>
+                    <th colspan="2">time</th>
+                    <th colspan="3">quantity</th>
+                    <th class="align-middle" rowspan="2">downtime</th>
+                    <th class="align-middle" rowspan="2">remarks</th>
+                    <th class="align-middle" rowspan="2">last updated by</th>
+                    <th colspan="2">date</th>
                 </tr>
                 <tr>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Packed</th>
-                    <th>Adjustment</th>
-                    <th>Total</th>
-                    <th>Entered</th>
-                    <th>Updated</th>
+                    <th>start</th>
+                    <th>end</th>
+                    <th>packed</th>
+                    <th>adjustment</th>
+                    <th>total</th>
+                    <th>entered</th>
+                    <th>updated</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td data-label="Start"></td>
-                    <td data-label="End"></td>
-                    <td class="align-bottom td-editable" data-label="Lot Number">
-                        <div class="td-indicator-required"></div>
-                        <input
-                            id="actLotNumber"
-                            name="lotNumber"
-                            type="number"
-                            required
-                            #headerInput
-                            [(ngModel)]="actLotNumber"
-                            (keyup.enter)="handleKeyUp($event)"
-                            class="form-control" />
-                    </td>
-                    <td class="align-bottom td-editable" data-label="Packed">
-                        <div class="td-indicator-required"></div>
-                        <input
-                            id="actPackedQty"
-                            name="packedQty"
-                            type="number"
-                            min="0"
-                            required
-                            #headerInput
-                            [(ngModel)]="actPackedQty"
-                            (keyup.enter)="handleKeyUp($event)"
-                            class="form-control" />
-                    </td>
-                    <td data-label="Adjustment">
-                    </td>
-                    <td data-label="Total"></td>
+                <!-- <tr>
+                    <td data-label="Start" class="align-middle"> {{ actualTime.start | date : 'HH:mm'}}</td>
+                    <td data-label="End" class="align-middle"> {{ actualTime.end | date : 'HH:mm'}}</td>
+                    <td class="align-bototm" data-label="Packed"></td>
+                    <td class="align-bototm" data-label="adjustment"></td>
+                    <td class="align-bototm" data-label="total"></td>
                     <td class="align-bottom td-editable" data-label="Downtime">
                         <div class="td-indicator"></div>
                         <input
@@ -98,49 +73,25 @@
                     </td>
                     <td data-label="Updated By"></td>
                     <td data-label="Date Entered"></td>
-                    <td data-label="Date Updated"></td>
-                </tr>
-                <tr #contentTr *ngFor="let activity of activities; let i = index;">
-                    <td class="align-middle" data-label="Start">{{ activity.start_time }}</td>
-                    <td class="align-middle" data-label="End">{{ activity.end_time }}</td>
-                    <td class="align-middle td-editable" data-label="Lot Number">
-                        <div class="td-indicator-required"></div>
-                        <input 
-                            type="number"
-                            name="lot_number"
-                            id="lot_number"
-                            class="form-control editable-content text-right"
-                            required
-                            [(ngModel)]="activities[i].lot_number"
-                            (focus)="$event.target.select();"
-                            (keydown.enter)="handleKeyDown($event)"
-                            (keyup.enter)="handleTrKeyUp($event)"
-                            #editableTd >
-                    </td>
+                    <td data-label="Date Updated"></td>                                
+                </tr> -->
+                <tr #contentTr *ngFor="let activity of activities; let i = index;" (dblclick)="openModal($event, i, activityDetailsModal)">
+                    <td class="align-middle" data-label="Start">{{ activity.START_TIME | date : 'HH:mm'}}</td>
+                    <td class="align-middle" data-label="End">{{ activity.END_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="Packed">
-                        {{ activity.packed | number: '' }}
+                        {{ activity.PACKED_QTY | number: '' }}
                     </td>
-                    <td class="align-middle td-editable" data-label="Adjustment">
-                        <div class="td-indicator"></div>
-                        <input 
-                            type="number"
-                            name="adjustment"
-                            id="adjustment"
-                            class="form-control editable-content text-right"
-                            [(ngModel)]="activities[i].adjustment"
-                            (focus)="$event.target.select();"
-                            (keydown.enter)="handleKeyDown($event)"
-                            (keyup.enter)="handleTrKeyUp($event)"
-                            #editableTd >
+                    <td class="align-middle" data-label="Adjustment">
+                        {{ activity.ADJ_QTY | number: '' }}
                     </td>
-                    <td class="align-middle" data-label="Total">{{ activity.packed + activity.adjustment | number: '' }}</td>
+                    <td class="align-middle" data-label="Total">{{ activity.TOTAL }}</td>
                     <td class="align-middle td-editable" data-label="Downtime">
                         <input
                             type="number"
                             name="downtime"
                             id="downtime"
                             class="form-control editable-content text-right"
-                            [value]="activity.downtime"
+                            [value]="activity.DOWNTIME"
                             (focus)="$event.target.select();"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
@@ -152,7 +103,8 @@
                             name="remarks"
                             id="remarks"
                             class="form-control editable-content"
-                            [value]="activity.remarks"
+                            [(ngModel)]="activities[i].REMARKS"
+                            (ngModel)="valueChanged(i)"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
                             #editableTd 
@@ -161,14 +113,14 @@
                         </textarea>
                         <div class="td-indicator"></div>
                     </td>
-                    <td class="align-middle" data-label="Updated By">{{ activity.last_updated_by }}</td>
-                    <td class="align-middle" data-label="Date Entered">{{ activity.date_entered }}</td>
-                    <td class="align-middle" data-label="Date Updated">{{ activity.date_updated }}</td>
+                    <td class="align-middle" data-label="Updated By">{{ activity.LAST_UPDATED_BY }}</td>
+                    <td class="align-middle" data-label="Date Entered">{{ activity.DATE_ENTERED | date : 'MM/d/yy HH:mm' }}</td>
+                    <td class="align-middle" data-label="Date Updated">{{ activity.DATE_UPDATED | date : 'MM/d/yy HH:mm' }}</td>                    
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="text-uppercase">
-                    <td colspan="4"></td>
+                    <td colspan="3"></td>
                     <td class="text-right">Sub total:</td>
                     <td class="text-right">{{ subTotal | number: '' }}</td>
                     <td colspan="5"></td>
@@ -177,3 +129,7 @@
         </table>
     </div>
 </div>
+
+<ng-template #activityDetailsModal let-modal>
+
+</ng-template>

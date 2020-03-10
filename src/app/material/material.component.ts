@@ -10,48 +10,8 @@ import { ApiService } from '../services/api.service';
 export class MaterialComponent implements  AfterViewInit {
     @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
     @Input() actTotal: number;
+    @Input() materials = [];
 
-    materials = [
-        {
-            id:  '1',
-            material_code: '301144AN---XF',
-            quantity: 1,
-            standard: 1,
-            requirements: 5000,
-            used: 2550,
-            reject: 0,
-            remarks: 'Remarks',
-            manpower: 'R. Cerico',
-            entered: '10/23/19 08:00',
-            updated: null
-        },
-        {
-            id:  '2',
-            material_code: 'TBA143ASCN',
-            quantity: 1,
-            standard: 25,
-            requirements: 200,
-            used: 102,
-            reject: 0,
-            remarks: 'My Remarks',
-            manpower: 'R. Cerico',
-            entered: '10/23/19 08:00',
-            updated: null
-        },
-        {
-            id:  '3',
-            material_code: 'TBB143ASCN',
-            quantity: 1,
-            standard: 50,
-            requirements: 100,
-            used: 204,
-            reject: 0,
-            remarks: 'This is a remarks. Just testing the layout. Another testing. Final test.',
-            manpower: 'R. Cerico',
-            entered: '10/23/19 08:00',
-            updated: null
-        }
-    ];
 
     apiResponse: any;
     constructor(public apis: ApiService) { }

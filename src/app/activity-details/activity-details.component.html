@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <h5 class="modal-title">Activity Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body container">
+    <div class="w-100 text-center text-md-left mb-3">
+        <span class="small text-muted font-weight-light">Legends: &nbsp;&nbsp;</span>
+        <p class="small font-weight-500 m-0 position-relative d-inline-block mr-2">
+            <span class="font-weight-bold text-danger">
+                <div class="td-indicator"></div>
+            </span>
+            <i class="text-underline legend-editable">&nbsp; &nbsp; optional &nbsp; &nbsp;</i>
+        </p>
+        <p class="small font-weight-500 m-0 position-relative d-inline-block">
+            <span class="font-weight-bold text-danger">
+                <div class="td-indicator-required"></div>
+            </span>
+            <i class="text-underline legend-editable">&nbsp; &nbsp; required &nbsp; &nbsp;</i>
+        </p>
+    </div>
+    <table id="modal_table" class="table table-sm table-bordered table-hover">
+        <thead class="text-uppercase">
+            <tr>
+                <th class="align-middle" rowspan="2">lot number</th>
+                <th colspan="2">quantity</th>
+            </tr>
+            <tr>
+                <th>Packed</th>
+                <th>Adjustment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="align-bottom td-editable">
+                    <div class="td-indicator-required"></div>
+                    <input
+                        type="text"
+                        class="form-control input-sm editable-content text-right"
+                        #modalHeaderInput
+                        [(ngModel)]="mLotNumber"
+                        (keyup.enter)="modalEnter($event)">
+                </td>
+                <td class="align-bottom td-editable">
+                    <div class="td-indicator-required"></div>
+                    <input
+                        type="number"
+                        min="0"
+                        class="form-control input-sm editable-content text-right"
+                        #modalHeaderInput
+                        [(ngModel)]="mPacked">
+                </td>
+                <td class="align-bottom">
+                    <!-- <div class="td-indicator"></div>
+                    <input
+                        type="text"
+                        class="form-control input-sm editable-content text-right"
+                        #modalHeaderInput
+                        [(ngModel)]="mAdjustment"> -->
+                </td>
+            </tr>
+            <tr *ngFor="let val of activities[selectedActivityIndex].ACTIVITY_DETAILS; let i = index">
+                <td class="text-right td-editable">
+                    <div class="td-indicator-required"></div>
+                    <input
+                        type="text"
+                        class="form-control input-sm editable-content text-right"
+                        #modalHeaderInput
+                        [(ngModel)]="activities[selectedActivityIndex].ACTIVITY_DETAILS[i].LOT_NUMBER">
+                </td>
+                <td class="text-right">
+                    {{ val.PACKED_QTY | number: ''}}
+                </td>
+                <td class="text-right td-editable">
+                    <div class="td-indicator"></div>
+                    <input
+                        type="number"
+                        min="0"
+                        class="form-control input-sm editable-content text-right"
+                        #modalHeaderInput
+                        [(ngModel)]="activities[selectedActivityIndex].ACTIVITY_DETAILS[i].ADJ_QTY">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

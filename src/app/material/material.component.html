@@ -25,42 +25,43 @@
             <tbody>
                 <tr *ngFor="let material of materials; let i = index;">
                     <!-- <td class="align-middle">{{ material.id }}</td> -->
-                    <td class="align-middle" data-label="Code">{{ material.material_code }}</td>
-                    <td class="align-middle" data-label="Quantity">{{ material.quantity }}</td>
-                    <td class="align-middle" data-label="Standard">{{ material.standard }}</td>
-                    <td class="align-middle" data-label="Requirements">{{ material.requirements }}</td>
-                    <td class="align-middle" data-label="Used">{{ actTotal / material.standard | number : '1.0-0'}}</td>
+                    <td class="align-middle" data-label="Code">{{ material.MATERIAL_CODE }}</td>
+                    <td class="align-middle" data-label="Quantity">{{ material.QUANTITY }}</td>
+                    <td class="align-middle" data-label="Standard">{{ material.STANDARD }}</td>
+                    <td class="align-middle" data-label="Requirements">{{ material.REQUIREMENTS }}</td>
+                    <td class="align-middle" data-label="Used">{{ actTotal / material.STANDARD | number : '1.0-0'}}</td>
                     <td class="align-middle td-editable" width="6%" data-label="Reject">
                         <div class="td-indicator"></div>
                         <input 
                             type="number" 
                             name="reject" 
-                            [(ngModel)]="materials[i].reject"
-                            [attr.m-id]="material.id"
+                            [(ngModel)]="materials[i].REJECT"
+                            [attr.m-id]="material.ID"
                             class="form-control text-right"
                             (focus)="$event.target.select();"
                             (keydown.enter)="onKeyDown($event)"
+                            min="0"
                             #tdEditable />
                     </td>
                     <td class="align-middle" data-label="Total">
-                        {{ (actTotal / material.standard) + material.reject | number : '1.0-0'}}
+                        {{ (actTotal / material.STANDARD) + material.REJECT | number : '1.0-0'}}
                     </td>
                     <td class="align-middle td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea                             
-                            [(ngModel)]="materials[i].remarks"
+                            [(ngModel)]="materials[i].REMARKS"
                             name="remarks"
                             class="form-control remarks"
                             [attr.m-id]="material.id"
                             #tdEditable
                             autosize rows="1"
                             (keydown.enter)="onKeyDown($event)">
-                            {{ material.remarks }}
+                            {{ material.REMARKS }}
                         </textarea>
                    </td>
-                    <td class="align-middle" data-label="Manpower">{{ material.manpower }}</td>
-                    <td class="align-middle" data-label="Date Entered">{{ material.entered }}</td>
-                    <td class="align-middle" data-label="Date Updated">{{ material.updated }}</td>
+                    <td class="align-middle" data-label="Manpower">{{ material.MANPOWER }}</td>
+                    <td class="align-middle" data-label="Date Entered">{{ material.DATE_ENTERED | date : 'MM/d/yy HH:mm' }}</td>
+                    <td class="align-middle" data-label="Date Updated">{{ material.DATE_UPDATED | date : 'MM/d/yy HH:mm' }}</td>
                 </tr>
             </tbody>
         </table>

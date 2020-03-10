@@ -34,12 +34,18 @@ export class ApiService {
         return this.http.get(`${this.url}` + '/api/personnel');
     }
 
-    getData(barcode): Observable<any> {
-        const testBarcode = 'SO01-022020-818454';
-        return this.http.get('http://t2apps.tailinsubic.com/api/t2_header?prodno=' + testBarcode);
+    getExternalData(barcode): Observable<any> {
+        barcode = 'SO01-022020-818454';
+        return this.http.get('http://t2apps.tailinsubic.com/api/t2_header?prodno=' + barcode);
+    }
+
+    getAllByBarcode(data): Observable<any> {
+        // const data = 'SO01-022020-818454';
+        data = String(data).toUpperCase();
+        return this.http.get(`${this.url}` + '/api/get_all_by_barcode/' + data);
     }
 
     header(data): Observable<any> {
-        return this.http.post(`${ this.url }` + '/api/header', data, this.setHeaders());
+        return this.http.post(`${ this.url }` + '/api/store_all', data);
     }
 }

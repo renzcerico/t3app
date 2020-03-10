@@ -9,25 +9,24 @@ async function initialize() {
 
 module.exports.initialize = initialize;
 
-function simpleExecute(statement, binds = [], opts = {}) {
+function simpleExecute(statement, binds = [], opts = {}, autoCommit = true) {
   return new Promise(async (resolve, reject) => {
     let conn;
  
     opts.outFormat = oracledb.OBJECT;
-    opts.autoCommit = true;
+    opts.autoCommit = autoCommit;
  
     try {
       conn = await oracledb.getConnection();
- 
+
       const result = await conn.execute(statement, binds, opts);
-//  console.log(result)
       resolve(result);
     } catch (err) {
         reject(err);
     } finally {
       if (conn) { // conn assignment worked, need to close
         try {
-          await conn.close();
+          await conn.close({drop: true});
         } catch (err) {
           console.log(err);
         }
@@ -136,3 +135,14 @@ function resultsetExecute(statement, binds = [], opts = {}) {
 }
  
 module.exports.resultsetExecute = resultsetExecute;
+
+async function getConnection() {
+  return await oracledb.getConnection();
+}
+module.exports.getConnection = getConnection;
+
+async function getDbObjectClass(classname) {
+      connection = await oracledb.getConnection();
+      return await connection.getDbObjectClass(classname);
+}
+module.exports.getDbObjectClass = getDbObjectClass;

@@ -1,5 +1,6 @@
 #table_activity thead  th,
 #table_manpower thead  th,
+#modal_table thead  th,
 #table_material thead  th {
     text-align: center;
     background-color: #28a745;
@@ -9,6 +10,7 @@
 }
 
 #table_activity tbody td,
+#modal_table tbody td,
 #table_manpower tbody td,
 #table_material tbody td,
 #table_material tbody input,
@@ -19,7 +21,9 @@
 }
 
 #table_material>tbody input,
+#modal_table>tbody input,
 #table_material>tbody textarea,
+#modal_table>tbody textarea,
 #table_manpower>tbody input,
 #table_manpower>tbody select,
 #table_manpower>tbody textarea,
@@ -30,7 +34,9 @@
 }
 
 #table_activity>tbody input:focus,
+#modal_table>tbody input:focus,
 #table_activity>tbody textarea:focus,
+#modal_table>tbody textarea:focus,
 #table_manpower>tbody input:focus,
 #table_manpower>tbody select:focus,
 #table_manpower>tbody textarea:focus,

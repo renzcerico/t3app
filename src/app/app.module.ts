@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './footer/footer.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { ActivityComponent } from './activity/activity.component';
+import { ActivityDetailsComponent } from './activity-details/activity-details.component';
 
 @NgModule({
 declarations: [
@@ -26,7 +27,9 @@ MaterialComponent,
 ManpowerComponent,
 FooterComponent,
 ActivityComponent,
+ActivityDetailsComponent
 ],
+entryComponents: [ActivityDetailsComponent],
 imports: [
 AutosizeModule,
 BrowserModule,

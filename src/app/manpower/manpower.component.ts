@@ -17,7 +17,7 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
   constructor(public apis: ApiService) { }
 
   ngOnInit() {
-    this.getManpower();
+    // this.getManpower();
   }
 
   ngAfterContentChecked() {
