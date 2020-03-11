@@ -10,7 +10,7 @@
     color: #28a745 !important;
 }
 
-#header_production_order input {
+#header_production_order input, #prod_span {
     border-right: 0;
     border-left: 0;
     border-top: 0;
@@ -63,7 +63,7 @@ input:read-only {
 
 .form-label-group > label {
     position: absolute;
-    top: 0;
+    top: -3px;
     left: 0;
     display: block;
     width: 100%;
@@ -91,4 +91,21 @@ input:read-only {
     font-size: 11px;
     font-weight: 500 !important;
     color: #777;
+}
+
+#prod_span {
+    border-bottom: 1px solid #ced4da;
+    white-space: nowrap;
+    z-index: 2;
+    padding: 0 0.75rem;
+    position: absolute;
+    bottom: 0;
+    background-color: #fff2a6;
+    min-width: 75%;
+}
+
+#prod_span ~ label {
+    font-size: 11px;
+    font-weight: 500 !important;
+    color: #777; 
 }

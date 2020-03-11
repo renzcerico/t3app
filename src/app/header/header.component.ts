@@ -47,6 +47,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     matArr: any;
     actArr: any = [];
     array: Array<any>;
+    prodHover = 0;
+
+    get dummyDesc() {
+        return 'this is a very long description veryyyyyyyyyyyyyyyyyy long';
+    }
 
     apiResponse: any;
     constructor(public apis: ApiService, private activityService: ActivityService) {
@@ -108,6 +113,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             .subscribe(
                 res => {
                 this.headerObj = res.header_obj;
+                this.headerObj.PRODUCT_DESCRIPTION = this.dummyDesc;
                 this.activityService.setHeaderObj(this.headerObj);
                 const activities = [];
                 res.activity_collection.forEach(element => {
@@ -145,6 +151,16 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 );
         console.log(json);
         return json;
+    }
+
+    handleProdMouseEnter() {
+        if (this.headerObj.PRODUCT_DESCRIPTION.length >= 20 ) {
+            this.prodHover = 1;
+        }
+    }
+
+    handleProdMouseLeave() {
+        this.prodHover = 0;
     }
 
 }

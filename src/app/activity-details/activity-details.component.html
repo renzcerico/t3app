@@ -89,10 +89,12 @@
             </tr>
         </tbody>
         <tfoot class="text-right">
-            <th>Subtotal</th>
-            <th>{{ activities[selectedActivityIndex].PACKED_QTY | number: '' }}</th>
-            <th>{{ activities[selectedActivityIndex].ADJ_QTY | number: '' }}</th>
-            <th>{{ activities[selectedActivityIndex].TOTAL | number: '' }}</th>
+            <tr>
+                <th>Subtotal</th>
+                <th>{{ activities[selectedActivityIndex].PACKED_QTY | number: '' }}</th>
+                <th>{{ activities[selectedActivityIndex].ADJ_QTY | number: '' }}</th>
+                <th>{{ activities[selectedActivityIndex].TOTAL | number: '' }}</th>
+            </tr>
         </tfoot>
     </table>
 </div>
