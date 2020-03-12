@@ -1,7 +1,7 @@
-import { Activity } from './activity';
+import Activity from './activity';
 
 describe('Activity', () => {
   it('should create an instance', () => {
-    expect(new Activity()).toBeTruthy();
+    expect(new Activity({})).toBeTruthy();
   });
 });

@@ -40,8 +40,10 @@ export class ActivityDetailsComponent implements OnInit {
 
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
-      console.log('mpacked: ', this.mLotNumber);
     } else {
+      elArr.forEach((el, index) => {
+        // TO DO catch if prev input is null
+      });
       const newActivityDetail = {
         LOT_NUMBER      : this.mLotNumber,
         PACKED_QTY      : this.mPacked,

@@ -6,8 +6,9 @@ import ScannerDetector from 'js-scanner-detection';
 import * as moment from 'moment';
 import { ActivityComponent } from '../activity/activity.component';
 import { MaterialComponent } from './../material/material.component';
-import {ActivityService} from '../activity.service';
-import Activity from '../activity';
+import {ActivityService} from '../services/activity.service';
+import Activity from '../classes/activity';
+import Header from '../classes/header';
 
 @Component({
     selector: 'app-home',
@@ -20,25 +21,26 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     faAngleUp = faAngleUp;
     faAngleDown = faAngleDown;
     iconResult = faAngleDown;
-    headerObj = {
-        ID: Number,
-        BARCODE: '',
-        ACTUAL_START: moment().format('DD/MMM/YY'),
-        ACTUAL_END: '',
-        STATUS: '',
-        PO_NUMBER: '',
-        CONTROL_NUMBER: '',
-        SHIPPING_DATE: '',
-        ORDER_QUANTITY: '',
-        CUSTOMER: '',
-        CUSTOMER_CODE: '',
-        CUSTOMER_SPEC: '',
-        OLD_CODE: '',
-        INTERNAL_CODE: '',
-        PRODUCT_DESCRIPTION: '',
-        IS_NEW: 0,
-        IS_CHANGED: 0
-    };
+    // headerObj = {
+    //     ID: Number,
+    //     BARCODE: '',
+    //     ACTUAL_START: moment().format('DD/MMM/YY'),
+    //     ACTUAL_END: '',
+    //     STATUS: '',
+    //     PO_NUMBER: '',
+    //     CONTROL_NUMBER: '',
+    //     SHIPPING_DATE: '',
+    //     ORDER_QUANTITY: '',
+    //     CUSTOMER: '',
+    //     CUSTOMER_CODE: '',
+    //     CUSTOMER_SPEC: '',
+    //     OLD_CODE: '',
+    //     INTERNAL_CODE: '',
+    //     PRODUCT_DESCRIPTION: '',
+    //     IS_NEW: 0,
+    //     IS_CHANGED: 0
+    // };
+    headerObj: any = {};
     actCollection = [];
     matCollection = [];
     @ViewChild(ActivityComponent, {static: true}) actComponent;
@@ -48,9 +50,18 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     actArr: any = [];
     array: Array<any>;
     prodHover = 0;
-
+    activities: Array<Activity>;
+    getDataRes: any = {};
     get dummyDesc() {
         return 'this is a very long description veryyyyyyyyyyyyyyyyyy long';
+    }
+
+    get scheduleTime() {
+        let res = '';
+        if (Object.entries(this.headerObj).length > 0) {
+            res = moment(this.headerObj.SCHEDULE_DATE_START).format('HHmm') + '-' + moment(this.headerObj.SCHEDULE_DATE_END).format('HHmm');
+        }
+        return res;
     }
 
     apiResponse: any;
@@ -74,8 +85,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.matArr = this.matComponent.materials;
     }
 
-    ngOnInit() {
-        this.barcode();
+    async ngOnInit() {
+        await this.getData('SO35-091319-785915');
+        // this.barcode();
     }
 
     btnSee() {
@@ -108,30 +120,27 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async getData(barcodeNum) {
-        console.log(barcodeNum);
-        await this.apis.getAllByBarcode(barcodeNum)
-            .subscribe(
-                res => {
-                this.headerObj = res.header_obj;
-                this.headerObj.PRODUCT_DESCRIPTION = this.dummyDesc;
-                this.activityService.setHeaderObj(this.headerObj);
-                const activities = [];
-                res.activity_collection.forEach(element => {
-                    const activity = new Activity(element);
-                    activities.push(activity);
-                });
-                this.activityService.setActivities(activities);
-                this.matCollection = res.materials_collection;
-                },
-                err => {
-                this.apiResponse = err;
-                console.log(err);
-                }
-            );
+        await this.apis.getAllByBarcode(barcodeNum).toPromise()
+        .then(
+            res => {
+                console.log('res: ', res);
+                this.getDataRes = res;
+            }
+        );
+        console.log('response', this.getDataRes);
+        if (this.getDataRes.isExisting) {
+            this.headerObj = new Header(this.getDataRes.header_obj);
+            console.log(this.headerObj);
+            this.activityService.setHeaderObj(this.headerObj);
+            this.activityService.setActivities(this.getDataRes.activity_collection);
+            this.matCollection = this.getDataRes.materials_collection;
+        } else {
+            alert(this.getDataRes.isExisting);
+        }
     }
 
     handleBarcodeChange() {
-        this.getData('SO35-091319-785916');
+        this.getData('SO35-091319-785915');
     }
 
     header() {
@@ -153,14 +162,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         return json;
     }
 
-    handleProdMouseEnter() {
-        if (this.headerObj.PRODUCT_DESCRIPTION.length >= 20 ) {
+    handleProdMouseOver() {
+        if (this.headerObj.PRODUCT_DESCRIPTION.length >= 65 ) {
             this.prodHover = 1;
         }
     }
-
-    handleProdMouseLeave() {
-        this.prodHover = 0;
-    }
-
 }

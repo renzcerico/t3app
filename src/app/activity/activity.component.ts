@@ -6,9 +6,10 @@ import {
   Input
 } from '@angular/core';
 import * as moment from 'moment';
-import {ActivityService} from '../activity.service';
+import {ActivityService} from '../services/activity.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityDetailsComponent } from '../activity-details/activity-details.component';
+import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtime.component';
 
 @Component({
   selector: 'app-activity',
@@ -134,9 +135,22 @@ export class ActivityComponent {
   }
 
   openModal(event, index) {
-    const modalRef = this.modalService.open(ActivityDetailsComponent, {size: 'lg'});
+    const modalRef = this.modalService.open(ActivityDetailsComponent,
+      {
+        size: 'lg',
+      });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.activities = this.activities;
+  }
+
+  openDowntimeModal(event, index) {
+    const modalRef = this.modalService.open(ActivityDowntimeComponent,
+      {
+        size: 'lg',
+      });
+    modalRef.componentInstance.selectedActivityIndex = index;
+    modalRef.componentInstance.activities = this.activities;
+    event.stopPropagation();
   }
 
 }

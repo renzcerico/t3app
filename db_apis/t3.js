@@ -15,13 +15,17 @@ const storeAll = async (data) => {
             end;`;
         // console.log('activity: ', data.activity_collection[1]);
         // console.log('activity: ', data.dummy_activity_collection[0]);
-        const headerObj = await connect.getDbObjectClass('T3.HEADER_OBJ');
+        const headerObj = await connect.getDbObjectClass('T3.HEADER_OBJ')
+        .catch(error => { console.log('caught', error.message); });
         const header_obj = new headerObj(data.header_obj);
-        const activityCollection = await connect.getDbObjectClass('T3.ACTIVITY_COLLECTION');
+        const activityCollection = await connect.getDbObjectClass('T3.ACTIVITY_COLLECTION')
+        .catch(error => { console.log('caught', error.message); });
         const activity_data = new activityCollection(data.activity_collection);
-        const manpowerCollection = await connect.getDbObjectClass('T3.MANPOWER_COLLECTION');
+        const manpowerCollection = await connect.getDbObjectClass('T3.MANPOWER_COLLECTION')
+        .catch(error => { console.log('caught', error.message); });
         const manpower_data = new manpowerCollection(data.manpower_collection);
-        const materialCollection = await connect.getDbObjectClass('T3.MATERIAL_COLLECTION');
+        const materialCollection = await connect.getDbObjectClass('T3.MATERIAL_COLLECTION')
+        .catch(error => { console.log('caught', error.message); });
         const material_data = new materialCollection(data.material_collection);
 
         let binds = {
@@ -61,7 +65,7 @@ const getAllByBarcode = async (data) => {
     }
 
     const header_res = await database.resultsetExecute(header_q, header_binds)
-    .catch(error => { console.log('caught', error.message); });
+        .catch(error => { console.log('caught', error.message); });
     let res = {};
     if (header_res.length > 0) {
         const activities = await getDataByHeaderId('TBL_ACTIVITY' , header_res[0].ID);

@@ -35,6 +35,9 @@ export default class Activity {
     get TOTAL_BOXES() {
         return this.TOTAL / 50;
     }
+    get TOTAL_DOWNTIME() {
+        return 10;
+    }
 
     set END_TIME(endTime: any) {
         this._END_TIME = moment(endTime).format('DD-MMM-YYYY HH:mm:ss');

@@ -85,18 +85,8 @@
                         {{ activity.ADJ_QTY | number: '' }}
                     </td>
                     <td class="align-middle" data-label="Total">{{ activity.TOTAL }}</td> -->
-                    <td class="align-middle td-editable" data-label="Downtime">
-                        <input
-                            type="number"
-                            name="downtime"
-                            id="downtime"
-                            class="form-control editable-content text-right"
-                            [value]="activity.DOWNTIME"
-                            (focus)="$event.target.select();"
-                            (keydown.enter)="handleKeyDown($event)"
-                            (keyup.enter)="handleTrKeyUp($event)"
-                            #editableTd >
-                        <div class="td-indicator"></div>
+                    <td class="align-middle" data-label="Downtime" (dblclick)="openDowntimeModal($event, i)">
+                        {{ activity.TOTAL_DOWNTIME }}
                     </td>
                     <td class="align-middle td-editable" data-label="Remarks">
                         <textarea
@@ -104,7 +94,7 @@
                             id="remarks"
                             class="form-control editable-content"
                             [(ngModel)]="activities[i].REMARKS"
-                            (ngModel)="valueChanged(i)"
+                            (ngModelChange)="valueChanged(i)"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
                             #editableTd 

@@ -10,7 +10,7 @@ import { map, catchError, retry } from 'rxjs/operators';
 export class ApiService {
 
   url: any = 'http://localhost:3000';
-
+  response: any = {};
   constructor(public http: HttpClient) { }
 
     setHeaders() {

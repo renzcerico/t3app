@@ -41,7 +41,7 @@ input:read-only {
     margin-top: -25px;
     display: block !important;
     position: absolute;
-    z-index: 999999;
+    z-index: 1000;
 }
 
 .blurred-bg {
@@ -95,17 +95,32 @@ input:read-only {
 
 #prod_span {
     border-bottom: 1px solid #ced4da;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     z-index: 2;
     padding: 0 0.75rem;
     position: absolute;
     bottom: 0;
     background-color: #fff2a6;
-    min-width: 75%;
+    min-width: 87.5%;
 }
 
 #prod_span ~ label {
     font-size: 11px;
     font-weight: 500 !important;
     color: #777; 
+}
+
+div.col-md-6 > .form-label-group > input {
+    width: 87.5%;
+}
+
+span.title {
+    color: #63605e !important;
+    font-size: 11px;
+    font-weight: 500 !important;
+}
+span.content {
+    font-size: 13px !important;
+    color: #495057;
+    font-weight: bold !important;
 }

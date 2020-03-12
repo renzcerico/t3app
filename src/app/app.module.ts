@@ -17,6 +17,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { ActivityComponent } from './activity/activity.component';
 import { ActivityDetailsComponent } from './activity-details/activity-details.component';
+import { ActivityDowntimeComponent } from './activity-downtime/activity-downtime.component';
 
 @NgModule({
 declarations: [
@@ -27,9 +28,13 @@ MaterialComponent,
 ManpowerComponent,
 FooterComponent,
 ActivityComponent,
-ActivityDetailsComponent
+ActivityDetailsComponent,
+ActivityDowntimeComponent
 ],
-entryComponents: [ActivityDetailsComponent],
+entryComponents: [
+ActivityDetailsComponent,
+ActivityDowntimeComponent
+],
 imports: [
 AutosizeModule,
 BrowserModule,

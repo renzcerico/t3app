@@ -1,20 +1,20 @@
-import { Injectable, OnChanges} from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
-import Activity from './activity.js';
+import Activity from '../classes/activity.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
-  private activitiesSource = new Subject<Array<object>>();
+  private activitiesSource = new Subject<Array<Activity>>();
   private headerSource = new Subject<object>();
   private actualTimeSource = new Subject<object>();
   activities$ = this.activitiesSource.asObservable();
   header$ = this.headerSource.asObservable();
   actualTime$ = this.actualTimeSource.asObservable();
-  activities: Array<object> = [];
+  activities: Array<Activity>;
   shifts: Array<any> = [];
   headerObj: any = {};
 
@@ -51,9 +51,19 @@ export class ActivityService {
     let res = { start: null, end: null };
     let start;
     let end;
-    if (this.headerObj.ACTUAL_START) {
+    if (Object.entries(this.headerObj).length > 0) {
       start = moment(this.headerObj.ACTUAL_START);
-      if (start.isBefore(this.shifts[this.headerObj.SHIFT].first_hour)) {
+      if (
+          (
+            this.headerObj.SHIFT === 'dayshift' &&
+            start.isBefore(this.shifts[this.headerObj.SHIFT].first_hour)
+          ) ||
+          (
+            this.headerObj.SHIFT === 'nightshift' &&
+            moment(start).format('A') === 'PM' &&
+            start.isBefore(this.shifts[this.headerObj.SHIFT].first_hour )
+          )
+        ) {
         start = this.shifts[this.headerObj.SHIFT].first_hour;
       }
       if (this.activities.length > 0) {
@@ -68,7 +78,7 @@ export class ActivityService {
   get actualTime() {
     let res = {start: null, end: null, exact: null};
     const date = new Date();
-    let start = moment(date).subtract(1, 'hours').startOf('hour');
+    let start = moment(date)/* .subtract(1, 'hours') */.startOf('hour');
     if (Object.entries(this.headerObj).length > 0) {
       if (start.isSame(this.shifts[this.headerObj.SHIFT].breaktime_start)) {
         start = this.shifts[this.headerObj.SHIFT].breaktime_end;
@@ -101,8 +111,13 @@ export class ActivityService {
     this.actualTimeSource.next(actualTime);
   }
 
-  setActivities(activities: Array<object>) {
-    this.activitiesSource.next(activities);
+  setActivities(activities: Array<any>) {
+    const activitiesArr = [];
+    activities.forEach(element => {
+        const activity = new Activity(element);
+        activitiesArr.push(activity);
+    });
+    this.activitiesSource.next(activitiesArr);
   }
 
   addActivity(activity: any) {
@@ -148,6 +163,9 @@ export class ActivityService {
 
   setFillers() {
     const diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
+    // console.log('actual time: ', moment(this.actualTime.start).format('MM/DD/YYYY  HH:mm'));
+    // console.log('expected time: ', moment(this.expectedTime.start).format('MM/DD/YYYY  HH:mm'));
+    // console.log('diff: ', diff);
     let filler;
     for (let index = 0; index < diff; index++) {
       filler = new Activity({

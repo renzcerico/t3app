@@ -23,7 +23,6 @@ const storeAll = async (req = {}, res, next = null) => {
         manpower_collection : manpower_collection,
         material_collection : material_collection
     };
-    console.log('data: ', req.body.activity_collection[3].ACTIVITY_DETAILS);
     const request = await t3.storeAll(data)
     .catch(error => { console.log('caught', error.message); });
     res.status(201).json(request);
@@ -35,7 +34,15 @@ const getAllByBarcode = async (req = {}, res, next = null) => {
     try {
         const request = await t3.getAllByBarcode(req.params.barcode)
         .catch(error => { console.log('caught', error.message); });
-        res.status(201).json(request);
+        if (Object.entries(request).length > 0) {
+            request.isExisting = true;
+            res.status(201).json(request);
+        } else {
+            const response = {
+                isExisting: false
+            };
+            res.status(201).json(response);
+        }
       } catch (err) {
         next(err);
       }
