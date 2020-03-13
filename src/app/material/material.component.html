@@ -4,9 +4,9 @@
         <table class="table table-bordered table-sm table-hover text-center" id="table_material">
             <thead>
                 <tr>
-                    <!-- <th rowspan="2" class="align-middle">ITEM</th> -->
+                    <th rowspan="2" class="align-middle">ITEM</th>
                     <th rowspan="2" class="align-middle">MATERIAL CODE</th>
-                    <th rowspan="2" class="align-middle">QUANTITY</th>
+                    <th rowspan="2" class="align-middle">CATEGORY</th>
                     <th rowspan="2" class="align-middle">STANDARD</th>
                     <th rowspan="2" class="align-middle">REQUIREMENTS</th>
                     <th colspan="3" class="align-middle">CONSUMPTION</th>
@@ -24,9 +24,12 @@
             </thead>
             <tbody>
                 <tr *ngFor="let material of materials; let i = index;">
-                    <!-- <td class="align-middle">{{ material.id }}</td> -->
-                    <td class="align-middle" data-label="Code">{{ material.MATERIAL_CODE }}</td>
-                    <td class="align-middle" data-label="Quantity">{{ material.QUANTITY }}</td>
+                    <td class="align-middle">{{ i + 1 }}</td>
+                    <td class="align-middle" data-label="Code">
+                        {{ material.MATERIAL_CODE }} <hr class="m-0">
+                        <small class="d-block">{{ material.MATERIAL_DESC }}</small>
+                    </td>
+                    <td class="align-middle" data-label="Quantity">{{ material.ITEM_CATEGORY }}</td>
                     <td class="align-middle" data-label="Standard">{{ material.STANDARD }}</td>
                     <td class="align-middle" data-label="Requirements">{{ material.REQUIREMENTS }}</td>
                     <td class="align-middle" data-label="Used">{{ actTotal / material.STANDARD | number : '1.0-0'}}</td>
@@ -58,7 +61,7 @@
                             (keydown.enter)="onKeyDown($event)">
                             {{ material.REMARKS }}
                         </textarea>
-                   </td>
+                    </td>
                     <td class="align-middle" data-label="Manpower">{{ material.MANPOWER }}</td>
                     <td class="align-middle" data-label="Date Entered">{{ material.DATE_ENTERED | date : 'MM/d/yy HH:mm' }}</td>
                     <td class="align-middle" data-label="Date Updated">{{ material.DATE_UPDATED | date : 'MM/d/yy HH:mm' }}</td>

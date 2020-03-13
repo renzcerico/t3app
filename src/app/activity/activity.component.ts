@@ -21,7 +21,6 @@ export class ActivityComponent {
   @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
   @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
   @ViewChildren('headerInput') headerInput !: QueryList<ElementRef>;
-  @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
   // actLotNumber: string;
   // actPackedQty: any;
@@ -32,6 +31,7 @@ export class ActivityComponent {
   mAdjustment = 0;
   actualTime: any = {};
   activities: any = [];
+  downtimeTypes: any = [];
   selectedActivityIndex = 7;
   @Input() headerObj: any = {};
 
@@ -49,6 +49,11 @@ export class ActivityComponent {
     activityService.activities$.subscribe(
       activities => {
         this.activities = activities;
+      }
+    );
+    activityService.downtimeTypes$.subscribe(
+      downtimeTypes => {
+        this.downtimeTypes = downtimeTypes;
       }
     );
     activityService.header$.subscribe(
@@ -140,7 +145,7 @@ export class ActivityComponent {
         size: 'lg',
       });
     modalRef.componentInstance.selectedActivityIndex = index;
-    modalRef.componentInstance.activities = this.activities;
+    modalRef.componentInstance.in_activity = this.activities[index];
   }
 
   openDowntimeModal(event, index) {
@@ -150,6 +155,7 @@ export class ActivityComponent {
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.activities = this.activities;
+    modalRef.componentInstance.downtimeTypes = this.downtimeTypes;
     event.stopPropagation();
   }
 

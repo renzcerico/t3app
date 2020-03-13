@@ -1,5 +1,6 @@
 import { ActivityService } from './../services/activity.service';
 import Activity from './activity';
+import * as moment from 'moment';
 export default class Header {
     ID: number;
     BARCODE: string;
@@ -23,22 +24,22 @@ export default class Header {
     // activityService: ActivityService;
 
     constructor(jsonObj) {
-        this.ID = jsonObj.ID || null;
-        this.BARCODE = jsonObj.BARCODE || '';
-        this.ACTUAL_START = jsonObj.ACTUAL_START || '';
+        this.ID = jsonObj.ID || jsonObj.HEADER_ID || null;
+        this.BARCODE = jsonObj.BARCODE || jsonObj.HEADER_ID || '';
+        this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours');
         this.ACTUAL_END = jsonObj.ACTUAL_END || '';
-        this.STATUS = jsonObj.STATUS || '';
-        this.PO_NUMBER = jsonObj.PO_NUMBER || '';
+        this.STATUS = jsonObj.STATUS || 'WIP';
+        this.PO_NUMBER = jsonObj.PO_NUMBER || jsonObj.CUST_PO_NUMBER || '';
         this.CONTROL_NUMBER = jsonObj.CONTROL_NUMBER || '';
         this.SHIPPING_DATE = jsonObj.SHIPPING_DATE || '';
         this.ORDER_QUANTITY = jsonObj.ORDER_QUANTITY || 0;
-        this.CUSTOMER = jsonObj.CUSTOMER || '';
-        this.CUSTOMER_CODE = jsonObj.CUSTOMER_CODE || '';
-        this.CUSTOMER_SPEC = jsonObj.CUSTOMER_SPEC || '';
-        this.OLD_CODE = jsonObj.OLD_CODE || '';
-        this.INTERNAL_CODE = jsonObj.INTERNAL_CODE || '';
-        this.PRODUCT_DESCRIPTION = jsonObj.PRODUCT_DESCRIPTION || '';
-        this.SHIFT = jsonObj.SHIFT || '';
+        this.CUSTOMER = jsonObj.CUSTOMER || jsonObj.CUST_ALIAS || '';
+        this.CUSTOMER_CODE = jsonObj.CUSTOMER_CODE || jsonObj.CUSTOMER_ITEM_CODE || '';
+        this.CUSTOMER_SPEC = jsonObj.CUSTOMER_SPEC || jsonObj.CUSTOMER_ITEM_DESC || '';
+        this.OLD_CODE = jsonObj.OLD_CODE || jsonObj.PRODUCT_CODE_OLD || '';
+        this.INTERNAL_CODE = jsonObj.INTERNAL_CODE || jsonObj.PRODUCT_CODE || '';
+        this.PRODUCT_DESCRIPTION = jsonObj.PRODUCT_DESCRIPTION || jsonObj.PRODUCT_DESC || '';
+        this.SHIFT = jsonObj.SHIFT || 'dayshift';
         this.SCHEDULE_DATE_START = jsonObj.SCHEDULE_DATE_START || '';
         this.SCHEDULE_DATE_END = jsonObj.SCHEDULE_DATE_END || '';
     }

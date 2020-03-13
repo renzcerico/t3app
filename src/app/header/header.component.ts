@@ -1,3 +1,4 @@
+import { MaterialService } from './../services/material.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewInit} from '@angular/core';
 import { ApiService } from '../services/api.service';
@@ -9,6 +10,7 @@ import { MaterialComponent } from './../material/material.component';
 import {ActivityService} from '../services/activity.service';
 import Activity from '../classes/activity';
 import Header from '../classes/header';
+import { HeaderService } from '../services/header.service';
 
 @Component({
     selector: 'app-home',
@@ -65,12 +67,26 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     apiResponse: any;
-    constructor(public apis: ApiService, private activityService: ActivityService) {
+    constructor(
+        public apis: ApiService,
+        private activityService: ActivityService,
+        private materialService: MaterialService,
+        private headerService: HeaderService) {
         activityService.activities$.subscribe(
             activities => {
               this.actCollection = activities;
             }
           );
+        materialService.materials$.subscribe(
+            materials => {
+                this.matCollection = materials;
+            }
+        );
+        headerService.header$.subscribe(
+            header => {
+                this.headerObj = header;
+            }
+        );
     }
 
     ngAfterContentChecked() {
@@ -86,7 +102,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
-        await this.getData('SO35-091319-785915');
+        await this.getData('SO35-091319-785915aaa');
         // this.barcode();
     }
 
@@ -123,19 +139,27 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         await this.apis.getAllByBarcode(barcodeNum).toPromise()
         .then(
             res => {
-                console.log('res: ', res);
                 this.getDataRes = res;
             }
         );
-        console.log('response', this.getDataRes);
+
         if (this.getDataRes.isExisting) {
-            this.headerObj = new Header(this.getDataRes.header_obj);
-            console.log(this.headerObj);
-            this.activityService.setHeaderObj(this.headerObj);
+            // this.headerObj = new Header(this.getDataRes.header_obj);
+            this.headerService.setHeaderObj(this.headerObj);
             this.activityService.setActivities(this.getDataRes.activity_collection);
             this.matCollection = this.getDataRes.materials_collection;
         } else {
-            alert(this.getDataRes.isExisting);
+            await this.apis.getNewBatch().toPromise()
+            .then(
+                res => {
+                    this.materialService.setMaterials(res.material_collection);
+                    this.headerService.setHeaderObj(res.batch_collection[0]);
+                    this.activityService.setActivities([]);
+                    console.log('res: ', res);
+                    console.log('this.headerObj: ', this.headerObj);
+                    // this.getDataRes = res;
+                }
+            );
         }
     }
 
@@ -163,8 +187,10 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     handleProdMouseOver() {
-        if (this.headerObj.PRODUCT_DESCRIPTION.length >= 65 ) {
-            this.prodHover = 1;
+        if (Object.entries(this.headerObj).length > 0) {
+            if (this.headerObj.PRODUCT_DESCRIPTION.length >= 60 ) {
+                this.prodHover = 1;
+            }
         }
     }
 }

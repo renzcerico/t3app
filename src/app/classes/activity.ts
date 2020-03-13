@@ -1,3 +1,4 @@
+import { MaterialService } from './../services/material.service';
 import * as moment from 'moment';
 
 export default class Activity {
@@ -33,7 +34,7 @@ export default class Activity {
         return this.ADJ_QTY + this.PACKED_QTY;
     }
     get TOTAL_BOXES() {
-        return this.TOTAL / 50;
+        return this.TOTAL / this.materialService.maxBoxQty();
     }
     get TOTAL_DOWNTIME() {
         return 10;
@@ -55,7 +56,7 @@ export default class Activity {
         return this._START_TIME;
     }
 
-    constructor(jsonObj) {
+    constructor(jsonObj, private materialService: MaterialService) {
         this.ID = jsonObj.ID || null;
         this.HEADER_ID = jsonObj.HEADER_ID || null;
         this.START_TIME = moment(jsonObj.START_TIME).format() || '';

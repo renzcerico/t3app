@@ -23,11 +23,11 @@
     <table id="modal_table" class="table table-sm table-bordered table-hover">
         <thead class="text-uppercase">
             <tr>
-                <th class="align-middle" rowspan="2">Type</th>
-                <th rowspan="2" class="align-middle">Minutes</th>
-                <th rowspan="2" class="align-middle">Quantity</th>
-                <th rowspan="2" class="align-middle">Remarks</th>
-                <th colspan="2">Created</th>
+                <th style="width: 40%;" class="align-middle" rowspan="2">Type</th>
+                <th style="width: 10%;" rowspan="2" class="align-middle">Minutes</th>
+                <th style="width: 10%;" rowspan="2" class="align-middle">Quantity</th>
+                <th style="width: 30%;" rowspan="2" class="align-middle">Remarks</th>
+                <th style="width: 10%;" colspan="2">Created</th>
             </tr>
             <tr>
                 <th>By</th>
@@ -38,12 +38,16 @@
             <tr>
                 <td class="text-right td-editable">
                     <div class="td-indicator"></div>
-                    <select name="downtime_type" id="downtime_type" class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>                
+                    <select 
+                        name="downtime_type"
+                        ngbAutofocus
+                        id="downtime_type"
+                        class="form-control"
+                        [(ngModel)]="selectedDowntimeType"
+                        (change)="test()"
+                    >
+                        <option value="{value: null}" selected disabled>Select Reason</option>
+                        <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype">{{ dtype.NAME }}</option>                
                     </select>
                 </td>
                 <td class="text-right td-editable">
@@ -51,7 +55,8 @@
                     <input
                         type="number"
                         min="0"
-                        class="form-control input-sm editable-content text-right">
+                        class="form-control input-sm editable-content text-right"
+                        value="{{selectedDowntimeType.DEFAULT_MINUTES}}">
                 </td>
                 <td class="text-right td-editable">
                     <div class="td-indicator"></div>

@@ -1,3 +1,4 @@
+import { ActivityFactory } from './../classes/activity-factory';
 import {
   Component,
   ElementRef,
@@ -14,18 +15,19 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ActivityDetailsComponent implements OnInit {
 
-  activities: any = [];
+  // tslint:disable-next-line: variable-name
+  in_activity: any = [];
   mLotNumber: string;
   mPacked = 0;
   selectedActivityIndex: number;
+  activity: any = {};
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
-  constructor(public activeModal: NgbActiveModal) {
+  constructor(public activeModal: NgbActiveModal, private activityFactory: ActivityFactory) {
   }
 
   ngOnInit() {
-    console.log(this.selectedActivityIndex);
-    console.log(this.activities);
+    this.activity = this.in_activity;
   }
 
   modalEnter(event) {
@@ -51,7 +53,7 @@ export class ActivityDetailsComponent implements OnInit {
         IS_NEW          : 1,
         IS_CHANGED      : 0
       };
-      this.activities[this.selectedActivityIndex].ACTIVITY_DETAILS.unshift(newActivityDetail);
+      this.activity.ACTIVITY_DETAILS.unshift(newActivityDetail);
       this.mPacked = 0;
       this.mLotNumber = '';
       elArr[0].nativeElement.focus();
@@ -60,8 +62,8 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   setIsChanged(index: number) {
-    this.activities[this.selectedActivityIndex].IS_CHANGED = 1;
-    this.activities[this.selectedActivityIndex].ACTIVITY_DETAILS[index].IS_CHANGED = 1;
+    this.activity.IS_CHANGED = 1;
+    this.activity.ACTIVITY_DETAILS[index].IS_CHANGED = 1;
   }
 
 }

@@ -18,4 +18,6 @@ router.route('/store_all').post(t3.storeAll);
 
 router.route('/get_all_by_barcode/:barcode').get(t3.getAllByBarcode);
 
+router.route('/get_downtime_types').get(t3.getDowntimeTypes);
+
 module.exports = router;

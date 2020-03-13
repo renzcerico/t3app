@@ -48,4 +48,13 @@ export class ApiService {
     header(data): Observable<any> {
         return this.http.post(`${ this.url }` + '/api/store_all', data);
     }
+
+    getDowntimeTypes(): Observable<any> {
+        return this.http.get(`${this.url}` + '/api/get_downtime_types');
+    }
+
+    getNewBatch(): Observable<any> {
+        const url = 'http://localhost:3001';
+        return this.http.get(`${url}` + '/api/t3Batch_info/' + 1);
+    }
 }

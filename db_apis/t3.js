@@ -118,3 +118,18 @@ const getActivityDetails = async (activity_id) => {
     .catch(error => { console.log('caught', error.message); });
     return res;
 }
+
+const getDowntimeTypes = async () => {
+    const q = `BEGIN T3_PACKAGE.GET_DOWNTIME_TYPES (:cursor); END;`;
+    let binds = {
+        cursor: {
+            dir: oracle.BIND_OUT,
+            type: oracle.CURSOR
+        }
+    }
+    let res = await database.resultsetExecute(q, binds)
+    .catch(error => { console.log('caugth', error.message)});
+    return res;
+}
+
+module.exports.getDowntimeTypes = getDowntimeTypes;

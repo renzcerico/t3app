@@ -1,8 +1,11 @@
+import { ActivityFactory } from './../classes/activity-factory';
+import { HeaderService } from './header.service';
 import { Injectable} from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import Activity from '../classes/activity.js';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +14,17 @@ export class ActivityService {
   private activitiesSource = new Subject<Array<Activity>>();
   private headerSource = new Subject<object>();
   private actualTimeSource = new Subject<object>();
+  private downtimeTypeSource = new Subject<Array<object>>();
   activities$ = this.activitiesSource.asObservable();
   header$ = this.headerSource.asObservable();
   actualTime$ = this.actualTimeSource.asObservable();
+  downtimeTypes$ = this.downtimeTypeSource.asObservable();
   activities: Array<Activity>;
   shifts: Array<any> = [];
   headerObj: any = {};
+  downtimeTypes: any = [];
 
-  constructor() {
+  constructor(private apiService: ApiService, private headerService: HeaderService, private activityFactory: ActivityFactory) {
     const dayshift = 'dayshift';
     const nightshift = 'nightshift';
     const date = new Date();
@@ -39,12 +45,13 @@ export class ActivityService {
         this.activities = activities;
       }
     );
-    this.header$.subscribe(
+    headerService.header$.subscribe(
       headerObj => {
         this.headerObj = headerObj;
       }
     );
     this.startTimer();
+    this.getDowntimeTypes();
   }
 
   get expectedTime() {
@@ -70,22 +77,21 @@ export class ActivityService {
         start = moment(this.lastActivity.END_TIME);
       }
     }
-    end = moment(start).add(1, 'hours');
+    end = moment(start).add(1, 'hours').startOf('hour');
     res = {start, end};
     return res;
   }
 
   get actualTime() {
     let res = {start: null, end: null, exact: null};
-    const date = new Date();
-    let start = moment(date)/* .subtract(1, 'hours') */.startOf('hour');
+    let start = moment()/* .subtract(1, 'hours') */.startOf('hour');
     if (Object.entries(this.headerObj).length > 0) {
       if (start.isSame(this.shifts[this.headerObj.SHIFT].breaktime_start)) {
         start = this.shifts[this.headerObj.SHIFT].breaktime_end;
       }
     }
     const end = moment(start).add(1, 'hours');
-    const exact = moment(date);
+    const exact = moment();
     res = {start, end, exact};
     this.setActualTime(res);
     return res;
@@ -103,10 +109,6 @@ export class ActivityService {
     return this.shifts[shift];
   }
 
-  setHeaderObj(headerObj) {
-    this.headerSource.next(headerObj);
-  }
-
   setActualTime(actualTime) {
     this.actualTimeSource.next(actualTime);
   }
@@ -114,7 +116,7 @@ export class ActivityService {
   setActivities(activities: Array<any>) {
     const activitiesArr = [];
     activities.forEach(element => {
-        const activity = new Activity(element);
+        const activity = this.activityFactory.createActivity(element);
         activitiesArr.push(activity);
     });
     this.activitiesSource.next(activitiesArr);
@@ -150,25 +152,25 @@ export class ActivityService {
       // return;
       // return;
     }
-    const newAct = new Activity(activity);
+    const newAct = this.activityFactory.createActivity(activity);
     this.activities.unshift(newAct);
     this.logTime();
   }
 
   logTime() {
+    const diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
     console.log('expected: ', this.expectedTime.start.format('MM/DD/YYYY HH:mm'));
-    console.log('actual_end: ', this.actualTime.end.format('MM/DD/YYYY HH:mm'));
+    console.log('actual_end: ', this.actualTime.start.format('MM/DD/YYYY HH:mm'));
     console.log('exact', this.actualTime.exact.format('MM/DD/YYYY HH:mm'));
+    console.log('diff: ', diff);
   }
 
   setFillers() {
     const diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
-    // console.log('actual time: ', moment(this.actualTime.start).format('MM/DD/YYYY  HH:mm'));
-    // console.log('expected time: ', moment(this.expectedTime.start).format('MM/DD/YYYY  HH:mm'));
-    // console.log('diff: ', diff);
     let filler;
     for (let index = 0; index < diff; index++) {
-      filler = new Activity({
+      this.logTime();
+      filler = this.activityFactory.createActivity({
         HEADER_ID       : this.headerObj.ID,
         START_TIME      : this.expectedTime.start,
         END_TIME        : this.expectedTime.end,
@@ -188,6 +190,15 @@ export class ActivityService {
         this.setFillers();
       }
     }, 1000);
+  }
+
+  async getDowntimeTypes() {
+    await this.apiService.getDowntimeTypes().toPromise()
+    .then(
+        res => {
+          this.downtimeTypeSource.next(res);
+        }
+    );
   }
 
 }

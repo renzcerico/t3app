@@ -13,12 +13,14 @@
 }
 
 #modal_table>tbody input,
+#modal_table>tbody select,
 .editable-content {
     border: 0;
     border-radius: 0;
     background-color: transparent;
 }
 
+#modal_table>tbody select:focus,
 #modal_table>tbody input:focus{
     box-shadow: none;
 }

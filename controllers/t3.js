@@ -49,3 +49,15 @@ const getAllByBarcode = async (req = {}, res, next = null) => {
 }
 
 module.exports.getAllByBarcode = getAllByBarcode;
+
+const getDowntimeTypes = async (req = {}, res, next = null) => {
+    try {
+        const request = await t3.getDowntimeTypes()
+        .catch(error => { console.log('caught', error.message); });
+        res.status(201).json(request);
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports.getDowntimeTypes = getDowntimeTypes;

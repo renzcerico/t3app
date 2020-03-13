@@ -12,7 +12,7 @@
     font-size: 13px !important;
 }
 
-#modal_table>tbody input,
+#modal_table>tbody input, #modal_table>tbody select,
 .editable-content {
     border: 0;
     border-radius: 0;
