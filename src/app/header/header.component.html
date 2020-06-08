@@ -113,7 +113,7 @@
                         <label for="internal_code">Internal Code</label>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 mt-1" style="z-index: 999999;" (mouseover)="handleProdMouseOver()" (mouseout)="prodHover = 0">                
+                <div class="col-12 col-md-6 mt-1" style="z-index: 1049;" (mouseover)="handleProdMouseOver()" (mouseout)="prodHover = 0">                
                     <div class="form-label-group h-100">
                         <input *ngIf="prodHover === 0" readonly name="product_desc" type="text" id="product_desc" class="form-control" [ngModel]="headerObj.PRODUCT_DESCRIPTION" placeholder="Description" required>
                         <span *ngIf="prodHover === 1" id="prod_span" readonly>{{ headerObj.PRODUCT_DESCRIPTION || 'Description' }}</span>
