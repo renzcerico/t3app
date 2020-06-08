@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Activity Details - <span class="text-danger">{{ activity.START_TIME | date : 'HH:mm'}} to {{ activity.END_TIME | date : 'HH:mm'}}</span> {{activity.TOTAL}}</h5>
+    <h5 class="modal-title">Activity Details - <span class="text-danger">{{ in_activity.START_TIME | date : 'HH:mm'}} to {{ in_activity.END_TIME | date : 'HH:mm'}}</span></h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
