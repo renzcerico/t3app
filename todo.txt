@@ -1,0 +1,12 @@
+Activity
+ - Status 
+  (gray closed, green complete, blue open, red wip)
+ - Actual End
+ - Updated By
+  (Forwarded By/Date, Reviewed By/Date, Approved By/Date)
+Manpower - Name, Position, User Level
+Notification (Wip, Open, Complete)
+
+Date Format
+Cursor Pointer
+Material - OK

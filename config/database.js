@@ -3,7 +3,7 @@ module.exports = {
     // user: process.env.HR_USER,
     // password: process.env.HR_PASSWORD,
     // connectString: process.env.HR_CONNECTIONSTRING,
-    user: 'T3',
+    user: 't3',
     password: 'oracle',
     connectString: '//localhost:1521/xe',
     poolMin: 10,
