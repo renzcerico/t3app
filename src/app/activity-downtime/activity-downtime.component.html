@@ -100,7 +100,7 @@
                         ngbAutofocus
                         id="downtime_type"
                         class="form-control"
-                        (change)="handleSelectChange($event)"
+                        (change)="handleSelectChange($event, i)"
                         [(ngModel)]="tempActDowntime[i].DOWNTIME_TYPE_ID"
                     >
                         <option value="{value: -1}" selected disabled>Select Reason</option>
