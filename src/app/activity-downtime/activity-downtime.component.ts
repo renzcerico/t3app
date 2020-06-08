@@ -114,7 +114,7 @@ export class ActivityDowntimeComponent implements OnInit {
 
   handleSelectChange(event, i) {
     const currValIndex = event.srcElement.attributes.selected_id.value;
-    console.log(currValIndex);
+    console.log(currValIndex, i);
     // const active = elArr.findIndex(index => {
     //   return (index.nativeElement.parentElement === event.target.parentElement);
     // });
@@ -122,7 +122,6 @@ export class ActivityDowntimeComponent implements OnInit {
     if (currValIndex !== null && currValIndex >= 0) {
       this.downtimeTypes[currValIndex].DISABLED = false;
     }
-    // event.srcElement.attributes.selected_index.value = newValIndex;
     if (newValIndex >= 0) {
       this.downtimeTypes[newValIndex].DISABLED = true;
     }
