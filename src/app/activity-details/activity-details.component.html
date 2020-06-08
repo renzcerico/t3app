@@ -62,14 +62,14 @@
                     {{ mPacked | number: '' }}
                 </td>
             </tr>
-            <tr *ngFor="let val of activity.ACTIVITY_DETAILS; let i = index">
+            <tr *ngFor="let val of tempActDetails; let i = index">
                 <td class="text-right td-editable">
                     <div class="td-indicator-required"></div>
                     <input
                         type="text"
                         class="form-control input-sm editable-content text-right"
                         (ngModelChange)="setIsChanged(i)"
-                        [(ngModel)]="activity.ACTIVITY_DETAILS[i].LOT_NUMBER">
+                        [(ngModel)]="tempActDetails[i].LOT_NUMBER">
                 </td>
                 <td class="text-right align-middle">
                     {{ val.PACKED_QTY | number: ''}}
@@ -81,7 +81,7 @@
                         min="0"
                         class="form-control input-sm editable-content text-right"
                         (ngModelChange)="setIsChanged(i)"
-                        [(ngModel)]="activity.ACTIVITY_DETAILS[i].ADJ_QTY">
+                        [(ngModel)]="tempActDetails[i].ADJ_QTY">
                 </td>
                 <td class="align-middle text-right px-3">
                     {{ val.PACKED_QTY + val.ADJ_QTY | number: '' }}
@@ -91,14 +91,14 @@
         <tfoot class="text-right">
             <tr>
                 <th>Subtotal</th>
-                <th>{{ activity.PACKED_QTY | number: '' }}</th>
-                <th>{{ activity.ADJ_QTY | number: '' }}</th>
-                <th>{{ activity.TOTAL | number: '' }}</th>
+                <th>{{ packedQty | number: '' }}</th>
+                <th>{{ adjQty | number: '' }}</th>
+                <th>{{ total | number: '' }}</th>
             </tr>
         </tfoot>
     </table>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-md btn-danger">Cancel</button>
-    <button class="btn btn-md btn-success">Save</button>
+    <button class="btn btn-md btn-danger" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+    <button class="btn btn-md btn-success" (click)="handleSave()">Save</button>
 </div>

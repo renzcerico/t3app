@@ -98,8 +98,10 @@ const getDataByHeaderId = async (table ,headerid) => {
     .catch(error => { console.log('caught', error.message); });
     res.forEach(async (el, i) => {
         if (table == 'TBL_ACTIVITY') {
-            const activity_deatils = await getActivityDetails(res[i].ID);
-            res[i].ACTIVITY_DETAILS = activity_deatils;
+            const activity_details = await getActivityDetails(res[i].ID);
+            res[i].ACTIVITY_DETAILS = activity_details;
+            const activity_downtime = await getActivityDowntime(res[i].ID);
+            res[i].ACTIVITY_DOWNTIME = activity_downtime;
         }
     });
     return res;
@@ -107,6 +109,20 @@ const getDataByHeaderId = async (table ,headerid) => {
 
 const getActivityDetails = async (activity_id) => {
     const q = `begin T3_PACKAGE.GET_ACTIVITY_DETAILS ( :activity_id, :cursor ); end;`;
+    let binds = {
+        activity_id: activity_id,
+    };
+    binds.cursor = {
+        dir: oracle.BIND_OUT,
+        type: oracle.CURSOR
+    }
+    let res = await database.resultsetExecute(q, binds)
+    .catch(error => { console.log('caught', error.message); });
+    return res;
+}
+
+const getActivityDowntime = async (activity_id) => {
+    const q = `begin T3_PACKAGE.GET_ACTIVITY_DOWNTIME ( :activity_id, :cursor ); end;`;
     let binds = {
         activity_id: activity_id,
     };

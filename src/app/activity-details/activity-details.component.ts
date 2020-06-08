@@ -20,6 +20,7 @@ export class ActivityDetailsComponent implements OnInit {
   mLotNumber: string;
   mPacked = 0;
   selectedActivityIndex: number;
+  tempActDetails: Array<any> = [];
   activity: any = {};
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
@@ -27,7 +28,11 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activity = this.in_activity;
+    this.in_activity.ACTIVITY_DETAILS.forEach(el => {
+      const actDetail = {};
+      Object.assign(actDetail, el);
+      this.tempActDetails.push(actDetail);
+    });
   }
 
   modalEnter(event) {
@@ -53,7 +58,7 @@ export class ActivityDetailsComponent implements OnInit {
         IS_NEW          : 1,
         IS_CHANGED      : 0
       };
-      this.activity.ACTIVITY_DETAILS.unshift(newActivityDetail);
+      this.tempActDetails.push(newActivityDetail);
       this.mPacked = 0;
       this.mLotNumber = '';
       elArr[0].nativeElement.focus();
@@ -62,8 +67,34 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   setIsChanged(index: number) {
-    this.activity.IS_CHANGED = 1;
-    this.activity.ACTIVITY_DETAILS[index].IS_CHANGED = 1;
+    this.tempActDetails[index].IS_CHANGED = 1;
+  }
+
+  get packedQty() {
+    let res = 0;
+    this.tempActDetails.forEach(el => {
+      res += el.PACKED_QTY;
+    });
+    return res;
+  }
+
+  get adjQty() {
+    let res = 0;
+    this.tempActDetails.forEach(el => {
+      res += el.ADJ_QTY;
+    });
+    return res;
+  }
+
+  get total() {
+    return this.packedQty + this.adjQty;
+  }
+
+  handleSave() {
+    this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
+    console.log('in_activity.ACTIVITY_DETAILS: ', this.in_activity.ACTIVITY_DETAILS);
+    console.log('tempActDetails: ', this.tempActDetails);
+    this.activeModal.dismiss('Cross click');
   }
 
 }

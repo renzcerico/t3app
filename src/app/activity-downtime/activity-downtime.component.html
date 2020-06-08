@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Activity Downtime - <span class="text-danger">{{ activities[selectedActivityIndex].START_TIME | date : 'HH:mm'}} to {{ activities[selectedActivityIndex].END_TIME | date : 'HH:mm'}}</span></h5>
+    <h5 class="modal-title">Activity Downtime - <span class="text-danger">{{ activity.START_TIME | date : 'HH:mm'}} to {{ activity.END_TIME | date : 'HH:mm'}}</span></h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -43,11 +43,13 @@
                         ngbAutofocus
                         id="downtime_type"
                         class="form-control"
+                        #modalHeaderInput
                         [(ngModel)]="selectedDowntimeType"
-                        (change)="test()"
+                        (change)="modalEnter($event)"
+                        (ngModelChange)="handleDowntimeChange()"
                     >
                         <option value="{value: null}" selected disabled>Select Reason</option>
-                        <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype">{{ dtype.NAME }}</option>                
+                        <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype" [disabled]="dtype.DISABLED">{{ dtype.NAME }}</option>                
                     </select>
                 </td>
                 <td class="text-right td-editable">
@@ -56,14 +58,72 @@
                         type="number"
                         min="0"
                         class="form-control input-sm editable-content text-right"
-                        value="{{selectedDowntimeType.DEFAULT_MINUTES}}">
+                        #modalHeaderInput
+                        (keyup.enter)="modalEnter($event)"
+                        [(ngModel)]="mMinutes"
+                    >
                 </td>
                 <td class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
                         type="number"
                         min="0"
+                        #modalHeaderInput
+                        (keyup.enter)="modalEnter($event)"
+                        [(ngModel)]="mQuantity"
                         class="form-control input-sm editable-content text-right">
+                </td>
+                <td class="td-editable">
+                    <div class="td-indicator"></div>
+                    <textarea
+                        name="remarks"
+                        id="remarks"
+                        #modalHeaderInput
+                        class="form-control editable-content"
+                        autosize
+                        [(ngModel)]="mRemarks"
+                        (keyup.enter)="modalEnter($event)"
+                        (keydown.enter)="$event.preventDefault()"
+                        rows="1">
+                    </textarea>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let val of tempActDowntime; let i = index">
+                <td class="text-right td-editable">
+                    <div class="td-indicator"></div>
+                    <!-- TODO: fix disable select when chosen on other input -->
+                    <select
+                        bind-attr.selected_id="tempActDowntime[i].DOWNTIME_TYPE_ID"
+                        name="downtime_type"
+                        ngbAutofocus
+                        id="downtime_type"
+                        class="form-control"
+                        (change)="handleSelectChange($event)"
+                        [(ngModel)]="tempActDowntime[i].DOWNTIME_TYPE_ID"
+                    >
+                        <option value="{value: -1}" selected disabled>Select Reason</option>
+                        <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype.ID" [disabled]="dtype.DISABLED">{{ dtype.NAME }}</option>                
+                    </select>
+                </td>
+                <td class="text-right td-editable">
+                    <div class="td-indicator"></div>
+                    <input
+                        type="number"
+                        min="0"
+                        class="form-control input-sm editable-content text-right"
+                        (ngModelChange)="setIsChanged(i)"
+                        [(ngModel)]="tempActDowntime[i].MINUTES">
+                </td>
+                <td class="text-right td-editable">
+                    <div class="td-indicator"></div>
+                    <input
+                        type="number"
+                        min="0"
+                        class="form-control input-sm editable-content text-right"
+                        (ngModelChange)="setIsChanged(i)"
+                        [(ngModel)]="tempActDowntime[i].QUANTITY">
                 </td>
                 <td class="td-editable">
                     <div class="td-indicator"></div>
@@ -72,20 +132,26 @@
                         id="remarks"
                         class="form-control editable-content"
                         autosize
-                        rows="1">
+                        rows="1"
+                        (ngModelChange)="setIsChanged(i)"
+                        [(ngModel)]="tempActDowntime[i].REMARKS">
                     </textarea>
                 </td>
                 <td></td>
                 <td></td>
-            </tr>
+            </tr>            
         </tbody>
         <tfoot class="text-right">
             <tr>
                 <th>Subtotal</th>
-                <th>{{ activities[selectedActivityIndex].PACKED_QTY | number: '' }}</th>
-                <th>{{ activities[selectedActivityIndex].ADJ_QTY | number: '' }}</th>
-                <th>{{ activities[selectedActivityIndex].TOTAL | number: '' }}</th>
+                <th>{{ totalMinutes | number: '' }}</th>
+                <th>{{ totalQuantity | number: '' }}</th>
+                <td colspan="3"></td>
             </tr>
         </tfoot>
     </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-md btn-danger" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+    <button class="btn btn-md btn-success" (click)="handleSave()">Save</button>
 </div>

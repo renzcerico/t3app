@@ -45,6 +45,16 @@ export class ActivityComponent {
     return subTotal;
   }
 
+  get downtimeSubTotal() {
+    let subTotal = 0;
+    if (this.activities.length) {
+      this.activities.forEach( (el) => {
+        subTotal += el.TOTAL_DOWNTIME;
+      });
+    }
+    return subTotal;
+  }
+
   constructor(private activityService: ActivityService, private modalService: NgbModal) {
     activityService.activities$.subscribe(
       activities => {
@@ -153,8 +163,7 @@ export class ActivityComponent {
       {
         size: 'lg',
       });
-    modalRef.componentInstance.selectedActivityIndex = index;
-    modalRef.componentInstance.activities = this.activities;
+    modalRef.componentInstance.activity = this.activities[index];
     modalRef.componentInstance.downtimeTypes = this.downtimeTypes;
     event.stopPropagation();
   }

@@ -22,15 +22,18 @@ export default class Header {
     SCHEDULE_DATE_END: string;
     ACTIVITIES: Array<Activity>;
     // activityService: ActivityService;
+    IS_NEW: number;
+    IS_CHANGED: number;
 
     constructor(jsonObj) {
-        this.ID = jsonObj.ID || jsonObj.HEADER_ID || null;
-        this.BARCODE = jsonObj.BARCODE || jsonObj.HEADER_ID || '';
-        this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours');
+        console.log('jsonObj: ', jsonObj);
+        this.ID = jsonObj.ID || null;
+        this.BARCODE = jsonObj.BARCODE || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
+        this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');
         this.ACTUAL_END = jsonObj.ACTUAL_END || '';
         this.STATUS = jsonObj.STATUS || 'WIP';
         this.PO_NUMBER = jsonObj.PO_NUMBER || jsonObj.CUST_PO_NUMBER || '';
-        this.CONTROL_NUMBER = jsonObj.CONTROL_NUMBER || '';
+        this.CONTROL_NUMBER = jsonObj.CONTROL_NUMBER || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
         this.SHIPPING_DATE = jsonObj.SHIPPING_DATE || '';
         this.ORDER_QUANTITY = jsonObj.ORDER_QUANTITY || 0;
         this.CUSTOMER = jsonObj.CUSTOMER || jsonObj.CUST_ALIAS || '';
@@ -42,5 +45,7 @@ export default class Header {
         this.SHIFT = jsonObj.SHIFT || 'dayshift';
         this.SCHEDULE_DATE_START = jsonObj.SCHEDULE_DATE_START || '';
         this.SCHEDULE_DATE_END = jsonObj.SCHEDULE_DATE_END || '';
+        (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
+        (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }
 }

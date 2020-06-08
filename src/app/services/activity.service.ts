@@ -196,6 +196,9 @@ export class ActivityService {
     await this.apiService.getDowntimeTypes().toPromise()
     .then(
         res => {
+          res.forEach(element => {
+            element.DISABLED = false;
+          });
           this.downtimeTypeSource.next(res);
         }
     );

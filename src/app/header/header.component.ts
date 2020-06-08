@@ -102,7 +102,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
-        await this.getData('SO35-091319-785915aaa');
+        await this.getData('163178');
         // this.barcode();
     }
 
@@ -144,10 +144,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         );
 
         if (this.getDataRes.isExisting) {
-            // this.headerObj = new Header(this.getDataRes.header_obj);
-            this.headerService.setHeaderObj(this.headerObj);
+            this.headerService.setHeaderObj(this.getDataRes.header_obj);
             this.activityService.setActivities(this.getDataRes.activity_collection);
-            this.matCollection = this.getDataRes.materials_collection;
+            this.materialService.setMaterials(this.getDataRes.materials_collection);
         } else {
             await this.apis.getNewBatch().toPromise()
             .then(
@@ -155,8 +154,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     this.materialService.setMaterials(res.material_collection);
                     this.headerService.setHeaderObj(res.batch_collection[0]);
                     this.activityService.setActivities([]);
-                    console.log('res: ', res);
-                    console.log('this.headerObj: ', this.headerObj);
                     // this.getDataRes = res;
                 }
             );
@@ -168,9 +165,16 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     header() {
+        alert('inn');
+        // tslint:disable-next-line: variable-name
+        const activity_collection = [];
+        this.actCollection.forEach(el => {
+            activity_collection.push(el.getJson());
+        });
         const json = {
             header_obj          : this.headerObj,
-            activity_collection : this.actCollection
+            material_collection : this.matCollection,
+            activity_collection
         };
 
         this.apis.header(json)

@@ -10,9 +10,10 @@ export default class Activity {
     DOWNTIME: number;
     REMARKS = '';
     LAST_UPDATED_BY: number;
-    DATE_ENTERED: string;
-    DATE_UPDATED: string;
+    _DATE_ENTERED: string;
+    _DATE_UPDATED: string;
     ACTIVITY_DETAILS: any[];
+    ACTIVITY_DOWNTIME: any[];
     IS_NEW: number;
     IS_CHANGED: number;
 
@@ -33,11 +34,32 @@ export default class Activity {
     get TOTAL() {
         return this.ADJ_QTY + this.PACKED_QTY;
     }
+
     get TOTAL_BOXES() {
         return this.TOTAL / this.materialService.maxBoxQty();
     }
     get TOTAL_DOWNTIME() {
-        return 10;
+        let totalDowntime = 0;
+        this.ACTIVITY_DOWNTIME.forEach(element => {
+          totalDowntime += element.MINUTES;
+        });
+        return totalDowntime;
+    }
+
+    set DATE_ENTERED(endTime: any) {
+        this._DATE_ENTERED = moment(endTime).format('DD-MMM-YYYY HH:mm:ss');
+    }
+
+    get DATE_ENTERED() {
+        return this._DATE_ENTERED;
+    }
+
+    set DATE_UPDATED(startTime: any) {
+        this._DATE_UPDATED = moment(startTime).format('DD-MMM-YYYY HH:mm:ss');
+    }
+
+    get DATE_UPDATED() {
+        return this._DATE_UPDATED;
     }
 
     set END_TIME(endTime: any) {
@@ -68,8 +90,9 @@ export default class Activity {
         this.DATE_ENTERED = moment(jsonObj.DATE_ENTERED).format() || '';
         this.DATE_UPDATED = moment(jsonObj.DATE_UPDATED).format() || '';
         this.ACTIVITY_DETAILS = jsonObj.ACTIVITY_DETAILS || [];
-        this.IS_NEW = jsonObj.IS_NEW || 0;
-        this.IS_CHANGED = jsonObj.IS_CHANGED || 0;
+        this.ACTIVITY_DOWNTIME = jsonObj.ACTIVITY_DOWNTIME || [];
+        (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
+        (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }
     getJson() {
         const json = {
@@ -77,7 +100,7 @@ export default class Activity {
             HEADER_ID: this.HEADER_ID,
             START_TIME: this.START_TIME,
             END_TIME: this.END_TIME,
-            LOT_NUMBER: this.LOT_NUMBER,
+            // LOT_NUMBER: this.LOT_NUMBER,
             PACKED_QTY: this.PACKED_QTY,
             ADJ_QTY: this.ADJ_QTY,
             DOWNTIME: this.DOWNTIME,
@@ -87,6 +110,7 @@ export default class Activity {
             DATE_ENTERED: this.DATE_ENTERED,
             DATE_UPDATED: this.DATE_UPDATED,
             ACTIVITY_DETAILS: this.ACTIVITY_DETAILS,
+            ACTIVITY_DOWNTIME: this.ACTIVITY_DOWNTIME,
             IS_NEW: this.IS_NEW,
             IS_CHANGED: this.IS_CHANGED
         };

@@ -39,6 +39,7 @@
                             type="number" 
                             name="reject" 
                             [(ngModel)]="materials[i].REJECT"
+                            (ngModelChange)="valueChanged(i)"
                             [attr.m-id]="material.ID"
                             class="form-control text-right"
                             (focus)="$event.target.select();"
@@ -53,6 +54,7 @@
                         <div class="td-indicator"></div>
                         <textarea                             
                             [(ngModel)]="materials[i].REMARKS"
+                            (ngModelChange)="valueChanged(i)"
                             name="remarks"
                             class="form-control remarks"
                             [attr.m-id]="material.id"
