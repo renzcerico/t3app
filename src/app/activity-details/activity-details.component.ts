@@ -41,7 +41,7 @@ export class ActivityDetailsComponent implements OnInit {
       return (index.nativeElement.parentElement === event.target.parentElement);
     });
 
-    if (event.target.attributes.required && !event.target.value) {
+    if (event.target.attributes.required && (!event.target.value || event.target.value < 1)) {
       return;
     }
 
