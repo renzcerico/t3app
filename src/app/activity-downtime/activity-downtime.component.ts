@@ -24,6 +24,7 @@ export class ActivityDowntimeComponent implements OnInit {
   mMinutes: number;
   mRemarks: string;
   mQuantity: number;
+  isChanged = 0;
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
   constructor(public activeModal: NgbActiveModal) {
@@ -68,6 +69,7 @@ export class ActivityDowntimeComponent implements OnInit {
         , IS_NEW          : 1
         , IS_CHANGED      : 0
       };
+      this.isChanged = 1;
       this.tempActDowntime.push(newActivityDowntime);
       this.selectedDowntimeType = {};
       this.mMinutes = 0;
@@ -81,12 +83,17 @@ export class ActivityDowntimeComponent implements OnInit {
     this.mMinutes = this.selectedDowntimeType.DEFAULT_MINUTES;
   }
   handleSave() {
+    if (this.isChanged === 1) {
+      this.activity.IS_CHANGED = 1;
+    }
     this.activity.ACTIVITY_DOWNTIME = this.tempActDowntime;
     this.activeModal.dismiss('Cross click');
   }
 
   setIsChanged(index: number) {
     this.tempActDowntime[index].IS_CHANGED = 1;
+    this.isChanged = 1;
+    // this.activity.IS_CHANGED = 1;
   }
 
   get totalMinutes() {
@@ -115,7 +122,7 @@ export class ActivityDowntimeComponent implements OnInit {
     if (currValIndex !== null && currValIndex >= 0) {
       this.downtimeTypes[currValIndex].DISABLED = false;
     }
-    event.srcElement.attributes.selected_index.value = newValIndex;
+    // event.srcElement.attributes.selected_index.value = newValIndex;
     if (newValIndex >= 0) {
       this.downtimeTypes[newValIndex].DISABLED = true;
     }

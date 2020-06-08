@@ -22,6 +22,7 @@ export class ActivityDetailsComponent implements OnInit {
   selectedActivityIndex: number;
   tempActDetails: Array<any> = [];
   activity: any = {};
+  isChanged = 0;
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
   constructor(public activeModal: NgbActiveModal, private activityFactory: ActivityFactory) {
@@ -58,6 +59,7 @@ export class ActivityDetailsComponent implements OnInit {
         IS_NEW          : 1,
         IS_CHANGED      : 0
       };
+      this.isChanged = 1;
       this.tempActDetails.push(newActivityDetail);
       this.mPacked = 0;
       this.mLotNumber = '';
@@ -68,6 +70,7 @@ export class ActivityDetailsComponent implements OnInit {
 
   setIsChanged(index: number) {
     this.tempActDetails[index].IS_CHANGED = 1;
+    this.isChanged = 1;
   }
 
   get packedQty() {
@@ -91,9 +94,11 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   handleSave() {
-    this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
-    console.log('in_activity.ACTIVITY_DETAILS: ', this.in_activity.ACTIVITY_DETAILS);
-    console.log('tempActDetails: ', this.tempActDetails);
+    if (this.isChanged === 1) {
+      this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
+      console.log('tempActDetails: ', this.tempActDetails);
+      console.log('in_activity.ACTIVITY_DETAILS: ', this.in_activity.ACTIVITY_DETAILS);
+    }
     this.activeModal.dismiss('Cross click');
   }
 
