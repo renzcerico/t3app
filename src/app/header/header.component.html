@@ -1,7 +1,12 @@
 <div class="container mt-2" id="header_production_order">
     <form #headerForm>
-        <div>
-            <span class="title">Schedule Date:</span>
+        <div *ngIf="currentStatus">
+            <span [ngClass]="currentStatus"></span>
+            <span class="content pl-1 text-uppercase">
+                {{ currentStatusDesc }}
+                <span class="text-muted">|</span>
+            </span>
+            <span class="title pl-1">Schedule Date:</span>
             <span class="content pl-1">{{ headerObj.SCHEDULE_DATE_START | date : 'MM/d/yy' }}</span> 
             <span class="title pl-2">Schedule Time: </span>
             <span class="content pl-1">{{ headerObj.SCHEDULE_DATE_START | date : 'HHmm' }}-{{ headerObj.SCHEDULE_DATE_END | date : 'HHmm' }}</span>
@@ -13,7 +18,7 @@
         <div class="form-row">           
             <div class="col-12 col-md-3 mt-1">
                 <div class="form-label-group">
-                    <input name="barcode" type="text" id="barcode" class="form-control w-75" [ngModel]="headerObj.CONTROL_NUMBER" name="barcode" placeholder="#" required (change)="handleBarcodeChange()">
+                    <input name="barcode" type="text" id="barcode" class="form-control w-75" [ngModel]="headerObj.CONTROL_NUMBER" name="barcode" placeholder="#" required (change)="handleBarcodeChange()" autofocus>
                     <label for="barcode">Control Number</label>
                 </div>                
             </div>  

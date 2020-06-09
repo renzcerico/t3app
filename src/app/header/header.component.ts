@@ -15,7 +15,7 @@ import { HeaderService } from '../services/header.service';
 @Component({
     selector: 'app-home',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css']
+    styleUrls: ['./header.component.css', '../app.component.css']
 })
 
 export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewInit {
@@ -23,6 +23,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     faAngleUp = faAngleUp;
     faAngleDown = faAngleDown;
     iconResult = faAngleDown;
+    currentStatus = '';
+    currentStatusDesc = '';
     // headerObj = {
     //     ID: Number,
     //     BARCODE: '',
@@ -135,6 +137,22 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         const scannerDetector = new ScannerDetector(options);
     }
 
+    visibleStatus(status) {
+        if (status === 'WIP' || status === 1) {
+            this.currentStatus = 'dot status-wip';
+            this.currentStatusDesc = 'WIP';
+        } else if (status === 'OPEN' || status === 2) {
+            this.currentStatus = 'dot status-open';
+            this.currentStatusDesc = 'OPEN';
+        } else if (status === 'COMPLETED' || status === 3) {
+            this.currentStatus = 'dot status-completed';
+            this.currentStatusDesc = 'COMPLETED';
+        } else if (status === 'CLOSED' || status === 4) {
+            this.currentStatus = 'dot status-closed';
+            this.currentStatusDesc = 'CLOSED';
+        }
+    }
+
     async getData(barcodeNum) {
         await this.apis.getAllByBarcode(barcodeNum).toPromise()
         .then(
@@ -147,6 +165,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             this.headerService.setHeaderObj(this.getDataRes.header_obj);
             this.activityService.setActivities(this.getDataRes.activity_collection);
             this.materialService.setMaterials(this.getDataRes.materials_collection);
+
+            const barcodeStatus = this.getDataRes.header_obj.STATUS;
+            this.visibleStatus(barcodeStatus);
         } else {
             await this.apis.getNewBatch().toPromise()
             .then(
