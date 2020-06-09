@@ -50,7 +50,9 @@ export class ActivityService {
         this.headerObj = headerObj;
       }
     );
-    this.startTimer();
+    if (this.headerObj.STATUS === 1) {
+      this.startTimer();
+    }
     this.getDowntimeTypes();
   }
 
