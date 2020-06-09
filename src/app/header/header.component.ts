@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     prodHover = 0;
     activities: Array<Activity>;
     getDataRes: any = {};
-    userType = 2;
+    userType = 1;
 
     get dummyDesc() {
         return 'this is a very long description veryyyyyyyyyyyyyyyyyy long';
@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         // 4 : closed
         // tslint:disable-next-line: no-inferrable-types
         if (this.userType === 1) {
-          if (this.headerObj.STATUS > 1) {
+          if (this.headerObj.STATUS !== 1) {
             return 'none';
           }
           return 'endprod';
@@ -104,7 +104,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
       }
 
     get showSaveButton() {
-        return this.headerObj.STATUS <= this.userType;
+        return (this.headerObj.STATUS <= this.userType) || this.userType === 3;
     }
 
     apiResponse: any;
@@ -225,7 +225,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.getData('SO35-091319-785915');
     }
 
-    header() {
+    async header() {
         // tslint:disable-next-line: variable-name
         const activity_collection = [];
         this.actCollection.forEach(el => {
@@ -237,8 +237,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             activity_collection
         };
 
-        this.apis.header(json)
-            .subscribe(
+        await this.apis.header(json).toPromise()
+            .then(
                 res => {
                     console.log(res);
                 },
