@@ -138,16 +138,16 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     visibleStatus(status) {
-        if (status === 'WIP') {
+        if (status === 'WIP' || status === 1) {
             this.currentStatus = 'dot status-wip';
             this.currentStatusDesc = 'WIP';
-        } else if (status === 'OPEN') {
+        } else if (status === 'OPEN' || status === 2) {
             this.currentStatus = 'dot status-open';
             this.currentStatusDesc = 'OPEN';
-        } else if (status === 'COMPLETED') {
+        } else if (status === 'COMPLETED' || status === 3) {
             this.currentStatus = 'dot status-completed';
             this.currentStatusDesc = 'COMPLETED';
-        } else if (status === 'CLOSED') {
+        } else if (status === 'CLOSED' || status === 4) {
             this.currentStatus = 'dot status-closed';
             this.currentStatusDesc = 'CLOSED';
         }
