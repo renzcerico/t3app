@@ -158,6 +158,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 }
             );
         }
+        // console.log(this.headerObj);
     }
 
     handleBarcodeChange() {
@@ -165,7 +166,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     header() {
-        alert('inn');
         // tslint:disable-next-line: variable-name
         const activity_collection = [];
         this.actCollection.forEach(el => {
@@ -186,8 +186,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     console.log(err);
                 }
                 );
-        console.log(json);
-        return json;
+        this.getData(json.header_obj.BARCODE);
     }
 
     handleProdMouseOver() {
@@ -195,6 +194,29 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             if (this.headerObj.PRODUCT_DESCRIPTION.length >= 60 ) {
                 this.prodHover = 1;
             }
+        }
+    }
+
+    endProduction() {
+        if (confirm('Confirm end production?')) {
+            // user types
+            // 1 : manpower
+            // 2 : supervisor
+            // 3 : manager
+
+            // status
+            // 1 : wip
+            // 2 : open
+            // 3 : completed
+            // 4 : closed
+            const date = new Date();
+            const userType = 1;
+            if (userType === 1) {
+                this.headerObj.IS_CHANGED = 1;
+                this.headerObj.STATUS = 2;
+                this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+            }
+            this.header();
         }
     }
 }

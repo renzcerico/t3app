@@ -152,7 +152,7 @@ export class ActivityComponent {
   openModal(event, index) {
     const modalRef = this.modalService.open(ActivityDetailsComponent,
       {
-        size: 'lg',
+        size: 'lg'
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.in_activity = this.activities[index];

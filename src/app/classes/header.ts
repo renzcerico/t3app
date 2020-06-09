@@ -6,7 +6,7 @@ export default class Header {
     BARCODE: string;
     ACTUAL_START: string;
     ACTUAL_END: string;
-    STATUS: string;
+    STATUS: number;
     PO_NUMBER: string;
     CONTROL_NUMBER: string;
     SHIPPING_DATE: string;
@@ -31,7 +31,7 @@ export default class Header {
         this.BARCODE = jsonObj.BARCODE || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
         this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');
         this.ACTUAL_END = jsonObj.ACTUAL_END || '';
-        this.STATUS = jsonObj.STATUS || 'WIP';
+        this.STATUS = jsonObj.STATUS || 1;
         this.PO_NUMBER = jsonObj.PO_NUMBER || jsonObj.CUST_PO_NUMBER || '';
         this.CONTROL_NUMBER = jsonObj.CONTROL_NUMBER || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
         this.SHIPPING_DATE = jsonObj.SHIPPING_DATE || '';

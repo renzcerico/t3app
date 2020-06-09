@@ -7,8 +7,8 @@
             <span class="content pl-1">{{ headerObj.SCHEDULE_DATE_START | date : 'HHmm' }}-{{ headerObj.SCHEDULE_DATE_END | date : 'HHmm' }}</span>
             <span class="title pl-2">Actual Start: </span>
             <span class="content pl-1">{{ headerObj.ACTUAL_START | date : 'MM/d/yy HH:mm' }}</span>            
-            <span *ngIf="headerObj.STATUS !== 'WIP'" class="title pl-2">Actual End: </span>
-            <span *ngIf="headerObj.STATUS !== 'WIP'" class="content pl-1">{{ headerObj.ACTUAL_END | date : 'MM/d/yy HH:mm' }}</span>            
+            <span *ngIf="headerObj.STATUS !== 1" class="title pl-2">Actual End: </span>
+            <span *ngIf="headerObj.STATUS !== 1" class="content pl-1">{{ headerObj.ACTUAL_END | date : 'MM/d/yy HH:mm' }}</span>            
         </div>
         <div class="form-row">           
             <div class="col-12 col-md-3 mt-1">
