@@ -13,6 +13,15 @@
             </span>
             <i class="text-underline legend-editable">&nbsp; &nbsp; required &nbsp; &nbsp;</i>
         </p>
+
+        <!-- <span class="dot status-closed ml-2"></span> 
+            <span class="small">&nbsp; CLOSED</span>
+        <span class="dot status-completed ml-2"></span> 
+            <span class="small">&nbsp; COMPLETED</span>
+        <span class="dot status-open ml-2"></span> 
+            <span class="small">&nbsp; OPEN</span>
+        <span class="dot status-wip ml-2"></span> 
+            <span class="small">&nbsp; WIP</span> -->
     </div>
 
     <div class="table-responsive">
@@ -75,7 +84,7 @@
                     <td data-label="Date Entered"></td>
                     <td data-label="Date Updated"></td>                                
                 </tr> -->
-                <tr #contentTr *ngFor="let activity of activities; let i = index;" (dblclick)="openModal($event, i, activityDetailsModal)">
+                <tr #contentTr *ngFor="let activity of activities; let i = index;" (dblclick)="openModal($event, i)">
                     <td class="align-middle" data-label="Start">{{ activity.START_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="End">{{ activity.END_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="Packed">

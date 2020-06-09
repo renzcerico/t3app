@@ -14,7 +14,7 @@ import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtim
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
-  styleUrls: ['./activity.component.css', '../material/material.component.css']
+  styleUrls: ['./activity.component.css', '../material/material.component.css', '../app.component.css']
 })
 export class ActivityComponent {
 

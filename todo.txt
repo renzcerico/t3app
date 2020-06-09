@@ -1,6 +1,4 @@
 Activity
- - Status 
-  (gray closed, green complete, blue open, red wip)
  - Actual End
  - Updated By
   (Forwarded By/Date, Reviewed By/Date, Approved By/Date)
@@ -9,5 +7,7 @@ Notification (Wip, Open, Complete)
 
 Modal on Downtime Background Click Alert "Exit without save"
 Date Format - OK (Activity, Material)
-Cursor Pointer
+Status
+ (gray closed, green complete, blue open, red wip) - OK
+Cursor Pointer - OK
 Material - OK
