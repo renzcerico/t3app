@@ -230,12 +230,31 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             // 2 : open
             // 3 : completed
             // 4 : closed
+            const userID = 1;
             const date = new Date();
-            const userType = 1;
+            const userType: number = 2;
             if (userType === 1) {
                 this.headerObj.IS_CHANGED = 1;
                 this.headerObj.STATUS = 2;
                 this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.REVIEWED_BY = userID;
+                this.headerObj.FORWARDED_BY = userID;
+            } else if (userType === 2) {
+                this.headerObj.IS_CHANGED = 1;
+                this.headerObj.STATUS = 3;
+                this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.FORWARDED_BY = userID;
+                this.headerObj.REVIEWED_BY = userID;
+            } else if (userType === 3) {
+                this.headerObj.IS_CHANGED = 1;
+                this.headerObj.STATUS = 3;
+                this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.FORWARDED_BY = userID;
+                this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.REVIEWED_BY = userID;
+                this.headerObj.APPROVED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                this.headerObj.APPROVED_BY = userID;
             }
             this.header();
         }
