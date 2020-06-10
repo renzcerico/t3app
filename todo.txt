@@ -1,11 +1,10 @@
 Activity
- - Actual End
- - Updated By
-  (Forwarded By/Date, Reviewed By/Date, Approved By/Date)
-Manpower - Name, Position, User Level
-Notification (Wip, Open, Complete)
+ - Actual End OK
+  (Forwarded By/Date, Reviewed By/Date, Approved By/Date)   OK
+Manpower - Name, Gender, Position, User Level - OK
+Notification (Wip, Open, Complete) - OK
 
-Modal on Downtime Background Click Alert "Exit without save"
+Modal on Downtime Background Click Alert "Exit without save" - OK
 Date Format - OK (Activity, Material)
 Status
  (gray closed, green complete, blue open, red wip) - OK

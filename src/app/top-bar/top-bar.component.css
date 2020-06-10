@@ -19,7 +19,7 @@
     color: #28a745 !important;
 }
 
-#form_login input {
+form input {
     border-right: 0;
     border-left: 0;
     border-top: 0;
@@ -28,11 +28,12 @@
     font-size: 15px !important;
 }
 
-#form_login label {
+form label {
     color: #63605e !important;
 }
 
-#form_login input:focus { 
+form input:focus,
+form select:focus { 
     border-bottom: 1px solid #28a745;
 }
 

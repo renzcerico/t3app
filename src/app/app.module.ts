@@ -19,6 +19,9 @@ import { AutosizeModule } from 'ngx-autosize';
 import { ActivityComponent } from './activity/activity.component';
 import { ActivityDetailsComponent } from './activity-details/activity-details.component';
 import { ActivityDowntimeComponent } from './activity-downtime/activity-downtime.component';
+import { AccountsComponent } from './accounts/accounts.component';
+
+import { Routes, RouterModule } from '@angular/router';
 
 @NgModule({
 declarations: [
@@ -30,7 +33,8 @@ ManpowerComponent,
 FooterComponent,
 ActivityComponent,
 ActivityDetailsComponent,
-ActivityDowntimeComponent
+ActivityDowntimeComponent,
+AccountsComponent
 ],
 entryComponents: [
 ActivityDetailsComponent,
@@ -50,7 +54,7 @@ NgbModule,
 providers: [
 ApiService,
 ActivityFactory,
-{ provide: LocationStrategy, useClass: HashLocationStrategy }
+// { provide: LocationStrategy, useClass: HashLocationStrategy }
 ],
 bootstrap: [AppComponent]
 })

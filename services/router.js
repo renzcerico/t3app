@@ -4,6 +4,7 @@ const login = require('../controllers/logins.js');
 const personnel = require('../controllers/personnel.js');
 const header = require('../controllers/header.js');
 const t3 = require('../controllers/t3.js');
+const accounts = require('../controllers/accounts.js');
 
 router.route('/header')
   .post(header.post);
@@ -19,5 +20,8 @@ router.route('/store_all').post(t3.storeAll);
 router.route('/get_all_by_barcode/:barcode').get(t3.getAllByBarcode);
 
 router.route('/get_downtime_types').get(t3.getDowntimeTypes);
+
+router.route('/accounts')
+  .post(accounts.insert);
 
 module.exports = router;

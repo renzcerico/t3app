@@ -1,15 +1,14 @@
-        ID                  : null,
-        BARCODE             : 'test 12345',
-        ACTUAL_START        : '12/FEB/20',
-        ACTUAL_END          : '12/FEB/20',
-        STATUS              : 'test',
-        PO_NUMBER           : '12345',
-        CONTROL_NUMBER      : '54321',
-        SHIPPING_DATE       : '12/FEB/20',
-        ORDER_QUANTITY      : 500,
-        CUSTOMER            : 'renz',
-        CUSTOMER_CODE       : 'martin',
-        CUSTOMER_SPEC       : 'cerico',
-        OLD_CODE            : 'hehez',
-        INTERNAL_CODE       : '12345',
-        PRODUCT_DESCRIPTION : '54321'
+         ###
+        curl 
+        -H "Content-Type: application/json" 
+        -X POST 
+        -d '{ 
+                "first_name": "Test",
+                "middle_name": "", 
+                "last_name": "test", 
+                "gender": "female", 
+                "user_level": "user", 
+                "username": "test2121", 
+                "password": "test"
+           }'
+         http://localhost:3000/api/accounts
