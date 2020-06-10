@@ -18,7 +18,7 @@ export class ActivityDetailsComponent implements OnInit {
 
   // tslint:disable-next-line: variable-name
   in_activity: any = [];
-  mLotNumber: string;
+  mLotNumber = '';
   mPacked = 0;
   selectedActivityIndex: number;
   tempActDetails: Array<any> = [];
@@ -95,11 +95,19 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   handleSave() {
+    if ( this.mLotNumber !== ''
+      || this.mPacked !== 0) {
+        if (confirm('You will lose your unfinished input, proceed?')) {
+          this.mPacked = 0;
+          this.mLotNumber = '';
+        } else {
+          return;
+        }
+      }
     if (this.isChanged === 1) {
       this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
-      console.log('tempActDetails: ', this.tempActDetails);
-      console.log('in_activity.ACTIVITY_DETAILS: ', this.in_activity.ACTIVITY_DETAILS);
     }
+    this.isChanged = 0;
     this.activeModal.dismiss('Cross click');
   }
 

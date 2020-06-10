@@ -1,5 +1,6 @@
 #table_activity thead  th,
 #table_manpower thead  th,
+#modal_table_header thead  th,
 #modal_table thead  th,
 #table_material thead  th {
     text-align: center;
@@ -10,6 +11,7 @@
 }
 
 #table_activity tbody td,
+#modal_table_header tbody td,
 #modal_table tbody td,
 #table_manpower tbody td,
 #table_material tbody td,
@@ -56,6 +58,7 @@
 } 
 
 #table_activity>tbody tr:hover,
+#modal_table_header>tbody tr:hover,
 #table_manpower>tbody tr:hover,
 #table_material>tbody tr:hover {
     background-color: #b6ffb2 !important;

@@ -149,3 +149,38 @@ const getDowntimeTypes = async () => {
 }
 
 module.exports.getDowntimeTypes = getDowntimeTypes;
+
+const getHeaderCountPerStatus = async () => {
+    const q = `BEGIN T3_PACKAGE.GET_HEADER_COUNT_PER_STATUS (:cursor); END;`;
+    let binds = {
+        cursor: {
+            dir: oracle.BIND_OUT,
+            type: oracle.CURSOR
+        }
+    }
+    let res = await database.resultsetExecute(q, binds)
+    .catch(error => { console.log('caugth', error.message)});
+    return res;
+}
+
+module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
+
+const getHeaderByStatus = async (data) => {
+    console.log(data);
+    const header_q = `begin T3_PACKAGE.GET_HEADER_BY_STATUS ( :status_code, :cursor); end;`;
+    let header_binds = {
+        status_code: data,
+    }
+
+    header_binds.cursor = {
+        dir: oracle.BIND_OUT,
+        type: oracle.CURSOR
+    }
+
+    const header_res = await database.resultsetExecute(header_q, header_binds)
+        .catch(error => { console.log('caught', error.message); });
+    let res = {};
+    return header_res;
+}
+
+module.exports.getHeaderByStatus = getHeaderByStatus;

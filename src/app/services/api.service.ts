@@ -57,4 +57,9 @@ export class ApiService {
         const url = 'http://localhost:3001';
         return this.http.get(`${url}` + '/api/t3Batch_info/' + 1);
     }
+
+    getHeaderCountPerStatus(): Observable<any> {
+        return this.http.get(`${this.url}` + '/api/get_header_count_per_status');
+    }
+
 }
