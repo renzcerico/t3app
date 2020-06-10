@@ -10,17 +10,12 @@ const routes: Routes = [
     component: HeaderComponent
 },
 {
-<<<<<<< HEAD
     path: 'accounts',
     component: AccountsComponent
 },
 {
 path: '**',
 component: HeaderComponent
-=======
-    path: 'activity',
-    component: ActivityComponent
->>>>>>> 2e277c0cff6fe5e643052abf70dcbbe7a736094e
 },
 // {
 //     path: '**',
