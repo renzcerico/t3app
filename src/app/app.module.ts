@@ -35,7 +35,7 @@ FooterComponent,
 ActivityComponent,
 ActivityDetailsComponent,
 ActivityDowntimeComponent,
-AccountsComponent
+AccountsComponent,
 HeaderModalComponent
 ],
 entryComponents: [
