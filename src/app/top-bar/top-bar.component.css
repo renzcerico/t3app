@@ -85,3 +85,7 @@ form select:focus {
     font-weight: 500 !important;
     color: #777;
 }
+
+.bold {
+    font-weight: 500;
+}

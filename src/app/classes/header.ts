@@ -26,7 +26,6 @@ export default class Header {
     IS_CHANGED: number;
 
     constructor(jsonObj) {
-        console.log('jsonObj: ', jsonObj);
         this.ID = jsonObj.ID || null;
         this.BARCODE = jsonObj.BARCODE || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
         this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');

@@ -21,9 +21,9 @@ export class ActivityDowntimeComponent implements OnInit {
   downtimeTypes: any = [];
   selectedDowntimeTypeIndex;
   selectedDowntimeType: any = {};
-  mMinutes: number;
-  mRemarks: string;
-  mQuantity: number;
+  mMinutes = 0;
+  mRemarks = '';
+  mQuantity = 0;
   isChanged = 0;
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
@@ -36,7 +36,6 @@ export class ActivityDowntimeComponent implements OnInit {
       Object.assign(actDowntime, el);
       this.tempActDowntime.push(actDowntime);
     });
-    console.log(this.tempActDowntime);
   }
 
   // get selectedDowntimeType() {
@@ -83,11 +82,23 @@ export class ActivityDowntimeComponent implements OnInit {
     this.mMinutes = this.selectedDowntimeType.DEFAULT_MINUTES;
   }
   handleSave() {
+    if ( this.mMinutes !== 0
+      || this.mQuantity !== 0
+      || this.mRemarks !== '') {
+        if (confirm('You will lose your unfinished input, proceed?')) {
+          this.mMinutes = 0;
+          this.mQuantity = 0;
+          this.mRemarks = '';
+        } else {
+          return;
+        }
+      }
     if (this.isChanged === 1) {
       this.activity.IS_CHANGED = 1;
     }
     this.activity.ACTIVITY_DOWNTIME = this.tempActDowntime;
-    this.activeModal.dismiss('Cross click');
+    this.isChanged = 0;
+    this.activeModal.dismiss('Save');
   }
 
   setIsChanged(index: number) {
@@ -114,7 +125,6 @@ export class ActivityDowntimeComponent implements OnInit {
 
   handleSelectChange(event, i) {
     const currValIndex = event.srcElement.attributes.selected_id.value;
-    console.log(currValIndex, i);
     // const active = elArr.findIndex(index => {
     //   return (index.nativeElement.parentElement === event.target.parentElement);
     // });

@@ -17,13 +17,11 @@ export class MaterialComponent implements  AfterViewInit {
     constructor(public apis: ApiService) { }
 
     ngAfterViewInit() {
-        // console.log(this.actTotal);
     }
 
     valueChanged(index) {
         this.materials[index].IS_CHANGED = 1;
-        console.log(this.materials[index]);
-      }
+    }
 
     makeApiCallGET() {
         this.apis.getHeader()

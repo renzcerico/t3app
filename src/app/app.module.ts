@@ -22,6 +22,7 @@ import { ActivityDowntimeComponent } from './activity-downtime/activity-downtime
 import { AccountsComponent } from './accounts/accounts.component';
 
 import { Routes, RouterModule } from '@angular/router';
+import { HeaderModalComponent } from './header-modal/header-modal.component';
 
 @NgModule({
 declarations: [
@@ -35,10 +36,12 @@ ActivityComponent,
 ActivityDetailsComponent,
 ActivityDowntimeComponent,
 AccountsComponent
+HeaderModalComponent
 ],
 entryComponents: [
 ActivityDetailsComponent,
-ActivityDowntimeComponent
+ActivityDowntimeComponent,
+HeaderModalComponent
 ],
 imports: [
 AutosizeModule,

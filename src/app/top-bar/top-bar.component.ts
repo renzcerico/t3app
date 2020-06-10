@@ -1,9 +1,11 @@
+import { HeaderModalComponent } from './../header-modal/header-modal.component';
 // import { HeaderComponent } from './../header/header.component';
-import { Component, OnInit, NgModule, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, NgModule, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { HeaderService } from '../services/header.service';
 
 @Component({
     selector: 'app-top-bar',
@@ -20,7 +22,12 @@ export class TopBarComponent implements OnInit {
     btnLogin = true;
     faUser = faUser;
     username = '';
-
+    headerCount: Array<any> = [
+        {STATUS: 1, COUNT: 0},
+        {STATUS: 2, COUNT: 0},
+        {STATUS: 3, COUNT: 0},
+        {STATUS: 4, COUNT: 0}
+    ];
     loginForm = new FormGroup({
         username: new FormControl(''),
         password: new FormControl('')
@@ -28,9 +35,16 @@ export class TopBarComponent implements OnInit {
 
     apiResponse: any;
 
-    constructor(private modalService: NgbModal, public apis: ApiService) {}
+    constructor(private modalService: NgbModal, public apis: ApiService, private headerService: HeaderService) {
+        headerService.headerCount$.subscribe(
+            headerCount => {
+              this.headerCount = headerCount;
+            }
+          );
+    }
 
     ngOnInit() {
+        console.log('count: ', this.headerCount);
     }
 
     openLoginModal(loginModal: any) {
@@ -70,5 +84,11 @@ export class TopBarComponent implements OnInit {
                 console.log('No response ' + error);
             }
         );
+    }
+
+    openHeaderModal(statusCode: number) {
+        const modalRef = this.modalService.open(HeaderModalComponent);
+        modalRef.componentInstance.status = statusCode;
+        // modalRef.componentInstance.in_activity = this.activities[index];
     }
 }

@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import Activity from '../classes/activity.js';
 import { ApiService } from './api.service';
+import Header from '../classes/header';
 
 @Injectable({
   providedIn: 'root'
@@ -46,13 +47,11 @@ export class ActivityService {
       }
     );
     headerService.header$.subscribe(
-      headerObj => {
-        this.headerObj = headerObj;
+      data => {
+        this.headerObj = new Header(data.header_obj);
       }
     );
-    if (this.headerObj.STATUS === 1) {
-      this.startTimer();
-    }
+    this.startTimer();
     this.getDowntimeTypes();
   }
 
@@ -161,10 +160,6 @@ export class ActivityService {
 
   logTime() {
     const diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
-    console.log('expected: ', this.expectedTime.start.format('MM/DD/YYYY HH:mm'));
-    console.log('actual_end: ', this.actualTime.start.format('MM/DD/YYYY HH:mm'));
-    console.log('exact', this.actualTime.exact.format('MM/DD/YYYY HH:mm'));
-    console.log('diff: ', diff);
   }
 
   setFillers() {
@@ -189,7 +184,9 @@ export class ActivityService {
   startTimer() {
     setInterval(() => {
       if (Object.entries(this.headerObj).length > 0) {
-        this.setFillers();
+        if (this.headerObj.STATUS === 1) {
+          this.setFillers();
+        }
       }
     }, 1000);
   }

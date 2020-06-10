@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h5 class="modal-title">
+        <span [ngClass]="currentStatus"></span>
+        <span class="content pl-1 text-uppercase">
+            {{ currentStatusDesc }}
+        </span>
+    </h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body container">
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm table-hover text-center" id="modal_table_header">
+            <thead class="text-capitalize">
+                <th class="align-middle" ngbAutofocus >Barcode</th>
+                <th class="align-middle">PO Number</th>
+                <th class="align-middle">Control Number</th>
+                <th class="align-middle">Customer</th>
+                <th class="align-middle">Shipping Date</th>
+            </thead>
+            <tbody *ngIf="headerList?.length > 0; else elseBlock">
+                <tr *ngFor="let header of headerList; let i = index" (click)="openHeader(header.BARCODE)">
+                    <td class="align-middle">{{header.BARCODE}}</td>
+                    <td class="align-middle">{{header.PO_NUMBER}}</td>
+                    <td class="align-middle">{{header.CONTROL_NUMBER}}</td>
+                    <td class="align-middle">{{header.CUSTOMER}}</td>
+                    <td class="align-middle">{{header.SHIPPING_DATE}}</td>
+                </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                    <tr>
+                        <td colspan="5">Nothing is <span class="text-lowercase">{{currentStatusDesc}}</span></td>
+                    </tr>
+                </tbody>
+            </ng-template>
+        </table>
+    </div>
+</div>

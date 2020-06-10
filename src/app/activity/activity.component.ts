@@ -21,7 +21,6 @@ export class ActivityComponent {
   @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
   @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
   @ViewChildren('headerInput') headerInput !: QueryList<ElementRef>;
-
   // actLotNumber: string;
   // actPackedQty: any;
   // actDowntime: any;
@@ -127,7 +126,6 @@ export class ActivityComponent {
   // }
 
   handleTrKeyUp(event) {
-    // console.log(event);
     const elArr = this.editableTd.toArray();
 
     const active = elArr.findIndex(index => {
@@ -150,9 +148,18 @@ export class ActivityComponent {
   }
 
   openModal(event, index) {
+    // alert(this.activityDetails.isChanged);
     const modalRef = this.modalService.open(ActivityDetailsComponent,
       {
-        size: 'lg'
+        size: 'lg',
+        beforeDismiss: () => {
+          // alert(this.)
+          if (modalRef.componentInstance.isChanged
+            || modalRef.componentInstance.mLotNumber !== ''
+            || modalRef.componentInstance.mPacked !== 0) {
+           return confirm('You will lose your unsaved changes');
+          }
+        }
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.in_activity = this.activities[index];
@@ -162,6 +169,15 @@ export class ActivityComponent {
     const modalRef = this.modalService.open(ActivityDowntimeComponent,
       {
         size: 'lg',
+        beforeDismiss: () => {
+          // alert(this.)
+          if (modalRef.componentInstance.isChanged
+            || modalRef.componentInstance.mMinutes !== 0
+            || modalRef.componentInstance.mQuantity !== 0
+            || modalRef.componentInstance.mRemarks !== '') {
+           return confirm('You will lose your unsaved changes');
+          }
+        }
       });
     modalRef.componentInstance.activity = this.activities[index];
     modalRef.componentInstance.downtimeTypes = this.downtimeTypes;

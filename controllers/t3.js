@@ -53,3 +53,36 @@ const getDowntimeTypes = async (req = {}, res, next = null) => {
 }
 
 module.exports.getDowntimeTypes = getDowntimeTypes;
+
+const getHeaderCountPerStatus = async (req = {}, res, next = null) => {
+    try {
+        const request = await t3.getHeaderCountPerStatus()
+        .catch(error => { console.log('caught', error.message); });
+        res.status(201).json(request);
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
+
+const getHeaderByStatus = async (req = {}, res, next = null) => {
+    try {
+        const request = await t3.getHeaderByStatus(req.params.status_code)
+        .catch(error => { console.log('caught', error.message); });
+        if (Object.entries(request).length > 0) {
+            // console.log(request);
+            request.isExisting = true;
+            res.status(201).json(request);
+        } else {
+            const response = {
+                isExisting: false
+            };
+            res.status(201).json(response);
+        }
+      } catch (err) {
+        next(err);
+      }
+}
+
+module.exports.getHeaderByStatus = getHeaderByStatus;

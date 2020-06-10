@@ -10,6 +10,12 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02"
             [ngClass]="{ 'show': navbarOpen }">
+            <ul class="navbar-nav ml-3">
+                <li class="nav-item"><a href="#" class="nav-link text-success small bold" (click)="openHeaderModal(1)">WIP<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].COUNT">{{headerCount[0].COUNT}}</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-success small bold" (click)="openHeaderModal(2)">OPEN<span class="ml-1 badge badge-danger" *ngIf="headerCount[1].COUNT">{{headerCount[1].COUNT}}</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-success small bold" (click)="openHeaderModal(3)">COMPLETED<span class="ml-1 badge badge-danger" *ngIf="headerCount[2].COUNT">{{headerCount[2].COUNT}}</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-success small bold" (click)="openHeaderModal(4)">CLOSED<span class="ml-1 badge badge-danger" *ngIf="headerCount[3].COUNT">{{headerCount[3].COUNT}}</span></a></li>
+            </ul>
             <ul class="navbar-nav ml-auto mr-3">
                 <li class="nav-item active">
                     <a class="nav-link font-weight-500 small" href="#">DASHBOARD</a>

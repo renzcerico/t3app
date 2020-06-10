@@ -23,5 +23,9 @@ router.route('/get_downtime_types').get(t3.getDowntimeTypes);
 
 router.route('/accounts')
   .post(accounts.insert);
+  
+router.route('/get_header_count_per_status').get(t3.getHeaderCountPerStatus);
+
+router.route('/get_header_by_status/:status_code').get(t3.getHeaderByStatus);
 
 module.exports = router;
