@@ -23,6 +23,7 @@ import { AccountsComponent } from './accounts/accounts.component';
 
 import { Routes, RouterModule } from '@angular/router';
 import { HeaderModalComponent } from './header-modal/header-modal.component';
+import { CounterPipePipe } from './counter-pipe.pipe';
 
 @NgModule({
 declarations: [
@@ -36,7 +37,8 @@ ActivityComponent,
 ActivityDetailsComponent,
 ActivityDowntimeComponent,
 AccountsComponent,
-HeaderModalComponent
+HeaderModalComponent,
+CounterPipePipe
 ],
 entryComponents: [
 ActivityDetailsComponent,
