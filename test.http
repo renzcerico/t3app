@@ -1,14 +1,7 @@
-         ###
-        curl 
-        -H "Content-Type: application/json" 
-        -X POST 
-        -d '{ 
-                "first_name": "Test",
-                "middle_name": "", 
-                "last_name": "test", 
-                "gender": "female", 
-                "user_level": "user", 
-                "username": "test2121", 
-                "password": "test"
-           }'
-         http://localhost:3000/api/accounts
+###
+curl -X GET http://localhost:3000/api/accounts
+
+
+
+###
+curl -H "Content-Type: application/json" -X POST -d '{ "first_name": "Test", "middle_name": "",  "last_name": "test",  "gender": "female",  "user_level": "user",  "username": "test2121",  "password": "test" }' http://localhost:3000/api/accounts

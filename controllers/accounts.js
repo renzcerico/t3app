@@ -28,3 +28,29 @@ const insert = async (req, res, next) => {
 };
 
 module.exports.insert = insert;
+
+const all = async (req, res, next) => {
+    try {
+        const result = await accounts.all();
+
+        res.status(200).json(result);
+    } catch(err) {
+        next(err);
+    }
+};
+
+module.exports.all = all;
+
+const getById = async (req, res, next) => {
+    try {
+        // const id = req.params.id;
+        const id = 1;
+        const result = await accounts.getById(1);
+    
+        res.status(200).json(result);
+    } catch(err) {
+        next(err);
+    }
+};
+
+module.exports.getById = getById;
