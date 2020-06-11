@@ -43,9 +43,9 @@ module.exports.all = all;
 
 const getById = async (req, res, next) => {
     try {
-        // const id = req.params.id;
-        const id = 1;
-        const result = await accounts.getById(1);
+        const id = req.params.id;
+
+        const result = await accounts.getById(id);
     
         res.status(200).json(result);
     } catch(err) {
