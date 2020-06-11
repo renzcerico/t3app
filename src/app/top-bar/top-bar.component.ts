@@ -6,7 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { HeaderService } from '../services/header.service';
-
+import { CounterPipePipe } from '../counter-pipe.pipe';
 @Component({
     selector: 'app-top-bar',
     templateUrl: './top-bar.component.html',
