@@ -23,7 +23,13 @@ router.route('/get_downtime_types').get(t3.getDowntimeTypes);
 
 router.route('/accounts')
   .post(accounts.insert);
-  
+
+router.route('/accounts')
+  .get(accounts.all);
+
+router.route('/accounts/:id')
+  .get(accounts.getById);
+
 router.route('/get_header_count_per_status').get(t3.getHeaderCountPerStatus);
 
 router.route('/get_header_by_status/:status_code').get(t3.getHeaderByStatus);
