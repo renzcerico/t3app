@@ -310,6 +310,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
 
     setData(data) {
         this.headerObj = new Header(data.header_obj);
+        this.visibleStatus(this.headerObj.STATUS);
         this.activityService.setActivities(data.activity_collection);
         this.materialService.setMaterials(data.materials_collection);
         console.log(data);
