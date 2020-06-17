@@ -2,7 +2,7 @@
     <div class="p-5">
         <!-- <a href="javascript:void(0);" (click)="toggle()">Create Account</a> -->
         <button class="btn btn-dark font-weight-500 border-100 pr-5 pl-5" (click)="toggle(true)">Create Account</button>
-
+        
         <div class="table-responsive mt-2">
             <table class="table table-bordered table-sm table-hover text-center" id="tblAccounts">
                 <thead class="text-capitalize">
@@ -30,6 +30,18 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- <div class="d-flex justify-content-between p-2">
+                <ngb-pagination
+                  [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                </ngb-pagination>
+            
+                <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                  <option [ngValue]="5">5 items per page</option>
+                  <option [ngValue]="10">10 items per page</option>
+                  <option [ngValue]="15">15 items per page</option>
+                </select>
+            </div> -->
         </div>
     </div>
 </div>

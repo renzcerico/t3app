@@ -34,10 +34,10 @@ export class LoginComponent implements OnInit {
     .subscribe(
         result => {
             this.apiResponse = result;
-            // console.log(this.apiResponse);
+            console.log(this.apiResponse);
 
-            if (this.apiResponse.length > 0) {
-                this.username = this.apiResponse[0].USERNAME;
+            if (this.apiResponse) {
+                this.username = this.apiResponse.USERNAME;
                 this.userService.setUser(this.apiResponse);
 
                 this.modalService.dismissAll();

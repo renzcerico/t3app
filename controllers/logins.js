@@ -15,13 +15,13 @@ function getLoginFromRec(req) {
       let login = getLoginFromRec(req);
       login = await logins.setlogin(login);
       // console.log(login);
-
+      
       if (login.length > 0) {
           session.user = login;
       }
 
       // if (login.length > 0) {
-        res.status(201).json(login);
+        res.status(201).json(login.shift());
       // } else {
       //   res.status(401).end();
       // }

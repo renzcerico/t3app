@@ -60,7 +60,7 @@ export class TopBarComponent implements OnInit {
                 res => {
                     if (res) {
                         this.userProfile = res;
-                        this.username = res[0].USERNAME;
+                        this.username = res.USERNAME;
                     }
                 },
                 err => {
