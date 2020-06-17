@@ -78,4 +78,12 @@ export class ApiService {
         return this.http.get(`${this.url}` + '/api/get_header_count_per_status');
     }
 
+    isAuth(): Observable<any> {
+        return this.http.get(`${ this.url }` + '/api/auth');
+    }
+
+    logout(): Observable<any> {
+        return this.http.get(`${ this.url }` + '/api/logout');
+    }
+
 }

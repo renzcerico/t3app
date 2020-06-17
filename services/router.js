@@ -37,4 +37,10 @@ router.route('/get_header_by_status/:status_code').get(t3.getHeaderByStatus);
 router.route('/accounts/reset')
   .post(accounts.resetPassword);
 
+router.route('/auth')
+  .get(login.authenticate);
+
+router.route('/logout')
+  .get(login.logout);
+
 module.exports = router;

@@ -58,8 +58,10 @@ export class TopBarComponent implements OnInit {
         this.userService.user
             .subscribe(
                 res => {
-                    this.userProfile = res;
-                    this.username = res[0].USERNAME;
+                    if (res) {
+                        this.userProfile = res;
+                        this.username = res[0].USERNAME;
+                    }
                 },
                 err => {
                     console.log(err);
@@ -113,6 +115,14 @@ export class TopBarComponent implements OnInit {
     }
 
     loggedOut() {
-        this.userService.setUser(false);
+        this.apis.logout()
+            .subscribe(
+                res => {
+                    location.reload();
+                },
+                err => {
+                    console.log(err);
+                }
+            );
     }
 }
