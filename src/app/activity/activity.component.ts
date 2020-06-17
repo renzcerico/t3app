@@ -79,7 +79,6 @@ export class ActivityComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.activities);
   }
   // handleKeyUp(event) {
   //   const elArr = this.headerInput.toArray();

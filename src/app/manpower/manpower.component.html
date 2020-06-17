@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let position of positions; let i = index;">
-                    <td class="align-middle" data-label="Position">{{ position }}</td>
+                    <td class="align-middle" data-label="Position">{{ position.position }}</td>
                     <td class="align-bottom td-editable" data-label="Manpower">
                         <div class="td-indicator-required"></div>
                         <!-- (focus)="manpowerFocus(manpowerID.value)" 
@@ -30,16 +30,16 @@
                             max="10" 
                             name="manpowerID" 
                             #manpowerID 
-                            (change)="handleChange($event)"
-                            [(ngModel)]="manpowers[i].MANPOWER_ID"
-                            [attr.selected_index]="-1"
+                            (change)="handleChange($event, i)"
+                            [(ngModel)]="positions[i].selected"
+                            [attr.selected_index]="positions[i].selected_index"
                             #tdEditable >
                             <option value="-1">Select</option>
                             <!-- FIX DISABLE ON LOAD -->
-                            <option *ngFor="let manpower of accounts; let ii = index"
-                                    [disabled]="manpowers[i].MANPOWER_ID === manpower.ID ? 1 : manpower.disabled"
-                                    value="{{ manpower.ID }}">
-                                    {{ manpower.FIRST_NAME}} {{ manpower.LAST_NAME}}
+                            <option *ngFor="let account of accounts; let ii = index"
+                                    [disabled]="account.DISABLED"
+                                    value="{{ account.ID }}">
+                                    {{ account.FIRST_NAME}} {{ account.LAST_NAME}}
                             </option>
                         </select>
                     </td>
@@ -48,7 +48,8 @@
                         <input type="text" 
                             class="form-control start_time" 
                             name="startTime"
-                            #startTime 
+                            #startTime
+                            (ngModelChange)="handleInput(i)"
                             [(ngModel)]="manpowers[i].START_TIME"
                             (focus)="$event.target.select();"
                             (keydown)="limit(startTime.value, $event.key)"
@@ -63,6 +64,7 @@
                                 class="form-control end_time"
                                 name="endTime" 
                                 #endTime 
+                                (ngModelChange)="handleInput(i)"
                                 [(ngModel)]="manpowers[i].END_TIME"
                                 (focus)="$event.target.select();"
                                 (keydown)="limit(endTime.value, $event.key)"
@@ -74,11 +76,12 @@
                     <td class="align-bottom td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea class="form-control remarks" 
-                                  (keyup.enter)="time('', $event)"
-                                  (keydown.enter)="preventEnter($event)" 
-                                  autosize rows="1" 
-                                  [(ngModel)]="manpowers[i].REMARKS"
-                                  #tdEditable></textarea>
+                            (keyup.enter)="time('', $event)"
+                            (keydown.enter)="preventEnter($event)" 
+                            autosize rows="1" 
+                            (ngModelChange)="handleInput(i)"
+                            [(ngModel)]="manpowers[i].REMARKS"
+                            #tdEditable></textarea>
                     </td>
                     <td class="align-middle" data-label="Updated By">{{manpowers[i].LAST_UPDATED_BY}}</td>
                     <td class="align-middle" data-label="Date Entered">{{manpowers[i].DATE_ENTERED}}</td>
