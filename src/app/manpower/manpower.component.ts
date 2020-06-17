@@ -55,4 +55,33 @@ export class ManpowerComponent implements OnInit {
     console.log(this.manpowers[newValIndex]);
   }
 
+  limit(val, key) {
+    const pattern = /^['0-9']$/i;
+    const count = val.toString().length;
+
+    if (pattern.test(key)) {
+      if (count === 4) {
+        return false;
+      }
+    }
+  }
+
+  time(value: string, event) {
+    const editable = this.tdEditable.toArray();
+
+    const active = editable.findIndex(index => {
+      return (index.nativeElement.parentElement === event.target.parentElement);
+    });
+
+    if (active < editable.length - 1) {
+        editable[active + 1].nativeElement.focus();
+    } else {
+      event.target.blur();
+    }
+  }
+
+  preventEnter(e) {
+    e.preventDefault();
+  }
+
 }
