@@ -3,7 +3,8 @@ import {
   ElementRef,
   QueryList,
   ViewChildren,
-  Input
+  Input,
+  OnInit
 } from '@angular/core';
 import * as moment from 'moment';
 import {ActivityService} from '../services/activity.service';
@@ -16,7 +17,7 @@ import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtim
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css', '../material/material.component.css', '../app.component.css']
 })
-export class ActivityComponent {
+export class ActivityComponent implements OnInit {
 
   @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
   @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
@@ -77,6 +78,9 @@ export class ActivityComponent {
     );
   }
 
+  ngOnInit() {
+    console.log(this.activities);
+  }
   // handleKeyUp(event) {
   //   const elArr = this.headerInput.toArray();
 

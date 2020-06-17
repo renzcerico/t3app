@@ -1,4 +1,4 @@
-<div class="container-fluid mt-4" id="container_manpower">
+<div class="container-fluid mt-4" id="container_manpower" *ngIf="manpowers.length > 0">
     <div class="table-responsive">
         <h6 class="text-center text-muted text-uppercase">Manpower</h6>
         <table class="table table-bordered table-sm table-hover text-center" id="table_manpower">
@@ -19,45 +19,51 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let position of positions">
+                <tr *ngFor="let position of positions; let i = index;">
                     <td class="align-middle" data-label="Position">{{ position }}</td>
                     <td class="align-bottom td-editable" data-label="Manpower">
                         <div class="td-indicator-required"></div>
+                        <!-- (focus)="manpowerFocus(manpowerID.value)" 
+                        (change)="manpower($event)" -->
                         <select 
                             class="form-control manpower_list" 
                             max="10" 
                             name="manpowerID" 
                             #manpowerID 
-                            (focus)="manpowerFocus(manpowerID.value)" 
-                            (change)="manpower($event)"
+                            (change)="handleChange($event)"
+                            [(ngModel)]="manpowers[i].MANPOWER_ID"
+                            [attr.selected_index]="-1"
                             #tdEditable >
-                            <option></option>
-                            <option *ngFor="let manpower of manpowers" 
-                                    [disabled]="manpower.disabled"
-                                    value="{{ manpower.PERSON_ID }}">
-                                    {{ manpower.FULLNAME }}
+                            <option value="-1">select</option>
+                            <!-- FIX DISABLE ON LOAD -->
+                            <option *ngFor="let manpower of accounts; let ii = index"
+                                    [disabled]="manpowers[i].MANPOWER_ID === manpower.ID ? 1 : manpower.disabled"
+                                    value="{{ manpower.ID }}">
+                                    {{ manpower.FIRST_NAME}} {{ manpower.LAST_NAME}}
                             </option>
                         </select>
                     </td>
                     <td class="align-bottom td-editable" data-label="Start">
                         <div class="td-indicator"></div>
-                        <input type="number" 
-                               class="form-control start_time" 
-                               name="startTime"
-                               #startTime 
-                               (focus)="$event.target.select();"
-                               (keydown)="limit(startTime.value, $event.key)"
-                               (keyup.enter)="time(startTime.value, $event)"
-                               (keydown.enter)="preventEnter($event)"
-                               placeholder="HHmm"
-                               #tdEditable />
+                        <input type="text" 
+                            class="form-control start_time" 
+                            name="startTime"
+                            #startTime 
+                            [(ngModel)]="manpowers[i].START_TIME"
+                            (focus)="$event.target.select();"
+                            (keydown)="limit(startTime.value, $event.key)"
+                            (keyup.enter)="time(startTime.value, $event)"
+                            (keydown.enter)="preventEnter($event)"
+                            placeholder="HHmm"
+                            #tdEditable />
                     </td>
                     <td class="align-bottom td-editable" data-label="End">
                         <div class="td-indicator"></div>
-                        <input type="tel" 
+                        <input type="text" 
                                 class="form-control end_time"
                                 name="endTime" 
                                 #endTime 
+                                [(ngModel)]="manpowers[i].END_TIME"
                                 (focus)="$event.target.select();"
                                 (keydown)="limit(endTime.value, $event.key)"
                                 (keyup.enter)="time(endTime.value, $event)"
@@ -71,11 +77,12 @@
                                   (keyup.enter)="time('', $event)"
                                   (keydown.enter)="preventEnter($event)" 
                                   autosize rows="1" 
+                                  [(ngModel)]="manpowers[i].REMARKS"
                                   #tdEditable></textarea>
                     </td>
-                    <td class="align-middle" data-label="Updated By"></td>
-                    <td class="align-middle" data-label="Date Entered"></td>
-                    <td class="align-middle" data-label="Date Updated"></td>
+                    <td class="align-middle" data-label="Updated By">{{manpowers[i].LAST_UPDATED_BY}}</td>
+                    <td class="align-middle" data-label="Date Entered">{{manpowers[i].DATE_ENTERED}}</td>
+                    <td class="align-middle" data-label="Date Updated">{{manpowers[i].DATE_UPDATED}}</td>
                 </tr>
             </tbody>
         </table>

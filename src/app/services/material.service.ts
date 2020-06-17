@@ -3,7 +3,6 @@ import { Observable, throwError } from 'rxjs';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import Material from '../classes/material.js';
-import { HeaderService } from './header.service.js';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class MaterialService {
   private materialsSource = new Subject<Array<Material>>();
   materials$ = this.materialsSource.asObservable();
   materials: Array<Material>;
-  constructor(private headerService: HeaderService) {
+  constructor() {
     this.materials$.subscribe(
       materials => {
         this.materials = materials;

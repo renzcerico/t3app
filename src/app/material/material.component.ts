@@ -7,7 +7,7 @@ import { ApiService } from '../services/api.service';
     styleUrls: ['./material.component.css']
 })
 
-export class MaterialComponent implements  AfterViewInit {
+export class MaterialComponent implements OnInit {
     @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
     @Input() actTotal: number;
     @Input() materials = [];
@@ -16,7 +16,7 @@ export class MaterialComponent implements  AfterViewInit {
     apiResponse: any;
     constructor(public apis: ApiService) { }
 
-    ngAfterViewInit() {
+    ngOnInit() {
     }
 
     valueChanged(index) {

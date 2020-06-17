@@ -1,5 +1,5 @@
 import { FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class AccountsComponent implements OnInit {
   formCreateAccount;
   msg = '';
   displayAccounts;
-
+  @ViewChild('firstName', {static: false}) firstName: ElementRef;
   constructor(private formBuilder: FormBuilder, private api: ApiService) {
   }
 
@@ -68,6 +68,9 @@ export class AccountsComponent implements OnInit {
 
   toggle() {
     this.displayAccounts = !this.displayAccounts;
+    setTimeout(() => {
+      (this.firstName  ? this.firstName.nativeElement.focus() : console.log('hidden'));
+    }, 100);
   }
 
 }

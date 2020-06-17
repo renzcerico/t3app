@@ -1,3 +1,4 @@
+import { ManpowerService } from './../services/manpower.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewInit} from '@angular/core';
 import { ApiService } from '../services/api.service';
@@ -47,6 +48,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     headerObj: any = {};
     actCollection = [];
     matCollection = [];
+    manPowercollection = [];
     @ViewChild(ActivityComponent, {static: true}) actComponent;
     @ViewChild(MaterialComponent, {static: true}) matComponent;
     actTotal = 0;
@@ -112,6 +114,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         public apis: ApiService,
         private activityService: ActivityService,
         private materialService: MaterialService,
+        private manpowerService: ManpowerService,
         private headerService: HeaderService) {
         activityService.activities$.subscribe(
             activities => {
@@ -121,6 +124,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         materialService.materials$.subscribe(
             materials => {
                 this.matCollection = materials;
+            }
+        );
+        manpowerService.manpower$.subscribe(
+            manpower => {
+                this.manPowercollection = manpower;
             }
         );
         headerService.header$.subscribe(
@@ -313,6 +321,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.visibleStatus(this.headerObj.STATUS);
         this.activityService.setActivities(data.activity_collection);
         this.materialService.setMaterials(data.materials_collection);
-        console.log(data);
+        this.manpowerService.setManpower(data.manpower_collection);
     }
 }

@@ -54,7 +54,7 @@ export class ApiService {
     }
 
     getAllAccounts(): Observable<any> {
-        return this.http.get(`${ this.url }` + '/accounts');
+        return this.http.get(`${ this.url }` + '/api/accounts');
     }
 
     getDowntimeTypes(): Observable<any> {

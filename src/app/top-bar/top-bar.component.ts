@@ -44,7 +44,6 @@ export class TopBarComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('count: ', this.headerCount);
     }
 
     openLoginModal(loginModal: any) {
