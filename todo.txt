@@ -5,7 +5,7 @@ Manpower - Name, Gender, Position, User Level - OK
 	Table(Pagination, Search, Subscribe)
 Notification (Wip, Open, Complete) - OK
 Login - OK
-Session
+Session - OK
 
 Modal on Downtime Background Click Alert "Exit without save" - OK
 Date Format - OK (Activity, Material)
