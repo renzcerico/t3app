@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
             if (this.apiResponse) {
                 this.username = this.apiResponse.USERNAME;
                 this.userService.setUser(this.apiResponse);
+                console.log('renz')
 
                 this.modalService.dismissAll();
                 setTimeout(() => {
