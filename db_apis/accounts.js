@@ -66,3 +66,27 @@ const getById = async (id) => {
 };
 
 module.exports.getById = getById;
+
+const sqlResetPassword = `BEGIN T3_PACKAGE.RESET_PASSWORD(:id, :output); END;`;
+
+const resetPassword = async (id) => {
+    const binds = {
+        id: {
+            dir: oracledb.BIND_IN,
+            type: oracledb.NUMBER,
+            val: parseInt(id)
+        },
+        output: {
+            dir: oracledb.BIND_OUT,
+            type: oracledb.VARCHAR
+        }
+    };
+
+    console.log(binds);
+
+    const result = await database.simpleExecute(sqlResetPassword, binds);
+
+    return result;
+};
+
+module.exports.resetPassword = resetPassword;

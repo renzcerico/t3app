@@ -2,7 +2,9 @@ Activity
  - Actual End OK
   (Forwarded By/Date, Reviewed By/Date, Approved By/Date)   OK
 Manpower - Name, Gender, Position, User Level - OK
+	Table(Pagination, Search, Subscribe)
 Notification (Wip, Open, Complete) - OK
+Login
 
 Modal on Downtime Background Click Alert "Exit without save" - OK
 Date Format - OK (Activity, Material)

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Observer } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
 
 @Injectable({
@@ -53,8 +53,16 @@ export class ApiService {
         return this.http.post(`${ this.url }` + '/api/accounts', data);
     }
 
+    resetPassword(id): Observable<any> {
+        return this.http.post(`${ this.url }` + '/api/accounts/reset', id);
+    }
+
     getAllAccounts(): Observable<any> {
         return this.http.get(`${ this.url }` + '/api/accounts');
+    }
+
+    getAccountById(id): Observable<any> {
+        return this.http.get(`${ this.url }` + '/api/accounts/' + id);
     }
 
     getDowntimeTypes(): Observable<any> {

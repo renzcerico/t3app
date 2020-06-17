@@ -1,14 +1,46 @@
-<div class="container-fluid" *ngIf="displayAccounts">
-    <a href="javascript:void(0);" (click)="toggle()">Create Account</a>
+<div class="container-fluid" *ngIf="!toggleAccount">
+    <div class="p-5">
+        <!-- <a href="javascript:void(0);" (click)="toggle()">Create Account</a> -->
+        <button class="btn btn-dark font-weight-500 border-100 pr-5 pl-5" (click)="toggle(true)">Create Account</button>
+
+        <div class="table-responsive mt-2">
+            <table class="table table-bordered table-sm table-hover text-center" id="tblAccounts">
+                <thead class="text-capitalize">
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Gender</th>
+                        <th>User Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let acct of accounts" (dblclick)="editAccount(acct.ID)">
+                        <td data-label="Name">
+                            <fa-icon [icon]="faEdit" 
+                                    class="float-left d-sm-none d-md-block ml-3" 
+                                    (click)="editAccount(acct.ID)"></fa-icon>
+                            {{ acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase }}
+                        </td>
+                        <td data-label="Username">{{ acct.USERNAME | lowercase }}</td>
+                        <td data-label="Gender">{{ acct.GENDER | titlecase }}</td>
+                        <td data-label="User Level">{{ acct.USER_LEVEL | titlecase }}</td>
+                    </tr>
+                    <tr *ngIf="accounts.length === 0">
+                        <td colspan="4">No records found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div class="container-fluid py-3" *ngIf="!displayAccounts">
+<div class="container-fluid py-3" *ngIf="toggleAccount">
     <div class="row">
         <div class="col-sm-12 col-md-4"></div>
         <div class="col-sm-12 col-md-4 card p-5 card-shadow">
             <div>
-                <h5 class="text-muted m-0 float-left">Create Account</h5>
-                <h5 class="close m-0" (click)="toggle()">&times;</h5>
+                <h5 class="text-muted m-0 float-left">{{ formTitle }}</h5>
+                <h5 class="close m-0" (click)="toggle(false)">&times;</h5>
             </div>
             <hr />
             <form method="POST" id="formCreateAccount" [formGroup]="formCreateAccount">
@@ -58,7 +90,7 @@
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-                <div>
+                <div class="mb-3">
                     <div class="custom-control custom-radio d-inline-block">
                         <input type="radio" 
                                name="gender" 
@@ -82,10 +114,11 @@
                     </div>
                 </div>
         
-                <button class="btn btn-success border-100 w-100 font-weight-bold mt-4" 
+                <a href="javascript:void(0);" *ngIf="acctID > 0" (click)="resetPassword()">Click to reset the password to "welcome"</a>
+                <button class="btn btn-success border-100 w-100 font-weight-bold mt-4 text-uppercase" 
                         id="btnCreate"
                         (click)="createAccount(formCreateAccount.value)">
-                        CREATE
+                        {{ formButtonTxt }}
                 </button>
             </form>
 

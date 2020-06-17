@@ -3,7 +3,7 @@ const accounts = require('../db_apis/accounts');
 const insert = async (req, res, next) => {
     try {
         const data = {
-            ID: null,
+            ID: req.body.id || null,
             FIRST_NAME: req.body.firstName,
             MIDDLE_NAME: req.body.middleName,
             LAST_NAME: req.body.lastName,
@@ -54,3 +54,17 @@ const getById = async (req, res, next) => {
 };
 
 module.exports.getById = getById;
+
+const resetPassword = async (req, res, next) => {
+    try {
+        const id = req.body.id || null;
+        
+        const result = await accounts.resetPassword(id);
+
+        res.status(200).json(result.outBinds.output);
+    } catch(err) {
+        next(err);
+    }
+};
+
+module.exports.resetPassword = resetPassword;

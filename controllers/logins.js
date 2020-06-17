@@ -11,20 +11,15 @@ function getLoginFromRec(req) {
 
   async function post(req, res, next) {
     try {
-      // let employee = getEmployeeFromRec(req);
       let login = getLoginFromRec(req);
-      console.log(login);
       login = await logins.setlogin(login);
-   
-      if (login.bv === 'Y') {
-        login = await logins.validLogin(login);
-        delete login['user'];
-        delete login['pass'];
-        console.log(login);
-      }
+      console.log(login);
 
-      res.status(201).json(login);
-
+      // if (login.length > 0) {
+        res.status(201).json(login);
+      // } else {
+      //   res.status(401).end();
+      // }
     } catch (err) {
       next(err);
     }

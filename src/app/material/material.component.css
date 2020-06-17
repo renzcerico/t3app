@@ -2,7 +2,8 @@
 #table_manpower thead  th,
 #modal_table_header thead  th,
 #modal_table thead  th,
-#table_material thead  th {
+#table_material thead  th,
+#tblAccounts thead th {
     text-align: center;
     background-color: #28a745;
     color: white;
@@ -17,6 +18,7 @@
 #table_material tbody td,
 #table_material tbody input,
 #table_material tbody textarea,
+#tblAccounts thead td
 .editable-content {
     font-weight: 400 !important;
     font-size: 13px !important;

@@ -2,6 +2,10 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+fa-icon {
+  cursor: pointer;
+}
+
 label {
     font-size: 14px !important;
 }
@@ -72,4 +76,11 @@ form select {
   @keyframes fadeout {
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
+  }
+
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    button {
+      width: 100%;
+    }
   }

@@ -9,7 +9,7 @@ const accounts = require('../controllers/accounts.js');
 router.route('/header')
   .post(header.post);
 
-router.route('/login/:id?')
+router.route('/login')
   .post(login.post);
 
 router.route('/personnel/:search?')
@@ -33,5 +33,8 @@ router.route('/accounts/:id')
 router.route('/get_header_count_per_status').get(t3.getHeaderCountPerStatus);
 
 router.route('/get_header_by_status/:status_code').get(t3.getHeaderByStatus);
+
+router.route('/accounts/reset')
+  .post(accounts.resetPassword);
 
 module.exports = router;

@@ -7,6 +7,8 @@ import { ApiService } from '../services/api.service';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { HeaderService } from '../services/header.service';
 import { CounterPipePipe } from '../counter-pipe.pipe';
+import { LoginComponent } from '../modals/login/login.component';
+
 @Component({
     selector: 'app-top-bar',
     templateUrl: './top-bar.component.html',
@@ -28,14 +30,16 @@ export class TopBarComponent implements OnInit {
         {STATUS: 3, COUNT: 0},
         {STATUS: 4, COUNT: 0}
     ];
-    loginForm = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl('')
-    });
+    // loginForm = new FormGroup({
+    //     username: new FormControl(''),
+    //     password: new FormControl('')
+    // });
 
     apiResponse: any;
 
-    constructor(private modalService: NgbModal, public apis: ApiService, private headerService: HeaderService) {
+    constructor(private modalService: NgbModal,
+        public apis: ApiService,
+        private headerService: HeaderService) {
         headerService.headerCount$.subscribe(
             headerCount => {
               this.headerCount = headerCount;
@@ -46,44 +50,44 @@ export class TopBarComponent implements OnInit {
     ngOnInit() {
     }
 
-    openLoginModal(loginModal: any) {
-        this.modalService.open(loginModal);
+    openLoginModal() {
+        this.modalService.open(LoginComponent);
     }
 
     toggleNavbar() {
         this.navbarOpen = !this.navbarOpen;
     }
 
-    login() {
-        const loginForm = this.loginForm;
-        const barcode = document.getElementById('barcode');
+    // login() {
+    //     const loginForm = this.loginForm;
+    //     const barcode = document.getElementById('barcode');
 
-        this.apis.loginAPI(loginForm.value)
-        .subscribe(
-            result => {
-                this.apiResponse = result;
+    //     this.apis.loginAPI(loginForm.value)
+    //     .subscribe(
+    //         result => {
+    //             this.apiResponse = result;
 
-                if (result.bv !== 'N') {
-                    result = result.bv.toString();
-                    result = result.split('|');
-                    this.btnLogin = false;
-                    this.username = result[1];
-                    this.userProfile = true;
-                    this.modalService.dismissAll();
-                    barcode.focus();
-                } else {
-                    this.loginHidden = false;
-                    setTimeout(() => {
-                        this.loginHidden = true;
-                    }, 3000);
-                }
-            },
-            error => {
-                this.apiResponse = error;
-                console.log('No response ' + error);
-            }
-        );
-    }
+    //             if (result.bv !== 'N') {
+    //                 result = result.bv.toString();
+    //                 result = result.split('|');
+    //                 this.btnLogin = false;
+    //                 this.username = result[1];
+    //                 this.userProfile = true;
+    //                 this.modalService.dismissAll();
+    //                 barcode.focus();
+    //             } else {
+    //                 this.loginHidden = false;
+    //                 setTimeout(() => {
+    //                     this.loginHidden = true;
+    //                 }, 3000);
+    //             }
+    //         },
+    //         error => {
+    //             this.apiResponse = error;
+    //             console.log('No response ' + error);
+    //         }
+    //     );
+    // }
 
     openHeaderModal(statusCode: number) {
         const modalRef = this.modalService.open(HeaderModalComponent);

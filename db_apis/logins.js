@@ -2,43 +2,20 @@ const oracledb = require('oracledb');
 const database = require('../services/database.js');
  
 const loginSql =
- `begin my_pkg.validate_user(:user, :pass, :bv); end;`;
+ `begin T3_PACKAGE.validate_user(:user, :pass, :cursor); end;`;
 
 async function setlogin(log) {
 
   const login = Object.assign({}, log);
 
-  login.bv = {
+  login.cursor = {
     dir: oracledb.BIND_OUT,
-    type: oracledb.CHAR
+    type: oracledb.CURSOR
   }
 
-  const result = await database.simpleExecute(loginSql, login);
-
-  login.bv = result.outBinds.bv[0];
+  const result = await database.resultsetExecute(loginSql, login);
   
-  return login;
+  return result;
 }
 
 module.exports.setlogin = setlogin;
-
-const loginSql2 =
- `begin my_pkg.erp_users(:user, :pass, 'attribute8', :bv); end;`;
-
-async function validLogin(log) {
-
-  const login = Object.assign({}, log);
-
-  login.bv = {
-    dir: oracledb.BIND_OUT,
-    type: oracledb.VARCHAR
-  }
-
-  const result = await database.simpleExecute(loginSql2, login);
-
-  login.bv = result.outBinds.bv;
-  
-  return login;
-}
-
-module.exports.validLogin = validLogin;

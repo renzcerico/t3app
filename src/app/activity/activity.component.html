@@ -113,8 +113,13 @@
                         <div class="td-indicator"></div>
                     </td>
                     <td class="align-middle" data-label="Updated By">{{ activity.LAST_UPDATED_BY }}</td>
-                    <td class="align-middle" data-label="Date Entered">{{ activity.DATE_ENTERED | date : 'MMM d, y HH:mm' }}</td>
-                    <td class="align-middle" data-label="Date Updated">{{ activity.DATE_UPDATED | date : 'MMM d, y HH:mm' }}</td>                    
+                    <td class="align-middle" data-label="Date Entered">
+                        {{ activity.DATE_ENTERED | date : 'MMM d, y HH:mm' }}
+                        <!-- {{ activity.DATE_ENTERED ? (activity.DATE_ENTERED | date : 'MMM d, y HH:mm') : "" }} -->
+                    </td>
+                    <td class="align-middle" data-label="Date Updated">
+                        {{ activity.DATE_UPDATED !== 'Invalid date' ? (activity.DATE_UPDATED | date : 'MMM d, y HH:mm') : null  }}
+                    </td>                    
                 </tr>
             </tbody>
             <tfoot>
