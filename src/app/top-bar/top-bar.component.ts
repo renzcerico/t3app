@@ -109,7 +109,7 @@ export class TopBarComponent implements OnInit {
     // }
 
     openHeaderModal(statusCode: number) {
-        const modalRef = this.modalService.open(HeaderModalComponent);
+        const modalRef = this.modalService.open(HeaderModalComponent, { size: 'xl' });
         modalRef.componentInstance.status = statusCode;
         // modalRef.componentInstance.in_activity = this.activities[index];
     }
