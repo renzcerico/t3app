@@ -1,4 +1,4 @@
-create or replace PACKAGE BODY "T3_PACKAGE" AS
+create or replace PACKAGE BODY T3_PACKAGE AS
     
     PROCEDURE VALIDATE_USER(user IN VARCHAR2, pass IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
@@ -89,7 +89,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
             END IF;
         END IF;
     END INSERT_ACCOUNTS;
-
+    
     PROCEDURE STORE_ALL ( obj_header IN T3.HEADER_OBJ
                 , activities IN T3.ACTIVITY_COLLECTION
                 , manpower IN T3.MANPOWER_COLLECTION
@@ -126,7 +126,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
                     , TO_DATE(obj_header.SCHEDULE_DATE_START, 'DD-MON-YYYY HH24:MI:SS')
                     , TO_DATE(obj_header.SCHEDULE_DATE_END, 'DD-MON-YYYY HH24:MI:SS')
                     , obj_header.FORWARDED_BY
-                    , obj_header.REVIEWED_BY
+                    , obj_header.REVIEWED_BY                    
                     , obj_header.APPROVED_BY
                     , obj_header.REVIEWED_AT
                     , obj_header.APPROVED_AT
@@ -134,8 +134,13 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         else
             if obj_header.IS_CHANGED = 1 then
                 UPDATE tbl_header
-                SET ACTUAL_END  = TO_DATE(obj_header.ACTUAL_END, 'DD-MON-YYYY HH24:MI:SS'),
-                    STATUS      = obj_header.STATUS
+                SET ACTUAL_END      = TO_DATE(obj_header.ACTUAL_END, 'DD-MON-YYYY HH24:MI:SS'),
+                    REVIEWED_AT     = TO_DATE(obj_header.REVIEWED_AT, 'DD-MON-YYYY HH24:MI:SS'),
+                    APPROVED_AT     = TO_DATE(obj_header.APPROVED_AT, 'DD-MON-YYYY HH24:MI:SS'),
+                    REVIEWED_BY     = obj_header.REVIEWED_BY,
+                    FORWARDED_BY    = obj_header.FORWARDED_BY,
+                    APPROVED_BY     = obj_header.APPROVED_BY,
+                    STATUS          = obj_header.STATUS
                 WHERE ID = obj_header.ID;
             end if;
             output := obj_header.ID;
@@ -220,22 +225,39 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
             end loop;            
         end loop;
         --        REC_COUNT := SQL%rowcount;
---        for i in 1 .. manpower.count loop
---            OBJ_MANPOWER := manpower (i);
---            INSERT INTO TBL_MANPOWER
---            VALUES (
---            OBJ_MANPOWER.ID
---            ,OBJ_MANPOWER.POSITION_ID
---            ,OBJ_MANPOWER.MANPOWER_ID
---            ,OBJ_MANPOWER.START_TIME
---            ,OBJ_MANPOWER.END_TIME
---            ,OBJ_MANPOWER.REMARKS
---            ,OBJ_MANPOWER.LAST_UPDATED_BY
---            ,OBJ_MANPOWER.DATE_ENTERED
---            ,OBJ_MANPOWER.DATE_UPDATED
---            , output
---        );
---        end loop;    
+        for i in 1 .. manpower.count loop
+            OBJ_MANPOWER := manpower (i);
+            if OBJ_MANPOWER.IS_NEW = 1 then
+                if OBJ_MANPOWER.MANPOWER_ID > 0 then
+                    INSERT INTO TBL_MANPOWER
+                    VALUES (
+                        OBJ_MANPOWER.ID
+                        ,OBJ_MANPOWER.POSITION_ID
+                        ,OBJ_MANPOWER.MANPOWER_ID
+                        ,OBJ_MANPOWER.START_TIME
+                        ,OBJ_MANPOWER.END_TIME
+                        ,OBJ_MANPOWER.REMARKS
+                        ,OBJ_MANPOWER.LAST_UPDATED_BY
+                        ,CURRENT_DATE
+                        ,CURRENT_DATE
+                        , output
+                    );
+                end if;
+            else
+                if OBJ_MANPOWER.IS_CHANGED = 1 then
+                    if OBJ_MANPOWER.MANPOWER_ID > 0 then
+                        UPDATE TBL_MANPOWER
+                        SET POSITION_ID     = OBJ_MANPOWER.POSITION_ID,
+                            MANPOWER_ID     = OBJ_MANPOWER.MANPOWER_ID,
+                            START_TIME      = OBJ_MANPOWER.START_TIME,
+                            END_TIME        = OBJ_MANPOWER.END_TIME,
+                            REMARKS         = OBJ_MANPOWER.REMARKS,
+                            DATE_UPDATED    = CURRENT_DATE
+                        WHERE ID = OBJ_MANPOWER.ID;
+                    end if;
+                end if;
+            end if;
+        end loop;    
 --        
         for i in 1 .. materials.count loop
             OBJ_MATERIAL := materials (i);
@@ -271,7 +293,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
                 end if;
             end if;
         end loop;       
-
+        
     END STORE_ALL;
 
     PROCEDURE GET_ALL_BY_BARCODE (
@@ -312,7 +334,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         INTO obj_header
         FROM TBL_HEADER
         WHERE BARCODE = bar_code;
-
+        
         SELECT T3.ACTIVITY_OBJ (
             ID
             ,HEADER_ID
@@ -329,7 +351,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         BULK COLLECT INTO act_collection
         FROM TBL_ACTIVITY
         WHERE HEADER_ID = obj_header.ID;
-
+        
         SELECT T3.MANPOWER_OBJ (
             ID
             ,POSITION_ID
@@ -341,11 +363,13 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
             ,DATE_ENTERED
             ,DATE_UPDATED
             ,HEADER_ID
+            ,0
+            ,0
         )
         BULK COLLECT INTO manpower_collection
         FROM TBL_MANPOWER
         WHERE HEADER_ID = obj_header.ID;
-
+        
         SELECT T3.MATERIAL_OBJ (
             ID
             ,QUANTITY
@@ -381,7 +405,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         FROM TBL_HEADER h
         WHERE BARCODE = bar_code;
     END GET_HEADER_BY_BARCODE;
-
+    
     PROCEDURE GET_DATA_BY_HEADER_ID (
         headerid IN Number
         , tablename IN String
@@ -392,8 +416,105 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         sort_by := '';
         IF tablename = 'TBL_ACTIVITY' THEN
             sort_by := ' ORDER BY START_TIME DESC, END_TIME DESC';
+        ELSIF tablename = 'TBL_MANPOWER' THEN
+            sort_by := ' ORDER BY POSITION_ID ASC';
         END IF;
-        OPEN res FOR 'SELECT t.*, (0) AS IS_NEW, (0) AS IS_CHANGED FROM ' || tablename || ' t WHERE t.HEADER_ID = ' || headerid || sort_by;
+--        IF tablename = 'TBL_MANPOWER' THEN
+--            OPEN res FOR
+--            SELECT A.*, 0 AS IS_CHANGED, 0 AS IS_NEW
+--            FROM (
+--                    SELECT 
+--                        null AS ID
+--                        , 1 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 2 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 3 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 4 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 5 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 6 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual UNION ALL
+--                    SELECT 
+--                        null AS ID
+--                        , 7 AS POSITION_ID
+--                        , -1 AS MANPOWER_ID
+--                        , '' AS START_TIME
+--                        , '' AS END_TIME
+--                        , '' AS REMARKS
+--                        , null AS LAST_UPDATED_BY
+--                        , '' AS DATE_ENTERED
+--                        , '' AS DATE_UPDATED
+--                        , null AS HEADER_ID
+--                    FROM dual
+--                ) A INNER JOIN (
+--                    SELECT * FROM tbl_manpower WHERE HEADER_ID = headerid
+--                ) M
+--                ON M.POSITION_ID = A.POSITION_ID
+--                ORDER BY A.POSITION_ID;
+--        ELSE
+            OPEN res FOR 'SELECT t.*, (0) AS IS_NEW, (0) AS IS_CHANGED FROM ' || tablename || ' t WHERE t.HEADER_ID = ' || headerid || sort_by;
+--        END IF;
     END GET_DATA_BY_HEADER_ID;
 
     PROCEDURE GET_ACTIVITY_DETAILS(
@@ -406,7 +527,7 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         FROM tbl_activity_details t
         WHERE ACTIVITY_ID = activityid;
     END GET_ACTIVITY_DETAILS;
-
+    
     PROCEDURE GET_ACTIVITY_DOWNTIME(
         activityid IN NUMBER
         , res OUT SYS_REFCURSOR
@@ -430,5 +551,31 @@ create or replace PACKAGE BODY "T3_PACKAGE" AS
         SELECT dt.*
         FROM tbl_downtime_types dt;
     END GET_DOWNTIME_TYPES;
+    
+    PROCEDURE GET_HEADER_COUNT_PER_STATUS ( res OUT SYS_REFCURSOR) AS
+    BEGIN
+        OPEN res FOR
+        SELECT D.STATUS, COUNT(H.STATUS) AS COUNT
+        FROM (
+            SELECT 1 AS STATUS FROM DUAL UNION ALL
+            SELECT 2 AS STATUS FROM DUAL UNION ALL
+            SELECT 3 AS STATUS FROM DUAL UNION ALL
+            SELECT 4 AS STATUS FROM DUAL
+        ) D LEFT JOIN tbl_header H
+        ON H.STATUS = D.STATUS
+        GROUP BY D.STATUS
+        ORDER BY D.STATUS;
+    END GET_HEADER_COUNT_PER_STATUS;
+
+    PROCEDURE GET_HEADER_BY_STATUS(
+        status_code IN NUMBER
+        , header_collection OUT SYS_REFCURSOR
+    ) AS
+    BEGIN
+        OPEN header_collection FOR
+        SELECT *
+        FROM tbl_header
+        WHERE STATUS = status_code; 
+    END GET_HEADER_BY_STATUS;
 
 END T3_PACKAGE;
