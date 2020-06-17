@@ -34,7 +34,7 @@
                             [(ngModel)]="manpowers[i].MANPOWER_ID"
                             [attr.selected_index]="-1"
                             #tdEditable >
-                            <option value="-1">select</option>
+                            <option value="-1">Select</option>
                             <!-- FIX DISABLE ON LOAD -->
                             <option *ngFor="let manpower of accounts; let ii = index"
                                     [disabled]="manpowers[i].MANPOWER_ID === manpower.ID ? 1 : manpower.disabled"
