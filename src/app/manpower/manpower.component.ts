@@ -46,6 +46,7 @@ export class ManpowerComponent implements OnInit {
   manpowerOnFocus = 0;
 
   apiResponse: any;
+
   constructor(public apis: ApiService, private manpowerService: ManpowerService) {
     this.manpowerService.manpower$.subscribe(
       manpower => {
@@ -59,6 +60,7 @@ export class ManpowerComponent implements OnInit {
       }
     );
   }
+
   ngOnInit() {
     this.getAllAccounts();
   }

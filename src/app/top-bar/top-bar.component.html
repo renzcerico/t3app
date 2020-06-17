@@ -48,12 +48,12 @@
                         </button>
                         <div ngbDropdownMenu aria-labelledby="user_profile_dropdown" class="dropdown-menu dropdown-menu-left">
                             <a href="javascript:void(0)" ngbDropdownItem class="text-muted">Change Password</a>
-                            <a href="javascript:void(0)" ngbDropdownItem class="text-muted">Logout</a>
+                            <a href="javascript:void(0)" (click)="loggedOut()" ngbDropdownItem class="text-muted">Logout</a>
                         </div>
                     </div>
                 </div>
                 <button type="button"
-                        *ngIf="btnLogin" 
+                        *ngIf="!userProfile" 
                         class="btn btn-success my-2 my-sm-0 border-100 pl-5 pr-5 font-weight-bold"
                         (click)="openLoginModal()"
                         >
