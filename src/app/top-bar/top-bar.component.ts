@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import { HeaderModalComponent } from './../header-modal/header-modal.component';
 // import { HeaderComponent } from './../header/header.component';
 import { Component, OnInit, AfterContentChecked, NgModule, ViewChild, ElementRef, Renderer } from '@angular/core';
@@ -39,15 +40,31 @@ export class TopBarComponent implements OnInit {
 
     constructor(private modalService: NgbModal,
         public apis: ApiService,
-        private headerService: HeaderService) {
+        private headerService: HeaderService,
+        public userService: UserService) {
         headerService.headerCount$.subscribe(
             headerCount => {
               this.headerCount = headerCount;
             }
           );
+
+        this.userLoggedIn();
     }
 
     ngOnInit() {
+    }
+
+    userLoggedIn() {
+        this.userService.user
+            .subscribe(
+                res => {
+                    this.userProfile = res;
+                    this.username = res[0].USERNAME;
+                },
+                err => {
+                    console.log(err);
+                }
+            );
     }
 
     openLoginModal() {
@@ -93,5 +110,9 @@ export class TopBarComponent implements OnInit {
         const modalRef = this.modalService.open(HeaderModalComponent);
         modalRef.componentInstance.status = statusCode;
         // modalRef.componentInstance.in_activity = this.activities[index];
+    }
+
+    loggedOut() {
+        this.userService.setUser(false);
     }
 }

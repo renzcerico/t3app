@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  user;
+  user = new Subject<any>();
+  user$ = this.user.asObservable();
 
   constructor() { }
 
   setUser(user) {
-      this.user = user;
+      this.user.next(user);
   }
 
-  getUser(user): Observable<any> {
-    return of(this.user);
+  getUser() {
+    return this.user;
   }
 }

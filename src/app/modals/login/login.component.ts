@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from './../../services/api.service';
 import { Component, OnInit } from '@angular/core';
@@ -17,7 +18,10 @@ export class LoginComponent implements OnInit {
   apiResponse: any;
   loginHidden = true;
 
-  constructor(public apis: ApiService, private modalService: NgbModal, public activeModal: NgbActiveModal) { }
+  constructor(public apis: ApiService,
+             private modalService: NgbModal,
+             public activeModal: NgbActiveModal,
+             public userService: UserService) { }
 
   ngOnInit() {
   }
@@ -30,10 +34,11 @@ export class LoginComponent implements OnInit {
     .subscribe(
         result => {
             this.apiResponse = result;
-            console.log(this.apiResponse);
+            // console.log(this.apiResponse);
 
             if (this.apiResponse.length > 0) {
                 this.username = this.apiResponse[0].USERNAME;
+                this.userService.setUser(this.apiResponse);
 
                 this.modalService.dismissAll();
                 setTimeout(() => {
@@ -45,6 +50,7 @@ export class LoginComponent implements OnInit {
                     this.loginHidden = true;
                 }, 3000);
             }
+
         },
         error => {
             this.apiResponse = error;
