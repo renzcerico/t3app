@@ -2,6 +2,7 @@ import { Manpower } from './../classes/manpower';
 import { ManpowerService } from './../services/manpower.service';
 import { Component, OnInit, AfterViewInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 
 @Component({
   selector: 'app-manpower',
@@ -12,32 +13,39 @@ export class ManpowerComponent implements OnInit {
   @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
   positions = [
     {
-      position : 'In-Feeder',
-      selected : -1
+      position      : 'In-Feeder',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Inspector 1',
-      selected : -1
+      position      : 'Inspector 1',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Inspector 2',
-      selected : -1
+      position      : 'Inspector 2',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Roller',
-      selected : -1
+      position      : 'Roller',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Out-Feeder',
-      selected : -1
+      position      : 'Out-Feeder',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Strapping',
-      selected : -1
+      position      : 'Strapping',
+      selected      : -1,
+      selected_index: -1
     },
     {
-      position : 'Stamping',
-      selected : -1
+      position      : 'Stamping',
+      selected      : -1,
+      selected_index: -1
     }
   ];
   manpowers: any = [];
@@ -51,12 +59,6 @@ export class ManpowerComponent implements OnInit {
     this.manpowerService.manpower$.subscribe(
       manpower => {
         this.manpowers = manpower;
-        this.manpowers.forEach((el , i) => {
-          if (el.MANPOWER_ID !== -1) {
-            this.positions[i].selected = el.MANPOWER_ID;
-            // this.accounts[this.accounts.findIndex(x => x.ID === el.MANPOWER_ID)].disabled = true;
-          }
-        });
       }
     );
   }
@@ -72,21 +74,29 @@ export class ManpowerComponent implements OnInit {
         this.accounts = res;
       }
     );
+    this.manpowers.forEach((el , i) => {
+      if (el.MANPOWER_ID > 0) {
+        const accIndex = this.accounts.findIndex(x => x.ID === el.MANPOWER_ID);
+        this.accounts[accIndex].DISABLED = 1;
+        this.positions[i].selected = el.MANPOWER_ID;
+        this.positions[i].selected_index = accIndex;
+      }
+    });
   }
 
-  handleChange(event) {
+  handleChange(event, i) {
     const currValIndex = event.srcElement.attributes.selected_index.value;
     const options = event.srcElement.options;
     const newValIndex = options.selectedIndex - 1;
     if (currValIndex >= 0) {
-      this.accounts[currValIndex].DISABLED = false;
+      this.accounts[currValIndex].DISABLED = 0;
     }
     event.srcElement.attributes.selected_index.value = newValIndex;
-    console.log(newValIndex);
     if (newValIndex >= 0) {
-      this.accounts[newValIndex].DISABLED = true;
+      this.accounts[newValIndex].DISABLED = 1;
     }
-    console.log(this.manpowers[newValIndex]);
+    this.manpowers[i].setManpowerID(this.positions[i].selected);
+    this.handleInput(i);
   }
 
   limit(val, key) {
@@ -116,6 +126,11 @@ export class ManpowerComponent implements OnInit {
 
   preventEnter(e) {
     e.preventDefault();
+  }
+
+  handleInput(i: number) {
+    this.manpowers[i].IS_CHANGED = 1;
+    // console.log(this.manpowers);
   }
 
 }

@@ -8,8 +8,7 @@ import { Subject } from 'rxjs';
 export class UserService {
   user = new Subject<any>();
   user$ = this.user.asObservable();
-
-  constructor() { }
+  constructor() {}
 
   setUser(user) {
       this.user.next(user);

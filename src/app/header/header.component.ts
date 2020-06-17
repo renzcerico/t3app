@@ -186,6 +186,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async header() {
+        console.log(this.manPowercollection);
         // tslint:disable-next-line: variable-name
         const activity_collection = [];
         this.actCollection.forEach(el => {

@@ -25,4 +25,8 @@ export class Manpower {
         (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
         (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }
+
+    setManpowerID(id: number) {
+        this.MANPOWER_ID = id;
+    }
 }

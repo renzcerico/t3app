@@ -28,7 +28,6 @@ export class MaterialComponent implements OnInit {
         .subscribe(
             d => {
                 this.apiResponse = d;
-                console.log(d);
             },
             e => {
                 this.apiResponse = e;
