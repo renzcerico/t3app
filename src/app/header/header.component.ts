@@ -26,25 +26,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     iconResult = faAngleDown;
     currentStatus = '';
     currentStatusDesc = '';
-    // headerObj = {
-    //     ID: Number,
-    //     BARCODE: '',
-    //     ACTUAL_START: moment().format('DD/MMM/YY'),
-    //     ACTUAL_END: '',
-    //     STATUS: '',
-    //     PO_NUMBER: '',
-    //     CONTROL_NUMBER: '',
-    //     SHIPPING_DATE: '',
-    //     ORDER_QUANTITY: '',
-    //     CUSTOMER: '',
-    //     CUSTOMER_CODE: '',
-    //     CUSTOMER_SPEC: '',
-    //     OLD_CODE: '',
-    //     INTERNAL_CODE: '',
-    //     PRODUCT_DESCRIPTION: '',
-    //     IS_NEW: 0,
-    //     IS_CHANGED: 0
-    // };
     headerObj: any = {};
     actCollection = [];
     matCollection = [];
@@ -200,35 +181,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         }
     }
 
-    // async getData(barcodeNum) {
-        // await this.apis.getAllByBarcode(barcodeNum).toPromise()
-        // .then(
-        //     res => {
-        //         this.getDataRes = res;
-        //     }
-        // );
-
-        // if (this.getDataRes.isExisting) {
-        //     this.headerService.setHeaderObj(this.getDataRes.header_obj);
-        //     this.activityService.setActivities(this.getDataRes.activity_collection);
-        //     this.materialService.setMaterials(this.getDataRes.materials_collection);
-
-        //     const barcodeStatus = this.getDataRes.header_obj.STATUS;
-        //     this.visibleStatus(barcodeStatus);
-        // } else {
-        //     await this.apis.getNewBatch().toPromise()
-        //     .then(
-        //         res => {
-        //             this.materialService.setMaterials(res.material_collection);
-        //             this.headerService.setHeaderObj(res.batch_collection[0]);
-        //             this.activityService.setActivities([]);
-        //             // this.getDataRes = res;
-        //         }
-        //     );
-        // }
-        // console.log(this.headerObj);
-    // }
-
     handleBarcodeChange() {
         this.headerService.getData('SO35-091319-785915');
     }
@@ -242,6 +194,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         const json = {
             header_obj          : this.headerObj,
             material_collection : this.matCollection,
+            manpower_collection : this.manPowercollection,
             activity_collection
         };
 
@@ -322,5 +275,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.activityService.setActivities(data.activity_collection);
         this.materialService.setMaterials(data.materials_collection);
         this.manpowerService.setManpower(data.manpower_collection);
+        console.log(this.manPowercollection);
     }
 }

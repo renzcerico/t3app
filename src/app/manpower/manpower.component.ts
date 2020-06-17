@@ -10,7 +10,36 @@ import { ApiService } from '../services/api.service';
 })
 export class ManpowerComponent implements OnInit {
   @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
-  positions = ['In-Feeder', 'Inspector 1', 'Inspector 2', 'Roller', 'Out-Feeder', 'Strapping', 'Stamping'];
+  positions = [
+    {
+      position : 'In-Feeder',
+      selected : -1
+    },
+    {
+      position : 'Inspector 1',
+      selected : -1
+    },
+    {
+      position : 'Inspector 2',
+      selected : -1
+    },
+    {
+      position : 'Roller',
+      selected : -1
+    },
+    {
+      position : 'Out-Feeder',
+      selected : -1
+    },
+    {
+      position : 'Strapping',
+      selected : -1
+    },
+    {
+      position : 'Stamping',
+      selected : -1
+    }
+  ];
   manpowers: any = [];
   accounts: Array<any>;
   manpowerSelected = [];
@@ -21,14 +50,17 @@ export class ManpowerComponent implements OnInit {
     this.manpowerService.manpower$.subscribe(
       manpower => {
         this.manpowers = manpower;
+        this.manpowers.forEach((el , i) => {
+          if (el.MANPOWER_ID !== -1) {
+            this.positions[i].selected = el.MANPOWER_ID;
+            // this.accounts[this.accounts.findIndex(x => x.ID === el.MANPOWER_ID)].disabled = true;
+          }
+        });
       }
     );
   }
   ngOnInit() {
-    // this.getManpower();
     this.getAllAccounts();
-    console.log('manpoweeeer: ', this.manpowers);
-    console.log(this.accounts);
   }
 
   async getAllAccounts() {
@@ -45,12 +77,12 @@ export class ManpowerComponent implements OnInit {
     const options = event.srcElement.options;
     const newValIndex = options.selectedIndex - 1;
     if (currValIndex >= 0) {
-      this.accounts[currValIndex].disabled = 0;
+      this.accounts[currValIndex].DISABLED = false;
     }
     event.srcElement.attributes.selected_index.value = newValIndex;
     console.log(newValIndex);
     if (newValIndex >= 0) {
-      this.accounts[newValIndex].disabled = 1;
+      this.accounts[newValIndex].DISABLED = true;
     }
     console.log(this.manpowers[newValIndex]);
   }

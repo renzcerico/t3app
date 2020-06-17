@@ -4,7 +4,7 @@ const storeAll = async (req = {}, res, next = null) => {
     const data = {
         header_obj          : req.body.header_obj,
         activity_collection : req.body.activity_collection,
-        // manpower_collection : req.body.manpower_collection,
+        manpower_collection : req.body.manpower_collection,
         material_collection : req.body.material_collection
     };
     console.log(req.body.manpower_collection);
