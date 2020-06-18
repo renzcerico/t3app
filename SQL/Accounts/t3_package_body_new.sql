@@ -1,5 +1,22 @@
 create or replace PACKAGE BODY T3_PACKAGE AS
+    PROCEDURE FORWARD_LIST(userLevel IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
+    BEGIN
+        IF userLevel = 'user' THEN
+            OPEN res FOR
+            SELECT ID,
+                   CONCAT(CONCAT(CONCAT(CONCAT(LAST_NAME, ' '), FIRST_NAME), ' '), SUBSTR(MIDDLE_NAME, 1,1)) AS FULL_NAME
+            FROM TBL_ACCOUNTS
+            WHERE USER_LEVEL = 'supervisor';
+        ELSE
+            OPEN res FOR
+            SELECT ID,
+                   CONCAT(CONCAT(CONCAT(CONCAT(LAST_NAME, ' '), FIRST_NAME), ' '), SUBSTR(MIDDLE_NAME, 1,1)) AS FULL_NAME
+            FROM TBL_ACCOUNTS
+            WHERE USER_LEVEL = 'manager';
+        END IF;     
+    END;
+
     PROCEDURE VALIDATE_USER(user IN VARCHAR2, pass IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
     BEGIN

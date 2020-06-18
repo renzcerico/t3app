@@ -149,7 +149,7 @@
     </select>
     <button class="btn mx-1  d-md-inline-block btn-danger border-100 font-weight-500 pl-5 pr-5 text-uppercase w-100" (click)="updateHeaderStatus(1)" *ngIf="visibleButton === 'endprod'">End Production</button>
     <button class="btn mx-1  d-md-inline-block btn-success border-100 font-weight-500 pl-5 pr-5 text-uppercase w-100" (click)="updateHeaderStatus(2)" *ngIf="visibleButton === 'approve'">Approve</button>
-    <button class="btn mx-1  d-md-inline-block btn-dark border-100 font-weight-500 pl-5 pr-5 text-uppercase w-100" (click)="header()" *ngIf="!showSaveButton">Save</button>
+    <button class="btn mx-1  d-md-inline-block btn-dark border-100 font-weight-500 pl-5 pr-5 text-uppercase w-100" (click)="header()" *ngIf="showSaveButton">Save</button>
 </div>
 
 <app-activity></app-activity>
