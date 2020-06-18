@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr *ngIf="isAuthorized">
                 <td class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <select 
@@ -51,7 +51,7 @@
                         <option value="{value: null}" selected disabled>Select Reason</option>
                         <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype" [disabled]="dtype.DISABLED">{{ dtype.NAME }}</option>                
                     </select>
-                </td>
+                </td>                
                 <td class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
@@ -91,7 +91,15 @@
                 <td></td>
             </tr>
             <tr *ngFor="let val of tempActDowntime; let i = index">
-                <td class="text-right td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.DOWNTIME_TYPE_ID">
+                        {{val.DOWNTIME_TYPE_ID}}
+                    </span>
+                    <span *ngIf="!val.DOWNTIME_TYPE_ID">
+                        
+                    </span>
+                </td>                
+                <td *ngIf="isAuthorized" class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <!-- TODO: fix disable select when chosen on other input -->
                     <select
@@ -107,7 +115,15 @@
                         <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype.ID" [disabled]="dtype.DISABLED">{{ dtype.NAME }}</option>                
                     </select>
                 </td>
-                <td class="text-right td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.MINUTES">
+                        {{val.MINUTES}}
+                    </span>
+                    <span *ngIf="!val.MINUTES">
+                        
+                    </span>
+                </td>  
+                <td *ngIf="isAuthorized" class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
                         type="number"
@@ -116,7 +132,15 @@
                         (ngModelChange)="setIsChanged(i)"
                         [(ngModel)]="tempActDowntime[i].MINUTES">
                 </td>
-                <td class="text-right td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.QUANTITY">
+                        {{val.QUANTITY}}
+                    </span>
+                    <span *ngIf="!val.QUANTITY">
+                        
+                    </span>
+                </td>                 
+                <td *ngIf="isAuthorized" class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
                         type="number"
@@ -125,7 +149,15 @@
                         (ngModelChange)="setIsChanged(i)"
                         [(ngModel)]="tempActDowntime[i].QUANTITY">
                 </td>
-                <td class="td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.REMARKS">
+                        {{val.REMARKS}}
+                    </span>
+                    <span *ngIf="!val.REMARKS">
+                        
+                    </span>
+                </td>                 
+                <td *ngIf="isAuthorized" class="td-editable">
                     <div class="td-indicator"></div>
                     <textarea
                         name="remarks"
@@ -151,7 +183,7 @@
         </tfoot>
     </table>
 </div>
-<div class="modal-footer">
+<div *ngIf="isAuthorized" class="modal-footer">
     <button class="btn btn-md btn-secondary" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Cancel</button>
     <button class="btn btn-md btn-success" (click)="handleSave()">Save</button>
 </div>

@@ -11,6 +11,7 @@ export class Manpower {
     HEADER_ID: number;
     IS_CHANGED: number;
     IS_NEW: number;
+    LAST_UPDATED_BY_NAME: string;
     constructor(jsonObj) {
         this.ID = jsonObj.ID || null;
         this.POSITION_ID = jsonObj.POSITION_ID || null;
@@ -18,6 +19,7 @@ export class Manpower {
         this.START_TIME = jsonObj.START_TIME || '';
         this.END_TIME = jsonObj.END_TIME || '';
         this.REMARKS = jsonObj.REMARKS || '';
+        this.LAST_UPDATED_BY_NAME = jsonObj.LAST_UPDATED_BY_NAME || '';
         this.LAST_UPDATED_BY = jsonObj.LAST_UPDATED_BY || null;
         this.DATE_ENTERED = jsonObj.DATE_ENTERED || '';
         this.DATE_UPDATED = jsonObj.DATE_UPDATED || '';

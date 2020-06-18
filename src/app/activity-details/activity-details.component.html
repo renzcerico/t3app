@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr *ngIf="isAuthorized">
                 <td class="align-bottom td-editable">
                     <div class="td-indicator-required"></div>
                     <input
@@ -64,7 +64,15 @@
                 </td>
             </tr>
             <tr *ngFor="let val of tempActDetails; let i = index">
-                <td class="text-right td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.LOT_NUMBER">
+                        {{val.LOT_NUMBER}}
+                    </span>
+                    <span *ngIf="!val.LOT_NUMBER">
+                        
+                    </span>
+                </td>
+                <td *ngIf="isAuthorized" class="text-right td-editable">
                     <div class="td-indicator-required"></div>
                     <input
                         type="text"
@@ -75,7 +83,15 @@
                 <td class="text-right align-middle">
                     {{ val.PACKED_QTY | number: ''}}
                 </td>
-                <td class="text-right td-editable">
+                <td *ngIf="!isAuthorized" class="align-middle">
+                    <span *ngIf="val.ADJ_QTY">
+                        {{val.ADJ_QTY}}
+                    </span>
+                    <span *ngIf="!val.ADJ_QTY">
+                        
+                    </span>
+                </td>
+                <td *ngIf="isAuthorized" class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
                         type="number"
@@ -99,7 +115,7 @@
         </tfoot>
     </table>
 </div>
-<div class="modal-footer">
+<div *ngIf="isAuthorized" class="modal-footer">
     <button class="btn btn-md btn-secondary" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">Cancel</button>
     <button class="btn btn-md btn-success" (click)="handleSave()">Save</button>
 </div>

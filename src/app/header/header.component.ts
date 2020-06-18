@@ -12,6 +12,7 @@ import {ActivityService} from '../services/activity.service';
 import Activity from '../classes/activity';
 import Header from '../classes/header';
 import { HeaderService } from '../services/header.service';
+import { UserService } from './../services/user.service';
 
 @Component({
     selector: 'app-home',
@@ -39,12 +40,10 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     prodHover = 0;
     activities: Array<Activity>;
     getDataRes: any = {};
-    userType = 1;
-    usersForwardList: any;
-
-    get dummyDesc() {
-        return 'this is a very long description veryyyyyyyyyyyyyyyyyy long';
-    }
+    userType: number;
+    activeUser;
+    userID;
+    usersForwardList;
 
     get scheduleTime() {
         let res = '';
@@ -66,6 +65,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         // 3 : completed
         // 4 : closed
         // tslint:disable-next-line: no-inferrable-types
+        if ( this.headerObj.STATUS > 3 ) {
+            return 'none';
+        }
         if (this.userType === 1) {
           if (this.headerObj.STATUS !== 1) {
             return 'none';
@@ -77,7 +79,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
           } else if (this.headerObj.STATUS === 2) {
             return 'approve';
           }
-        } else if (this.userType === 3) {
+        } else if (this.userType >= 3) {
           if (this.headerObj.STATUS === 1) {
             return 'endprod';
           } else if (this.headerObj.STATUS > 1) {
@@ -88,7 +90,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
       }
 
     get showSaveButton() {
-        return (this.headerObj.STATUS <= this.userType) || this.userType === 3;
+        return (this.headerObj.STATUS <= this.userType) || this.userType >= 3 && this.headerObj.STATUS < 4;
     }
 
     apiResponse: any;
@@ -97,7 +99,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         private activityService: ActivityService,
         private materialService: MaterialService,
         private manpowerService: ManpowerService,
-        private headerService: HeaderService) {
+        private headerService: HeaderService,
+        private userService: UserService) {
         activityService.activities$.subscribe(
             activities => {
               this.actCollection = activities;
@@ -125,6 +128,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.actArr = this.actComponent.activities;
         this.matArr = this.matComponent.materials;
         this.setForwardList();
+        if (this.activeUser) {
+            this.userType = this.activeUser.USER_TYPE;
+        }
     }
 
     ngAfterViewInit() {
@@ -134,6 +140,16 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
+        this.userService.user.subscribe(
+            res => {
+                if (res) {
+                    this.activeUser = res;
+                }
+            },
+            err => {
+                console.log(err);
+            }
+        );
         await this.headerService.getData('163178');
         // this.barcode();
     }
@@ -221,7 +237,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         }
     }
 
-    updateHeaderStatus(action: number) {
+    updateHeaderStatus(action: number, receiverID: number) {
         // actions
         // 1: end production
         // 2: approve
@@ -236,36 +252,61 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             // 2 : open
             // 3 : completed
             // 4 : closed
-            const userID = 2;
             const date = new Date();
             switch (this.userType) {
                 case 1:
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 2;
                     this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                    this.headerObj.FORWARDED_BY = userID;
+                    this.headerObj.FORWARDED_BY = this.activeUser.ID;
+                    // uncomment if done on forward list
+                    // this.headerObj.REVIEWED_BY = receiverID;
+                    this.headerObj.REVIEWED_BY = 33;
                     break;
                 case 2:
                     if (this.headerObj.STATUS < this.userType) {
-                        this.headerObj.FORWARDED_BY = userID;
+                        // uncomment if done on forward list
+                        // this.headerObj.FORWARDED_BY = this.activeUser.ID;
+                        // this.headerObj.REVIEWED_BY = this.activeUser.ID;
+                        // this.headerObj.APPROVED_BY = receiverID;
+                        this.headerObj.FORWARDED_BY = 33;
+                        this.headerObj.REVIEWED_BY = 33;
+                        this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.APPROVED_BY = 33;
                     }
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 3;
-                    this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
                     this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                    this.headerObj.REVIEWED_BY = userID;
                     break;
                 case 3:
-                    if (this.headerObj.STATUS < this.userType) {
-                        this.headerObj.FORWARDED_BY = userID;
+                    if (this.headerObj.STATUS === 1) {
+                        this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.REVIEWED_BY = userID;
+                        // uncomment if done on forward list
+                        // this.headerObj.FORWARDED_BY = this.activeUser.ID;
+                        // this.headerObj.REVIEWED_BY = this.activeUser.ID;
+                        // this.headerObj.APPROVED_BY = this.activeUser.ID;
+                        this.headerObj.FORWARDED_BY = 32;
+                        this.headerObj.REVIEWED_BY = 32;
+                        this.headerObj.APPROVED_BY = 32;
+                    } else if (this.headerObj.STATUS === 2) {
+                        this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
+                        // uncomment if done on forward list
+                        // this.headerObj.REVIEWED_BY = this.activeUser.ID;
+                        // this.headerObj.APPROVED_BY = this.activeUser.ID;
+                        this.headerObj.REVIEWED_BY = 32;
+                        this.headerObj.APPROVED_BY = 32;
                     }
+                    // uncomment if done on forward list
+                    // this.headerObj.APPROVED_BY = this.activeUser.ID;
+                    this.headerObj.APPROVED_BY = 32;
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 4;
-                    this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.REVIEWED_AT = moment(this.headerObj.REVIEWED_AT).format('DD-MMM-YYYY HH:mm:ss');
                     this.headerObj.APPROVED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                    this.headerObj.APPROVED_BY = userID;
                     break;
             }
             this.header();
@@ -278,7 +319,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.activityService.setActivities(data.activity_collection);
         this.materialService.setMaterials(data.materials_collection);
         this.manpowerService.setManpower(data.manpower_collection);
-        console.log(this.manPowercollection);
+        console.log(this.matCollection);
     }
 
     setForwardList() {

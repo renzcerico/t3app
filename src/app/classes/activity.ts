@@ -14,6 +14,7 @@ export default class Activity {
     _DATE_UPDATED: string;
     ACTIVITY_DETAILS: any[];
     ACTIVITY_DOWNTIME: any[];
+    LAST_UPDATED_BY_NAME: string;
     IS_NEW: number;
     IS_CHANGED: number;
 
@@ -86,6 +87,7 @@ export default class Activity {
         this.LOT_NUMBER = jsonObj.LOT_NUMBER || '';
         this.DOWNTIME = jsonObj.DOWNTIME || 0;
         this.REMARKS = jsonObj.REMARKS || '';
+        this.LAST_UPDATED_BY_NAME = jsonObj.LAST_UPDATED_BY_NAME || '';
         this.LAST_UPDATED_BY = jsonObj.LAST_UPDATED_BY || 0;
         this.DATE_ENTERED = moment(jsonObj.DATE_ENTERED).format() || '';
         this.DATE_UPDATED = moment(jsonObj.DATE_UPDATED).format() || '';

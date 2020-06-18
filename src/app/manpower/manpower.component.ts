@@ -1,15 +1,16 @@
 import { Manpower } from './../classes/manpower';
 import { ManpowerService } from './../services/manpower.service';
-import { Component, OnInit, AfterViewInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { resetFakeAsyncZone } from '@angular/core/testing';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-manpower',
   templateUrl: './manpower.component.html',
   styleUrls: ['../material/material.component.css', '../manpower/manpower.component.css']
 })
-export class ManpowerComponent implements OnInit {
+export class ManpowerComponent implements OnInit, AfterContentChecked {
   @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
   positions = [
     {
@@ -52,15 +53,34 @@ export class ManpowerComponent implements OnInit {
   accounts: Array<any>;
   manpowerSelected = [];
   manpowerOnFocus = 0;
-
+  activeUser;
+  userID;
+  userType: number;
+  isAuthorized: boolean;
   apiResponse: any;
 
-  constructor(public apis: ApiService, private manpowerService: ManpowerService) {
+  constructor(public apis: ApiService,
+              private manpowerService: ManpowerService,
+              private userService: UserService) {
     this.manpowerService.manpower$.subscribe(
       manpower => {
         this.manpowers = manpower;
       }
     );
+    this.userService.user.subscribe(
+      res => {
+        if (res) {
+          this.activeUser = res;
+        }
+      },
+        err => {
+        console.log(err);
+      }
+    );
+  }
+
+  ngAfterContentChecked() {
+    (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
   }
 
   ngOnInit() {

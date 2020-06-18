@@ -21,7 +21,15 @@
             <tbody>
                 <tr *ngFor="let position of positions; let i = index;">
                     <td class="align-middle" data-label="Position">{{ position.position }}</td>
-                    <td class="align-bottom td-editable" data-label="Manpower">
+                    <td *ngIf="!isAuthorized" class="align-middle" data-label="Manpower">
+                        <span *ngIf="positions[i].selected_index !== -1">
+                            {{ accounts[positions[i].selected_index].FIRST_NAME }} {{ accounts[positions[i].selected_index].LAST_NAME }}
+                        </span>
+                        <span *ngIf="positions[i].selected_index === -1">
+                            
+                        </span>
+                    </td>
+                    <td *ngIf="isAuthorized" class="align-bottom td-editable" data-label="Manpower">
                         <div class="td-indicator-required"></div>
                         <!-- (focus)="manpowerFocus(manpowerID.value)" 
                         (change)="manpower($event)" -->
@@ -43,7 +51,15 @@
                             </option>
                         </select>
                     </td>
-                    <td class="align-bottom td-editable" data-label="Start">
+                    <td *ngIf="!isAuthorized" class="align-middle" data-label="Start">
+                        <span *ngIf="manpowers[i].START_TIME">
+                            {{manpowers[i].START_TIME}}
+                        </span>
+                        <span *ngIf="!manpowers[i].START_TIME">
+                            
+                        </span>
+                    </td>
+                    <td *ngIf="isAuthorized" class="align-bottom td-editable" data-label="Start">
                         <div class="td-indicator"></div>
                         <input type="text" 
                             class="form-control start_time" 
@@ -58,7 +74,15 @@
                             placeholder="HHmm"
                             #tdEditable />
                     </td>
-                    <td class="align-bottom td-editable" data-label="End">
+                    <td *ngIf="!isAuthorized" class="align-middle" data-label="End">
+                        <span *ngIf="manpowers[i].END_TIME">
+                            {{manpowers[i].END_TIME}}
+                        </span>
+                        <span *ngIf="!manpowers[i].END_TIME">
+                            
+                        </span>
+                    </td>
+                    <td *ngIf="isAuthorized" class="align-bottom td-editable" data-label="End">
                         <div class="td-indicator"></div>
                         <input type="text" 
                                 class="form-control end_time"
@@ -73,7 +97,15 @@
                                 placeholder="HHmm"
                                 #tdEditable />
                     </td>
-                    <td class="align-bottom td-editable" data-label="Remarks">
+                    <td *ngIf="!isAuthorized" class="align-middle" data-label="Remarks">
+                        <span *ngIf="manpowers[i].REMARKS">
+                            {{manpowers[i].REMARKS}}
+                        </span>
+                        <span *ngIf="!manpowers[i].REMARKS">
+                            
+                        </span>
+                    </td>                    
+                    <td *ngIf="isAuthorized" class="align-bottom td-editable" data-label="Remarks">
                         <div class="td-indicator"></div>
                         <textarea class="form-control remarks" 
                             (keyup.enter)="time('', $event)"
@@ -83,9 +115,9 @@
                             [(ngModel)]="manpowers[i].REMARKS"
                             #tdEditable></textarea>
                     </td>
-                    <td class="align-middle" data-label="Updated By">{{manpowers[i].LAST_UPDATED_BY}}</td>
-                    <td class="align-middle" data-label="Date Entered">{{manpowers[i].DATE_ENTERED}}</td>
-                    <td class="align-middle" data-label="Date Updated">{{manpowers[i].DATE_UPDATED}}</td>
+                    <td class="align-middle" data-label="Updated By">{{manpowers[i].LAST_UPDATED_BY_NAME}}</td>
+                    <td class="align-middle" data-label="Date Entered">{{manpowers[i].DATE_ENTERED | date : 'MMM d, y HH:mm' }}</td>
+                    <td class="align-middle" data-label="Date Updated">{{manpowers[i].DATE_UPDATED | date : 'MMM d, y HH:mm' }}</td>
                 </tr>
             </tbody>
         </table>
