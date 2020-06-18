@@ -4,28 +4,27 @@ import {
   QueryList,
   ViewChildren,
   Input,
-  OnInit
+  OnInit,
+  AfterContentChecked
 } from '@angular/core';
 import * as moment from 'moment';
 import {ActivityService} from '../services/activity.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityDetailsComponent } from '../activity-details/activity-details.component';
 import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtime.component';
+import { UserService } from './../services/user.service';
+import { HeaderService } from '../services/header.service';
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css', '../material/material.component.css', '../app.component.css']
 })
-export class ActivityComponent implements OnInit {
+export class ActivityComponent implements OnInit, AfterContentChecked {
 
   @ViewChildren('contentTr') contentTr !: QueryList<ElementRef>;
   @ViewChildren('editableTd') editableTd !: QueryList<ElementRef>;
   @ViewChildren('headerInput') headerInput !: QueryList<ElementRef>;
-  // actLotNumber: string;
-  // actPackedQty: any;
-  // actDowntime: any;
-  // actRemarks: any;
   mLotNumber: string;
   mPacked = 0;
   mAdjustment = 0;
@@ -33,8 +32,10 @@ export class ActivityComponent implements OnInit {
   activities: any = [];
   downtimeTypes: any = [];
   selectedActivityIndex = 7;
-  @Input() headerObj: any = {};
-
+  activeUser;
+  userID;
+  userType: number;
+  isAuthorized: boolean;
   get subTotal() {
     let subTotal = 0;
     if (this.activities.length) {
@@ -55,7 +56,10 @@ export class ActivityComponent implements OnInit {
     return subTotal;
   }
 
-  constructor(private activityService: ActivityService, private modalService: NgbModal) {
+  constructor(
+      private activityService: ActivityService,
+      private modalService: NgbModal,
+      private userService: UserService) {
     activityService.activities$.subscribe(
       activities => {
         this.activities = activities;
@@ -66,11 +70,6 @@ export class ActivityComponent implements OnInit {
         this.downtimeTypes = downtimeTypes;
       }
     );
-    activityService.header$.subscribe(
-      headerObj => {
-        this.headerObj = headerObj;
-      }
-    );
     activityService.actualTime$.subscribe(
       actualTime => {
         this.actualTime = actualTime;
@@ -78,55 +77,26 @@ export class ActivityComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  ngAfterContentChecked() {
+    (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
   }
-  // handleKeyUp(event) {
-  //   const elArr = this.headerInput.toArray();
 
-  //   const active = elArr.findIndex(index => {
-  //     return (index.nativeElement.parentElement === event.target.parentElement);
-  //   });
-
-  //   if (event.target.attributes.required && !event.target.value) {
-  //     return;
-  //   }
-
-  //   if (active < elArr.length - 1) {
-  //     elArr[active + 1].nativeElement.focus();
-  //   } else {
-
-  //     const newActivity = {
-  //       PACKED_QTY      : this.actPackedQty,
-  //       ADJ_QTY         : 0,
-  //       DOWNTIME        : this.actDowntime,
-  //       REMARKS         : this.actRemarks,
-  //       LAST_UPDATED_BY : 1,
-  //       DATE_ENTERED    : moment().format('DD/MMM/YY'),
-  //       DATE_UPDATED    : moment().format('DD/MMM/YY'),
-  //       IS_NEW          : 1,
-  //       IS_CHANGED      : 0
-  //     };
-  //     this.addActivity(newActivity);
-  //     this.clearInputs();
-  //   }
-
-  // }
+  ngOnInit() {
+    this.userService.user.subscribe(
+      res => {
+        if (res) {
+          this.activeUser = res;
+        }
+      },
+        err => {
+        console.log(err);
+      }
+    );
+  }
 
   handleKeyDown(event) {
     event.preventDefault();
   }
-
-  // addActivity(newActivity) {
-  //   this.activityService.addActivity(newActivity);
-  // }
-
-  // clearInputs() {
-  //   this.actDowntime = '';
-  //   this.actPackedQty = '';
-  //   this.actRemarks = '';
-  //   this.actLotNumber = '';
-  //   this.headerInput.toArray()[0].nativeElement.focus();
-  // }
 
   handleTrKeyUp(event) {
     const elArr = this.editableTd.toArray();
@@ -151,16 +121,16 @@ export class ActivityComponent implements OnInit {
   }
 
   openModal(event, index) {
-    // alert(this.activityDetails.isChanged);
     const modalRef = this.modalService.open(ActivityDetailsComponent,
       {
         size: 'lg',
         beforeDismiss: () => {
-          // alert(this.)
-          if (modalRef.componentInstance.isChanged
-            || modalRef.componentInstance.mLotNumber !== ''
-            || modalRef.componentInstance.mPacked !== 0) {
-           return confirm('You will lose your unsaved changes');
+          if (this.isAuthorized) {
+            if (modalRef.componentInstance.isChanged
+              || modalRef.componentInstance.mLotNumber !== ''
+              || modalRef.componentInstance.mPacked !== 0) {
+            return confirm('You will lose your unsaved changes');
+            }
           }
         }
       });
@@ -173,12 +143,13 @@ export class ActivityComponent implements OnInit {
       {
         size: 'lg',
         beforeDismiss: () => {
-          // alert(this.)
-          if (modalRef.componentInstance.isChanged
-            || modalRef.componentInstance.mMinutes !== 0
-            || modalRef.componentInstance.mQuantity !== 0
-            || modalRef.componentInstance.mRemarks !== '') {
-           return confirm('You will lose your unsaved changes');
+          if (this.isAuthorized) {
+            if (modalRef.componentInstance.isChanged
+              || modalRef.componentInstance.mMinutes !== 0
+              || modalRef.componentInstance.mQuantity !== 0
+              || modalRef.componentInstance.mRemarks !== '') {
+              return confirm('You will lose your unsaved changes');
+            }
           }
         }
       });

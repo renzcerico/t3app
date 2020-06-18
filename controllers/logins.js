@@ -15,7 +15,7 @@ function getLoginFromRec(req) {
       let login = getLoginFromRec(req);
       login = await logins.setlogin(login);
       // console.log(login);
-      const user = login.shift();
+      const user = login[0];
 
       if (login.length > 0) {
           session.user = user;

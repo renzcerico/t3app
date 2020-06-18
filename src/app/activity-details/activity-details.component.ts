@@ -5,16 +5,18 @@ import {
   ViewChildren,
   QueryList,
   Renderer2,
-  OnInit
+  OnInit,
+  AfterContentChecked
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-activity-details',
   templateUrl: './activity-details.component.html',
   styleUrls: ['./activity-details.component.css']
 })
-export class ActivityDetailsComponent implements OnInit {
+export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
 
   // tslint:disable-next-line: variable-name
   in_activity: any = [];
@@ -24,9 +26,30 @@ export class ActivityDetailsComponent implements OnInit {
   tempActDetails: Array<any> = [];
   activity: any = {};
   isChanged = 0;
+  activeUser;
+  userID;
+  userType: number;
+  isAuthorized: boolean;
+
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
-  constructor(public activeModal: NgbActiveModal, private activityFactory: ActivityFactory) {
+  constructor(public activeModal: NgbActiveModal,
+              private activityFactory: ActivityFactory,
+              private userService: UserService) {
+                this.userService.user.subscribe(
+                  res => {
+                    if (res) {
+                      this.activeUser = res;
+                    }
+                  },
+                    err => {
+                    console.log(err);
+                  }
+                );
+  }
+
+  ngAfterContentChecked() {
+    (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
   }
 
   ngOnInit() {

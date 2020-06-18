@@ -7,7 +7,8 @@ const storeAll = async (req = {}, res, next = null) => {
         manpower_collection : req.body.manpower_collection,
         material_collection : req.body.material_collection
     };
-    console.log(req.body.manpower_collection);
+    console.log('actual end: ', req.body.header_obj);
+    console.log('reviewed at: ', req.body.header_obj);
     // console.log(data.header_obj);
     const request = await t3.storeAll(data)
     .catch(error => { console.log('caught', error.message); });

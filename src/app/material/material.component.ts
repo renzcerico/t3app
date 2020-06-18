@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef, QueryList, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChildren, ElementRef, QueryList, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'app-material',
@@ -7,16 +8,35 @@ import { ApiService } from '../services/api.service';
     styleUrls: ['./material.component.css']
 })
 
-export class MaterialComponent implements OnInit {
+export class MaterialComponent implements OnInit, AfterContentChecked {
     @ViewChildren('tdEditable') tdEditable !: QueryList<ElementRef>;
     @Input() actTotal: number;
     @Input() materials = [];
-
-
+    activeUser;
+    userID;
+    userType: number;
     apiResponse: any;
-    constructor(public apis: ApiService) { }
+    isAuthorized: boolean;
+
+    constructor(public apis: ApiService,
+                private userService: UserService) {
+        this.userService.user.subscribe(
+          res => {
+            if (res) {
+              this.activeUser = res;
+            }
+          },
+            err => {
+            console.log(err);
+          }
+        );
+    }
 
     ngOnInit() {
+    }
+
+    ngAfterContentChecked() {
+      (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
     }
 
     valueChanged(index) {
@@ -35,20 +55,6 @@ export class MaterialComponent implements OnInit {
             }
         );
     }
-
-    // makeApiCallPOST() {
-    //     this.apis.postqueryApi()
-    //     .subscribe(
-    //         d => {
-    //             this.apiResponse = d;
-    //             console.log(d);
-    //         },
-    //         e => {
-    //             this.apiResponse = e;
-    //             console.log('No response ' + e);
-    //         }
-    //     )
-    // }
 
     onKeyDown(event) {
         const elArr = this.tdEditable.toArray();

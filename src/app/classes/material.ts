@@ -11,6 +11,7 @@ export default class Material {
     DATE_UPDATED:	string;
     MATERIAL_CODE:	string;
     MATERIAL_DESC:	string;
+    LAST_UPDATED_BY_NAME:	string;
     HEADER_ID:	number;
     ITEM_CATEGORY: string;
     BOX_TYPE: string;
@@ -29,6 +30,7 @@ export default class Material {
         this.LAST_UPDATED_BY = jsonObj.LAST_UPDATED_BY || 0;
         this.DATE_ENTERED = jsonObj.DATE_ENTERED || '';
         this.DATE_UPDATED = jsonObj.DATE_UPDATED || '';
+        this.LAST_UPDATED_BY_NAME = jsonObj.LAST_UPDATED_BY_NAME || '';
         this.MATERIAL_CODE = jsonObj.MATERIAL_CODE || jsonObj.ITEM_CODE || '';
         this.MATERIAL_DESC = jsonObj.MATERIAL_DESC || jsonObj.ITEM_DESC || '';
         this.HEADER_ID = jsonObj.HEADER_ID || null;
