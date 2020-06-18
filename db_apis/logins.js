@@ -19,3 +19,25 @@ async function setlogin(log) {
 }
 
 module.exports.setlogin = setlogin;
+
+const forwardListSql = `BEGIN T3_PACKAGE.FORWARD_LIST(:userLevel, :cursor); END;`;
+
+const forwardList = async (userLevel) => {
+  const bind = {
+    userLevel: {
+      dir: oracledb.BIND_IN,
+      type: oracledb.VARCHAR2,
+      value: userLevel.toLowerCase()
+    },
+    cursor: {
+      dir: oracledb.BIND_OUT,
+      type: oracledb.CURSOR
+    }
+  };
+
+  const result = await database.resultsetExecute(forwardListSql, bind);
+
+  return result;
+};
+
+module.exports.forwardList = forwardList;

@@ -1,3 +1,4 @@
+import { HeaderService } from './../../services/header.service';
 import { UserService } from './../../services/user.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from './../../services/api.service';
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
   constructor(public apis: ApiService,
              private modalService: NgbModal,
              public activeModal: NgbActiveModal,
+             public headerService: HeaderService,
              public userService: UserService) { }
 
   ngOnInit() {
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
             if (this.apiResponse) {
                 this.username = this.apiResponse.USERNAME;
                 this.userService.setUser(this.apiResponse);
-                console.log('renz')
+                this.headerService.getUserForwardList();
 
                 this.modalService.dismissAll();
                 setTimeout(() => {

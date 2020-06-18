@@ -1,4 +1,4 @@
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,11 +17,18 @@ export class AccountsComponent implements OnInit {
   msg = '';
   @ViewChild('firstName', {static: false}) firstName: ElementRef;
   toggleAccount;
-  accounts;
+  // accounts;
   faEdit = faEdit;
   formTitle;
   formButtonTxt;
   acctID = 0;
+
+  page = 1;
+  pageSize = 3;
+  collectionSize = 0;
+  accountsArray;
+
+  filter = new FormControl('');
 
   constructor(private formBuilder: FormBuilder, private api: ApiService) {
   }
@@ -119,7 +126,18 @@ export class AccountsComponent implements OnInit {
   }
 
   async displayAccounts() {
-    this.accounts = await this.getAllAccounts();
+    // this.accounts = await this.getAllAccounts();
+    // this.collectionSize = this.accounts.length;
+    // this.accounts.map( (accounts, i) => ({id: i + 1 , ...accounts}) )
+    // .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+
+    this.accountsArray = await this.getAllAccounts();
+  }
+
+  get accounts() {
+    this.collectionSize = this.accountsArray.length || 0;
+    return this.accountsArray.map( (res, i) => ({id: 1 + i, ...res}) )
+      .slice( (this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
   formAttribute(isExist) {

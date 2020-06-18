@@ -19,7 +19,8 @@
                             <fa-icon [icon]="faEdit" 
                                     class="float-left d-sm-none d-md-block ml-3" 
                                     (click)="editAccount(acct.ID)"></fa-icon>
-                            {{ acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase }}
+                            <ngb-highlight [result]="acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase" [term]="filter.value"></ngb-highlight>
+                            <!-- {{ acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase }} -->
                         </td>
                         <td data-label="Username">{{ acct.USERNAME | lowercase }}</td>
                         <td data-label="Gender">{{ acct.GENDER | titlecase }}</td>
@@ -31,17 +32,16 @@
                 </tbody>
             </table>
 
-            <!-- <div class="d-flex justify-content-between p-2">
-                <ngb-pagination
-                  [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            <div class="d-flex justify-content-between p-2">
+                <ngb-pagination [collectionSize]="collectionSize" (click)="displayAccounts()" [(page)]="page" [pageSize]="pageSize">
                 </ngb-pagination>
-            
-                <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
-                  <option [ngValue]="5">5 items per page</option>
+              
+                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+                  <option [ngValue]="3">3 items per page</option>
                   <option [ngValue]="10">10 items per page</option>
                   <option [ngValue]="15">15 items per page</option>
                 </select>
-            </div> -->
+              </div>
         </div>
     </div>
 </div>

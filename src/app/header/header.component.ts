@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     activities: Array<Activity>;
     getDataRes: any = {};
     userType = 1;
+    usersForwardList: any;
 
     get dummyDesc() {
         return 'this is a very long description veryyyyyyyyyyyyyyyyyy long';
@@ -123,6 +124,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.actTotal = this.actComponent.subTotal;
         this.actArr = this.actComponent.activities;
         this.matArr = this.matComponent.materials;
+        this.setForwardList();
     }
 
     ngAfterViewInit() {
@@ -277,5 +279,17 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.materialService.setMaterials(data.materials_collection);
         this.manpowerService.setManpower(data.manpower_collection);
         console.log(this.manPowercollection);
+    }
+
+    setForwardList() {
+       this.headerService.userForwardList
+        .subscribe(
+            res => {
+                this.usersForwardList = res;
+            },
+            err => {
+                console.log(err);
+            }
+        );
     }
 }

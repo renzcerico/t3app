@@ -43,4 +43,7 @@ router.route('/auth')
 router.route('/logout')
   .get(login.logout);
 
+router.route('/forward-list')
+  .get(login.forwardList);
+
 module.exports = router;

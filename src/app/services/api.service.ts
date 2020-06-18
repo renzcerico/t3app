@@ -86,4 +86,8 @@ export class ApiService {
         return this.http.get(`${ this.url }` + '/api/logout');
     }
 
+    forwardList(): Observable<any> {
+        return this.http.get(`${ this.url }` + '/api/forward-list');
+    }
+
 }

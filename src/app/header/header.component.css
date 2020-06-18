@@ -10,13 +10,18 @@
     color: #28a745 !important;
 }
 
-#header_production_order input, #prod_span {
+#header_production_order input, #prod_span,
+#forwardTo {
     border-right: 0;
     border-left: 0;
     border-top: 0;
     border-radius: 0;
     box-shadow: none;
     font-size: 13px !important;
+}
+
+#forwardTo {
+    outline: none;
 }
 
 #header_production_order label {

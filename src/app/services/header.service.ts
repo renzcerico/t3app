@@ -18,11 +18,14 @@ export class HeaderService {
   url: any = 'http://localhost:3000';
   getDataRes: any;
   visibleStatus: any;
+  userForwardList = new Subject<any>();
+  userForwardList$ = this.userForwardList.asObservable();
 
   constructor(private apiService: ApiService,
               public http: HttpClient,
               ) {
     this.getHeaderCountPerStatus();
+    this.getUserForwardList();
   }
 
   setHeaderObj(headerObj) {
@@ -70,5 +73,18 @@ export class HeaderService {
         );
     }
     // console.log(this.headerObj);
+  }
+
+  getUserForwardList() {
+    this.apiService.forwardList()
+    .subscribe(
+        res => {
+            this.userForwardList.next(res);
+            // console.log(res);
+        },
+        err => {
+            console.log(err);
+        }
+    );
   }
 }
