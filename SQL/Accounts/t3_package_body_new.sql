@@ -1,4 +1,5 @@
 create or replace PACKAGE BODY T3_PACKAGE AS
+    
     PROCEDURE FORWARD_LIST(userLevel IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
     BEGIN
@@ -15,8 +16,8 @@ create or replace PACKAGE BODY T3_PACKAGE AS
             FROM TBL_ACCOUNTS
             WHERE USER_LEVEL = 'manager';
         END IF;     
-    END;
-
+    END;    
+    
     PROCEDURE VALIDATE_USER(user IN VARCHAR2, pass IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
     BEGIN
@@ -418,7 +419,7 @@ create or replace PACKAGE BODY T3_PACKAGE AS
     ) AS
     BEGIN
         OPEN res FOR
-        SELECT h.*, (0) AS IS_NEW, (0) AS IS_CHANGED
+        SELECT h.*,(0) AS IS_NEW, (0) AS IS_CHANGED
         FROM TBL_HEADER h
         WHERE BARCODE = bar_code;
     END GET_HEADER_BY_BARCODE;
@@ -436,102 +437,7 @@ create or replace PACKAGE BODY T3_PACKAGE AS
         ELSIF tablename = 'TBL_MANPOWER' THEN
             sort_by := ' ORDER BY POSITION_ID ASC';
         END IF;
---        IF tablename = 'TBL_MANPOWER' THEN
---            OPEN res FOR
---            SELECT A.*, 0 AS IS_CHANGED, 0 AS IS_NEW
---            FROM (
---                    SELECT 
---                        null AS ID
---                        , 1 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 2 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 3 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 4 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 5 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 6 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual UNION ALL
---                    SELECT 
---                        null AS ID
---                        , 7 AS POSITION_ID
---                        , -1 AS MANPOWER_ID
---                        , '' AS START_TIME
---                        , '' AS END_TIME
---                        , '' AS REMARKS
---                        , null AS LAST_UPDATED_BY
---                        , '' AS DATE_ENTERED
---                        , '' AS DATE_UPDATED
---                        , null AS HEADER_ID
---                    FROM dual
---                ) A INNER JOIN (
---                    SELECT * FROM tbl_manpower WHERE HEADER_ID = headerid
---                ) M
---                ON M.POSITION_ID = A.POSITION_ID
---                ORDER BY A.POSITION_ID;
---        ELSE
-            OPEN res FOR 'SELECT t.*, (0) AS IS_NEW, (0) AS IS_CHANGED FROM ' || tablename || ' t WHERE t.HEADER_ID = ' || headerid || sort_by;
---        END IF;
+            OPEN res FOR 'SELECT t.*, CONCAT(a.FIRST_NAME, CONCAT( '''|| ' '  ||''',a.LAST_NAME)) AS LAST_UPDATED_BY_NAME, (0) AS IS_NEW, (0) AS IS_CHANGED FROM ' || tablename || ' t LEFT JOIN TBL_ACCOUNTS a ON t.LAST_UPDATED_BY = a.ID WHERE t.HEADER_ID = ' || headerid || sort_by;
     END GET_DATA_BY_HEADER_ID;
 
     PROCEDURE GET_ACTIVITY_DETAILS(
