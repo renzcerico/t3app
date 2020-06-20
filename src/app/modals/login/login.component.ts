@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from './../../services/api.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import Header from 'src/app/classes/header';
 
 @Component({
   selector: 'app-login',
@@ -18,48 +19,69 @@ export class LoginComponent implements OnInit {
   username = '';
   apiResponse: any;
   loginHidden = true;
-
-  constructor(public apis: ApiService,
-             private modalService: NgbModal,
-             public activeModal: NgbActiveModal,
-             public headerService: HeaderService,
-             public userService: UserService) { }
+  constructor(  public apis: ApiService,
+                private modalService: NgbModal,
+                public activeModal: NgbActiveModal,
+                public headerService: HeaderService,
+                public userService: UserService) {
+    }
 
   ngOnInit() {
   }
 
-  login() {
+  async login() {
     const loginForm = this.loginForm;
     const barcode = document.getElementById('barcode');
-
-    this.apis.loginAPI(loginForm.value)
-    .subscribe(
+    await this.apis.loginAPI(loginForm.value).toPromise()
+    .then(
         result => {
             this.apiResponse = result;
-            console.log(this.apiResponse);
+    });
 
-            if (this.apiResponse) {
-                this.username = this.apiResponse.USERNAME;
-                // this.userService.setUser(this.apiResponse);
-                this.headerService.getUserForwardList();
+    if (this.apiResponse) {
+      // console.log('res: ', this.apiResponse);
+      this.username = this.apiResponse.USERNAME;
+      this.headerService.getUserForwardList();
+      this.userService.setUser(this.apiResponse);
+      this.headerService.refreshSource();
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        barcode.focus();
+      }, 100);
+    } else {
+      this.loginHidden = false;
+      setTimeout(() => {
+          this.loginHidden = true;
+      }, 3000);
+    }
+    // this.apis.loginAPI(loginForm.value)
+    // .subscribe(
+    //     result => {
+    //         this.apiResponse = result;
+    //         console.log(this.apiResponse);
 
-                this.modalService.dismissAll();
-                setTimeout(() => {
-                  barcode.focus();
-                }, 100);
-            } else {
-                this.loginHidden = false;
-                setTimeout(() => {
-                    this.loginHidden = true;
-                }, 3000);
-            }
+    //         if (this.apiResponse) {
+    //             this.username = this.apiResponse.USERNAME;
+    //             this.userService.setUser(this.apiResponse);
+    //             this.headerService.getUserForwardList();
 
-        },
-        error => {
-            this.apiResponse = error;
-            console.log('No response ' + error);
-        }
-    );
+    //             this.modalService.dismissAll();
+    //             setTimeout(() => {
+    //               barcode.focus();
+    //             }, 100);
+    //         } else {
+    //             this.loginHidden = false;
+    //             setTimeout(() => {
+    //                 this.loginHidden = true;
+    //             }, 3000);
+    //         }
+
+    //     },
+    //     error => {
+    //         this.apiResponse = error;
+    //         console.log('No response ' + error);
+    //     }
+    // );
 }
 
 }

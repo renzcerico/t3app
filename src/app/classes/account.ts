@@ -1,5 +1,6 @@
-import { HeaderService } from './../services/header.service';
 import Header from './header';
+import { HeaderService } from './../services/header.service';
+
 export default class Account {
     ID: number;
     FIRST_NAME: string;
@@ -9,14 +10,15 @@ export default class Account {
     USER_LEVEL: string;
     CREATED_AT: string;
     USERNAME: string;
-    headerObj: Header;
+    // headerObj: Header;
     userTypes = {
-        manpower    : 1,
+        user        : 1,
         supervisor  : 2,
         manager     : 3,
         admin       : 4
     };
-    constructor(jsonObj, private headerService: HeaderService) {
+    _IS_AUTHORIZED;
+    constructor(jsonObj: any, public headerService: HeaderService) {
         this.ID          = jsonObj.ID || null;
         this.FIRST_NAME  = jsonObj.FIRST_NAME || '';
         this.MIDDLE_NAME = jsonObj.MIDDLE_NAME || '';
@@ -26,8 +28,10 @@ export default class Account {
         this.CREATED_AT  = jsonObj.CREATED_AT || '';
         this.USERNAME    = jsonObj.USERNAME || '';
         headerService.header$.subscribe(
-            headerObj => {
-                this.headerObj = new Header(headerObj.header_obj);
+            data => {
+              const headerObj = new Header(data.header_obj);
+            //   console.log('HEADAER OBJ: ', headerObj);
+              this.IS_AUTHORIZED = headerObj;
             }
         );
     }
@@ -37,36 +41,45 @@ export default class Account {
     }
 
     get IS_AUTHORIZED() {
-        console.log('header: ', this.headerObj);
-        if (this.headerObj) {
-            if (this.headerObj.STATUS > this.USER_TYPE) {
-                return false;
-            } else if (this.headerObj.STATUS < this.USER_TYPE) {
-                return true;
+        // console.log(this._IS_AUTHORIZED);
+        return this._IS_AUTHORIZED;
+    }
+
+    set IS_AUTHORIZED(headerObj: Header) {
+        if (headerObj) {
+            if (headerObj.STATUS > this.USER_TYPE) {
+                this._IS_AUTHORIZED = false;
+            } else if (headerObj.STATUS < this.USER_TYPE) {
+                // console.log('header: ', headerObj.STATUS);
+                // console.log('user type: ', this.USER_TYPE);
+                this._IS_AUTHORIZED = true;
             } else {
-                switch (this.headerObj.STATUS) {
+                switch (headerObj.STATUS) {
                     case 1:
-                        return true;
+                        this._IS_AUTHORIZED = true;
                         break;
                     case 2:
-                        if (this.headerObj.REVIEWED_BY === this.ID) {
-                            return true;
+                        if (headerObj.REVIEWED_BY === this.ID) {
+                            this._IS_AUTHORIZED = true;
+                        } else {
+                            this._IS_AUTHORIZED = false;
                         }
-                        return false;
                         break;
                     case 3:
-                        if (this.headerObj.APPROVED_BY === this.ID) {
-                            return true;
+                        if (headerObj.APPROVED_BY === this.ID) {
+                            this._IS_AUTHORIZED = true;
+                        } else {
+                            this._IS_AUTHORIZED = false;
                         }
-                        return false;
                         break;
                     default:
-                        return false;
+                        this._IS_AUTHORIZED = false;
                         break;
                 }
             }
             // return false;
+        } else {
+            this._IS_AUTHORIZED = false;
         }
-        return false;
     }
 }

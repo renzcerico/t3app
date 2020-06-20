@@ -20,12 +20,15 @@ export class HeaderService {
   visibleStatus: any;
   userForwardList = new Subject<any>();
   userForwardList$ = this.userForwardList.asObservable();
-
+  currentData;
   constructor(private apiService: ApiService,
               public http: HttpClient,
               ) {
     this.getHeaderCountPerStatus();
     this.getUserForwardList();
+    this.header$.subscribe(data => {
+      this.currentData = data;
+    });
   }
 
   setHeaderObj(headerObj) {
@@ -47,6 +50,7 @@ export class HeaderService {
     data = String(data).toUpperCase();
     return this.http.get(`${this.url}` + '/api/get_header_by_status/' + data);
   }
+
   async getData(barcodeNum) {
     await this.apiService.getAllByBarcode(barcodeNum).toPromise()
     .then(
@@ -86,5 +90,10 @@ export class HeaderService {
             console.log(err);
         }
     );
+  }
+
+  refreshSource() {
+    console.log(this.currentData);
+    this.setHeaderObj(this.currentData);
   }
 }

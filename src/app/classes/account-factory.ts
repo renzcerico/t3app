@@ -5,7 +5,7 @@ import Account from './account';
 @Injectable()
 export class AccountFactory {
     constructor(private headerService: HeaderService) {}
-    public setAccount(jsonObj) {
+    public setAccount(jsonObj: object) {
         return new Account(jsonObj, this.headerService);
     }
 }

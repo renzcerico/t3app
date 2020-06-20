@@ -117,6 +117,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
 
   valueChanged(index) {
     this.activities[index].IS_CHANGED = 1;
+    this.activities[index].LAST_UPDATED_BY = this.activeUser.ID;
   }
 
   openModal(event, index) {
@@ -135,6 +136,8 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.in_activity = this.activities[index];
+    modalRef.componentInstance.isAuthorized = this.isAuthorized;
+    modalRef.componentInstance.userID = this.activeUser.ID;
   }
 
   openDowntimeModal(event, index) {
@@ -154,6 +157,8 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
       });
     modalRef.componentInstance.activity = this.activities[index];
     modalRef.componentInstance.downtimeTypes = this.downtimeTypes;
+    modalRef.componentInstance.isAuthorized = this.isAuthorized;
+    modalRef.componentInstance.userID = this.activeUser.ID;
     event.stopPropagation();
   }
 

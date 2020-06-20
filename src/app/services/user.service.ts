@@ -19,21 +19,23 @@ export class UserService {
 
   setUser(user) {
     if (user) {
-      const userObj = this.accountFactory.setAccount(user);
+      const userObj: Account = this.accountFactory.setAccount(user);
+      console.log('user: ', userObj);
       this.user.next(userObj);
     } else {
       this.user.next(user);
     }
   }
 
-  getUser() {
-    return this.user;
-  }
+  // getUser() {
+  //   return this.user;
+  // }
 
   isAuth() {
     this.api.isAuth()
     .subscribe(
         res => {
+          console.log('res: ', res);
           this.setUser(res);
         },
         err => {
