@@ -158,7 +158,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
-        await this.headerService.getData('163178');
+        // await this.headerService.getData('12345');
         // this.barcode();
     }
 

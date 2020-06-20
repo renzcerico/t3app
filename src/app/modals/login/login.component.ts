@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
             if (this.apiResponse) {
                 this.username = this.apiResponse.USERNAME;
-                this.userService.setUser(this.apiResponse);
+                // this.userService.setUser(this.apiResponse);
                 this.headerService.getUserForwardList();
 
                 this.modalService.dismissAll();

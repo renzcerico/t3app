@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
               '../top-bar/top-bar.component.css',
               '../material/material.component.css']
 })
+
 export class AccountsComponent implements OnInit {
   formCreateAccount;
   msg = '';
