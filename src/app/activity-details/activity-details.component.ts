@@ -16,7 +16,7 @@ import { UserService } from '../services/user.service';
   templateUrl: './activity-details.component.html',
   styleUrls: ['./activity-details.component.css']
 })
-export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
+export class ActivityDetailsComponent implements OnInit {
 
   // tslint:disable-next-line: variable-name
   in_activity: any = [];
@@ -26,30 +26,13 @@ export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
   tempActDetails: Array<any> = [];
   activity: any = {};
   isChanged = 0;
-  activeUser;
   userID;
-  userType: number;
   isAuthorized: boolean;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
   constructor(public activeModal: NgbActiveModal,
-              private activityFactory: ActivityFactory,
-              private userService: UserService) {
-                this.userService.user.subscribe(
-                  res => {
-                    if (res) {
-                      this.activeUser = res;
-                    }
-                  },
-                    err => {
-                    console.log(err);
-                  }
-                );
-  }
-
-  ngAfterContentChecked() {
-    (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
+              private activityFactory: ActivityFactory) {
   }
 
   ngOnInit() {
@@ -73,9 +56,6 @@ export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
     if (active < elArr.length - 1) {
       elArr[active + 1].nativeElement.focus();
     } else {
-      elArr.forEach((el, index) => {
-        // TO DO catch if prev input is null
-      });
       const newActivityDetail = {
         LOT_NUMBER      : this.mLotNumber,
         PACKED_QTY      : this.mPacked,
@@ -85,6 +65,7 @@ export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
       };
       this.isChanged = 1;
       this.tempActDetails.push(newActivityDetail);
+      this.in_activity.LAST_UPDATED_BY = this.userID;
       this.mPacked = 0;
       this.mLotNumber = '';
       elArr[0].nativeElement.focus();
@@ -128,7 +109,9 @@ export class ActivityDetailsComponent implements OnInit, AfterContentChecked {
         }
       }
     if (this.isChanged === 1) {
+      console.log(this.userID);
       this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
+      this.in_activity.LAST_UPDATED_BY = this.userID;
     }
     this.isChanged = 0;
     this.activeModal.dismiss('Cross click');

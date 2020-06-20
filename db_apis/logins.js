@@ -24,17 +24,13 @@ const forwardListSql = `BEGIN T3_PACKAGE.FORWARD_LIST(:userLevel, :cursor); END;
 
 const forwardList = async (userLevel) => {
   const bind = {
-    userLevel: {
-      dir: oracledb.BIND_IN,
-      type: oracledb.VARCHAR2,
-      value: userLevel.toLowerCase()
-    },
+    userLevel: userLevel.toLowerCase(),
     cursor: {
       dir: oracledb.BIND_OUT,
       type: oracledb.CURSOR
     }
   };
-
+  console.log(bind);
   const result = await database.resultsetExecute(forwardListSql, bind);
 
   return result;

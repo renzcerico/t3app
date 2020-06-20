@@ -29,6 +29,7 @@ export default class Header {
     APPROVED_BY: number;
     REVIEWED_AT: string;
     APPROVED_AT: string;
+    FORWARDED_AT: string;
 
     constructor(jsonObj) {
         this.ID = jsonObj.ID || null;
@@ -49,11 +50,12 @@ export default class Header {
         this.SHIFT = jsonObj.SHIFT || 'dayshift';
         this.SCHEDULE_DATE_START = jsonObj.SCHEDULE_DATE_START || '';
         this.SCHEDULE_DATE_END = jsonObj.SCHEDULE_DATE_END || '';
-        this.FORWARDED_BY = jsonObj.FORWARDED_BY || 0;
-        this.REVIEWED_BY = jsonObj.REVIEWED_BY || 0;
-        this.APPROVED_BY = jsonObj.APPROVED_BY || 0;
+        this.FORWARDED_BY = jsonObj.FORWARDED_BY || null;
+        this.REVIEWED_BY = jsonObj.REVIEWED_BY || null;
+        this.APPROVED_BY = jsonObj.APPROVED_BY || null;
         this.REVIEWED_AT = jsonObj.REVIEWED_AT || '';
         this.APPROVED_AT = jsonObj.APPROVED_AT || '';
+        this.FORWARDED_AT = jsonObj.FORWARDED_AT || '';
         (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
         (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }

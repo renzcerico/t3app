@@ -63,9 +63,7 @@ function getLoginFromRec(req) {
           res.status(200).end();
         } else {
           const userLevel = session.user.USER_LEVEL;
-          
           result = await logins.forwardList(userLevel);
-          
           res.status(200).json(result);
         }
     } catch (err) {

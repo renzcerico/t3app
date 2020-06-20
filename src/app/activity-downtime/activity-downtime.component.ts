@@ -8,13 +8,12 @@ import {
   OnInit
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-activity-downtime',
   templateUrl: './activity-downtime.component.html',
   styleUrls: ['./activity-downtime.component.css']
 })
-export class ActivityDowntimeComponent implements OnInit,  AfterContentChecked{
+export class ActivityDowntimeComponent implements OnInit {
 
   mLotNumber: string;
   mPacked = 0;
@@ -27,28 +26,13 @@ export class ActivityDowntimeComponent implements OnInit,  AfterContentChecked{
   mRemarks = '';
   mQuantity = 0;
   isChanged = 0;
-  activeUser;
   userID;
-  userType: number;
   isAuthorized: boolean;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
-  constructor(public activeModal: NgbActiveModal, private userService: UserService) {
-    this.userService.user.subscribe(
-      res => {
-        if (res) {
-          this.activeUser = res;
-        }
-      },
-        err => {
-        console.log(err);
-      }
-    );
-  }
-
-  ngAfterContentChecked() {
-    (this.activeUser ? this.isAuthorized = this.activeUser.IS_AUTHORIZED : this.isAuthorized = false);
+  constructor(public activeModal: NgbActiveModal) {
+    //
   }
 
   ngOnInit() {
@@ -118,6 +102,7 @@ export class ActivityDowntimeComponent implements OnInit,  AfterContentChecked{
       this.activity.IS_CHANGED = 1;
     }
     this.activity.ACTIVITY_DOWNTIME = this.tempActDowntime;
+    this.activity.LAST_UPDATED_BY = this.userID;
     this.isChanged = 0;
     this.activeModal.dismiss('Save');
   }
