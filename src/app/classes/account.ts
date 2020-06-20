@@ -27,7 +27,7 @@ export default class Account {
         this.USERNAME    = jsonObj.USERNAME || '';
         headerService.header$.subscribe(
             headerObj => {
-                this.headerObj = headerObj.header_obj;
+                this.headerObj = new Header(headerObj.header_obj);
             }
         );
     }
@@ -37,32 +37,36 @@ export default class Account {
     }
 
     get IS_AUTHORIZED() {
+        console.log('header: ', this.headerObj);
+        if (this.headerObj) {
+            if (this.headerObj.STATUS > this.USER_TYPE) {
+                return false;
+            } else if (this.headerObj.STATUS < this.USER_TYPE) {
+                return true;
+            } else {
+                switch (this.headerObj.STATUS) {
+                    case 1:
+                        return true;
+                        break;
+                    case 2:
+                        if (this.headerObj.REVIEWED_BY === this.ID) {
+                            return true;
+                        }
+                        return false;
+                        break;
+                    case 3:
+                        if (this.headerObj.APPROVED_BY === this.ID) {
+                            return true;
+                        }
+                        return false;
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            }
+            // return false;
+        }
         return false;
-        // if (!this.activeUser) {
-        //     return false;
-        //   }
-        //   switch (this.headerObj.STATUS) {
-        //     case 1:
-        //       if (this.activeUser) { return true; }
-        //       return false;
-        //       break;
-        //     case 2:
-        //       if (this.userType > 2 || this.activeUser.ID === this.headerObj.REVIEWED_BY) {
-        //         return true;
-        //       } else {
-        //         return false;
-        //       }
-        //       break;
-        //     case 3:
-        //       if (this.userType > 3 || this.activeUser.ID === this.headerObj.APPROVED_BY) {
-        //         return true;
-        //       } else {
-        //         return false;
-        //       }
-        //       break;
-        //     case 4:
-        //       return false;
-        //       break;
-        //   }
     }
 }

@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     activeUser;
     userID;
     usersForwardList;
+    isAuthorized: boolean;
 
     get scheduleTime() {
         let res = '';
@@ -65,6 +66,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         // 3 : completed
         // 4 : closed
         // tslint:disable-next-line: no-inferrable-types
+        if ( !this.isAuthorized ) {
+            return 'none';
+        }
         if ( this.headerObj.STATUS > 3 ) {
             return 'none';
         }
@@ -121,6 +125,16 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 this.setData(header);
             }
         );
+        this.userService.user$.subscribe(
+            res => {
+                if (res) {
+                    this.activeUser = res;
+                }
+            },
+            err => {
+                console.log(err);
+            }
+        );
     }
 
     ngAfterContentChecked() {
@@ -130,6 +144,10 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.setForwardList();
         if (this.activeUser) {
             this.userType = this.activeUser.USER_TYPE;
+            this.isAuthorized = this.activeUser.IS_AUTHORIZED;
+            // console.log(this.isAuthorized);
+        } else {
+            this.isAuthorized = false;
         }
     }
 
@@ -140,16 +158,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
-        this.userService.user.subscribe(
-            res => {
-                if (res) {
-                    this.activeUser = res;
-                }
-            },
-            err => {
-                console.log(err);
-            }
-        );
         await this.headerService.getData('163178');
         // this.barcode();
     }

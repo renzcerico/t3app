@@ -13,7 +13,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityDetailsComponent } from '../activity-details/activity-details.component';
 import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtime.component';
 import { UserService } from './../services/user.service';
-import { HeaderService } from '../services/header.service';
 
 @Component({
   selector: 'app-activity',

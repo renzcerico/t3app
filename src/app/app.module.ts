@@ -1,3 +1,4 @@
+import { AccountFactory } from './classes/account-factory';
 import { ActivityFactory } from './classes/activity-factory';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -62,6 +63,7 @@ NgbModule,
 providers: [
 ApiService,
 ActivityFactory,
+AccountFactory,
 // { provide: LocationStrategy, useClass: HashLocationStrategy }
 ],
 bootstrap: [AppComponent]

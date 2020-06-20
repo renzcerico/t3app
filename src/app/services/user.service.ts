@@ -1,9 +1,10 @@
-import { HeaderService } from './header.service';
+import { AccountFactory } from './../classes/account-factory';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import Account from '../classes/account';
+// implement account factory
 @Injectable({
   providedIn: 'root'
 })
@@ -11,19 +12,20 @@ export class UserService {
   user = new Subject<any>();
   user$ = this.user.asObservable();
 
-  constructor(public api: ApiService, private headerService: HeaderService) {
+  constructor(public api: ApiService,
+              private accountFactory: AccountFactory) {
       this.isAuth();
   }
 
   setUser(user) {
-      if (user) {
-        const userObj = new Account(user, this.headerService);
-        this.user.next(userObj);
-      } else {
-        this.user.next(user);
-      }
+    if (user) {
+      const userObj = this.accountFactory.setAccount(user);
+      this.user.next(userObj);
+    } else {
+      this.user.next(user);
+    }
   }
-  // create account claaaaaassssssssssssssssssssssssssssssssssssssssssssss
+
   getUser() {
     return this.user;
   }
