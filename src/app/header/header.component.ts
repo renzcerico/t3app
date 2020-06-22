@@ -14,6 +14,8 @@ import Header from '../classes/header';
 import { HeaderService } from '../services/header.service';
 import { UserService } from './../services/user.service';
 import Swal from 'sweetalert2';
+import { HeaderModalComponent } from '../header-modal/header-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-home',
@@ -22,6 +24,7 @@ import Swal from 'sweetalert2';
 })
 
 export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewInit {
+    [x: string]: any;
     seeResult = 'See more';
     faAngleUp = faAngleUp;
     faAngleDown = faAngleDown;
@@ -100,6 +103,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
 
     apiResponse: any;
     constructor(
+        private modalService: NgbModal,
         public apis: ApiService,
         private activityService: ActivityService,
         private materialService: MaterialService,
@@ -211,7 +215,30 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.headerService.getData(barcode);
     }
 
-    async header() {
+    async header(showConfirmMessage: boolean = true) {
+        if (showConfirmMessage) {
+            let isConfirmed: boolean;
+            await Swal.fire({
+                title: 'Confirm',
+                showCancelButton: true,
+                text: 'Save Transaction?',
+                // text: (this.userType > 1 ? 'Do you want to approve another transaction?' : 'Save Transaction?'),
+                icon: 'question',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((confirm) => {
+                isConfirmed = confirm.isConfirmed;
+            });
+
+            if (!isConfirmed) {
+                // if (this.userType > 1) {
+                //     const modalRef = this.modalService.open(HeaderModalComponent, { size: 'xl' });
+                //     modalRef.componentInstance.status = this.userType;
+                //     // modalRef.componentInstance.in_activity = this.activities[index];
+                // }
+                return;
+            }
+        }
         // tslint:disable-next-line: variable-name
         const activity_collection = [];
         this.actCollection.forEach(el => {
@@ -227,10 +254,22 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         await this.apis.header(json).toPromise()
             .then(
                 res => {
-                    console.log(res);
+                    if (res) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Transaction Saved.',
+                            icon: 'success',
+                            confirmButtonText: 'Okay',
+                        });
+                    }
                 },
                 err => {
-                    console.log(err);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error saving transaction.',
+                        icon: 'error',
+                        confirmButtonText: 'Okay',
+                    });
                 }
                 );
         this.headerService.getData(json.header_obj.BARCODE);
@@ -318,7 +357,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     this.headerObj.APPROVED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
                     break;
             }
-            this.header();
+            this.header(false);
         }
     }
 
