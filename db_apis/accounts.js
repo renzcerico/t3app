@@ -17,10 +17,7 @@ const insert = async (data) => {
         }
     };
 
-    console.log(binds);
-
     const result = await database.simpleExecute(sqlInsert, binds);
-    console.log(result);
     return result;
 };
 
@@ -81,8 +78,6 @@ const resetPassword = async (id) => {
             type: oracledb.VARCHAR
         }
     };
-
-    console.log(binds);
 
     const result = await database.simpleExecute(sqlResetPassword, binds);
 

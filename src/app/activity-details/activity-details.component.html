@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngIf="isAuthorized">
+            <tr *ngIf="isAuthorized && canAdd">
                 <td class="align-bottom td-editable">
                     <div class="td-indicator-required"></div>
                     <input
@@ -64,15 +64,10 @@
                 </td>
             </tr>
             <tr *ngFor="let val of tempActDetails; let i = index">
-                <td *ngIf="!isAuthorized" class="align-middle">
-                    <span *ngIf="val.LOT_NUMBER">
-                        {{val.LOT_NUMBER}}
-                    </span>
-                    <span *ngIf="!val.LOT_NUMBER">
-                        
-                    </span>
+                <td *ngIf="!isAuthorized || !canUpdate" class="align-middle text-right px-3">
+                    {{val.LOT_NUMBER || 0}}
                 </td>
-                <td *ngIf="isAuthorized" class="text-right td-editable">
+                <td *ngIf="isAuthorized && canUpdate" class="text-right td-editable">
                     <div class="td-indicator-required"></div>
                     <input
                         type="text"
@@ -80,18 +75,13 @@
                         (ngModelChange)="setIsChanged(i)"
                         [(ngModel)]="tempActDetails[i].LOT_NUMBER">
                 </td>
-                <td class="text-right align-middle">
+                <td class="text-right align-middle px-3">
                     {{ val.PACKED_QTY | number: ''}}
                 </td>
-                <td *ngIf="!isAuthorized" class="align-middle">
-                    <span *ngIf="val.ADJ_QTY">
-                        {{val.ADJ_QTY}}
-                    </span>
-                    <span *ngIf="!val.ADJ_QTY">
-                        
-                    </span>
+                <td *ngIf="!isAuthorized || !canUpdate" class="align-middle text-right px-3">
+                    {{val.ADJ_QTY || 0}}
                 </td>
-                <td *ngIf="isAuthorized" class="text-right td-editable">
+                <td *ngIf="isAuthorized && canUpdate" class="text-right td-editable">
                     <div class="td-indicator"></div>
                     <input
                         type="number"
@@ -107,10 +97,10 @@
         </tbody>
         <tfoot class="text-right">
             <tr>
-                <th>Subtotal</th>
-                <th>{{ packedQty | number: '' }}</th>
-                <th>{{ adjQty | number: '' }}</th>
-                <th>{{ total | number: '' }}</th>
+                <th class="px-3">Subtotal</th>
+                <th class="px-3">{{ packedQty | number: '' }}</th>
+                <th class="px-3">{{ adjQty | number: '' }}</th>
+                <th class="px-3">{{ total | number: '' }}</th>
             </tr>
         </tfoot>
     </table>

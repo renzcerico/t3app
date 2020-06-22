@@ -102,7 +102,6 @@ export class ManpowerService {
     this.defaultManpower.forEach(el => {
       const actualManpower = manpower.filter(e => e.POSITION_ID === el.POSITION_ID);
       if (actualManpower.length > 0) {
-        // console.log('el: ', actualManpower[0]);
         manpowerObj = new Manpower(actualManpower[0]);
       } else {
         manpowerObj = new Manpower(el);

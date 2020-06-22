@@ -39,9 +39,9 @@ export class TopBarComponent implements OnInit {
     apiResponse: any;
 
     constructor(private modalService: NgbModal,
-        public apis: ApiService,
-        private headerService: HeaderService,
-        public userService: UserService) {
+                public apis: ApiService,
+                private headerService: HeaderService,
+                public userService: UserService) {
         headerService.headerCount$.subscribe(
             headerCount => {
               this.headerCount = headerCount;

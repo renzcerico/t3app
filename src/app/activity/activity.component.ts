@@ -62,7 +62,6 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     activityService.activities$.subscribe(
       activities => {
         this.activities = activities;
-        console.log(activities)
       }
     );
     activityService.downtimeTypes$.subscribe(
@@ -133,13 +132,12 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
             return confirm('You will lose your unsaved changes');
             }
           }
-          console.log(this.activities[index].LAST_UPDATED_BY);
         }
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.in_activity = this.activities[index];
-    modalRef.componentInstance.isAuthorized = this.isAuthorized;
-    modalRef.componentInstance.userID = this.activeUser.ID;
+    modalRef.componentInstance._isAuthorized = this.isAuthorized;
+    modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
   }
 
   openDowntimeModal(event, index) {
@@ -160,7 +158,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     modalRef.componentInstance.activity = this.activities[index];
     modalRef.componentInstance.downtimeTypes = this.downtimeTypes;
     modalRef.componentInstance.isAuthorized = this.isAuthorized;
-    modalRef.componentInstance.userID = this.activeUser.ID;
+    modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
     event.stopPropagation();
   }
 

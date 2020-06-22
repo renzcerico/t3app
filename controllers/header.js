@@ -18,12 +18,8 @@ const post = async (req, res, next) => {
             product_desc: req.body.product_desc
         };
 
-        // console.log(data);
-        // return data;
-
         const rows = await header.post();
         res.status(200).end(rows);
-        console.log(rows);
     } catch (err) {
         next(err);
     }

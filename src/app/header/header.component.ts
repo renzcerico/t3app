@@ -145,7 +145,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         if (this.activeUser) {
             this.userType = this.activeUser.USER_TYPE;
             this.isAuthorized = this.activeUser.IS_AUTHORIZED;
-            // console.log(this.isAuthorized);
         } else {
             this.isAuthorized = false;
         }
@@ -209,11 +208,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
 
     handleBarcodeChange(barcode) {
         this.headerService.getData(barcode);
-        console.log(barcode)
     }
 
     async header() {
-        // console.log(this.manPowercollection);
         // tslint:disable-next-line: variable-name
         const activity_collection = [];
         this.actCollection.forEach(el => {
@@ -226,7 +223,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             user_id             : this.activeUser.ID,
             activity_collection,
         };
-        console.log(json);
         await this.apis.header(json).toPromise()
             .then(
                 res => {
@@ -248,7 +244,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     updateHeaderStatus(action: number) {
-        if (!this.receiverID && (this.headerObj.STATUS >= this.userType) && this.headerObj.STATUS < 3) {
+        if (!this.receiverID && (this.headerObj.STATUS >= this.userType || this.userType < 3) && this.headerObj.STATUS < 3) {
             alert('Please select receiver');
             return;
         }

@@ -150,8 +150,6 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
 
   handleInput(i: number) {
     this.manpowers[i].IS_CHANGED = 1;
-    // this.manpowers[i].LAST_UPDATED_BY = this.activeUser.ID;
-    // console.log(this.manpowers);
   }
 
 }

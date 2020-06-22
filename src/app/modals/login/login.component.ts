@@ -39,9 +39,9 @@ export class LoginComponent implements OnInit {
     });
 
     if (this.apiResponse) {
-      // console.log('res: ', this.apiResponse);
       this.username = this.apiResponse.USERNAME;
       this.headerService.getUserForwardList();
+      this.headerService.getHeaderCountPerStatus();
       this.userService.setUser(this.apiResponse);
       this.headerService.refreshSource();
       this.modalService.dismissAll();
@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
     // .subscribe(
     //     result => {
     //         this.apiResponse = result;
-    //         console.log(this.apiResponse);
 
     //         if (this.apiResponse) {
     //             this.username = this.apiResponse.USERNAME;

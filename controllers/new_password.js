@@ -10,9 +10,7 @@ function getLoginFromRec(req) {
 
 async function post(req, res, next) {
   try {
-    console.log(req)
     let login = getLoginFromRec(req);
-  console.log(login)
     login = await new_pass.setPassword(login);
   
     res.status(201).json(login);
