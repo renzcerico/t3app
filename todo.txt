@@ -13,3 +13,6 @@ Status
  (gray closed, green complete, blue open, red wip) - OK
 Cursor Pointer - OK
 Material - OK
+
+specific status counter for every manpower who is logged in.
+auto select/highlight for numbers.

@@ -45,6 +45,7 @@ export class TopBarComponent implements OnInit {
         headerService.headerCount$.subscribe(
             headerCount => {
               this.headerCount = headerCount;
+              console.log(this.headerCount)
             }
           );
 

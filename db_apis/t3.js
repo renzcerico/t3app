@@ -1,5 +1,6 @@
 const oracle = require('oracledb');
 const database = require('../services/database.js');
+const session = require('express-session');
 
 const storeAll = async (data) => {
     let connect;
@@ -154,8 +155,16 @@ const getDowntimeTypes = async () => {
 module.exports.getDowntimeTypes = getDowntimeTypes;
 
 const getHeaderCountPerStatus = async () => {
-    const q = `BEGIN T3_PACKAGE.GET_HEADER_COUNT_PER_STATUS (:cursor); END;`;
+    let q = `BEGIN T3_PACKAGE.GET_HEADER_COUNT_PER_STATUS (:isLoggedIn, :cursor); END;`;
+    
+    if (!session.user) {
+        isLoggedIn = 0;
+    } else {
+        isLoggedIn = session.user.ID;
+    }
+
     let binds = {
+        isLoggedIn: isLoggedIn,
         cursor: {
             dir: oracle.BIND_OUT,
             type: oracle.CURSOR
