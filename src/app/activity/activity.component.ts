@@ -62,7 +62,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     activityService.activities$.subscribe(
       activities => {
         this.activities = activities;
-        console.log(this.activities);
+        console.log(activities)
       }
     );
     activityService.downtimeTypes$.subscribe(

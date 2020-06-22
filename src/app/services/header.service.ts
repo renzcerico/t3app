@@ -94,6 +94,8 @@ export class HeaderService {
 
   refreshSource() {
     console.log(this.currentData);
-    this.setHeaderObj(this.currentData);
+    if (this.currentData) {
+      this.setHeaderObj(this.currentData);
+    }
   }
 }
