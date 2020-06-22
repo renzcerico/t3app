@@ -1,11 +1,4 @@
---------------------------------------------------------
---  File created - Monday-June-22-2020   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Package T3_PACKAGE
---------------------------------------------------------
-
-  CREATE OR REPLACE PACKAGE "T3"."T3_PACKAGE" AS 
+create or replace PACKAGE T3_PACKAGE AS 
 
     PROCEDURE STORE_ALL ( 
         obj_header IN T3.HEADER_OBJ
@@ -48,7 +41,7 @@
     
     PROCEDURE GET_DOWNTIME_TYPES (res OUT SYS_REFCURSOR);
     
-    PROCEDURE GET_HEADER_COUNT_PER_STATUS ( res OUT SYS_REFCURSOR);
+    PROCEDURE GET_HEADER_COUNT_PER_STATUS (user_id NUMBER DEFAULT 0, res OUT SYS_REFCURSOR);
     
     PROCEDURE GET_HEADER_BY_STATUS(
         status_code IN NUMBER
@@ -72,5 +65,3 @@
     PROCEDURE FORWARD_LIST(userLevel IN VARCHAR2, res OUT SYS_REFCURSOR);
 
 END T3_PACKAGE;
-
-/
