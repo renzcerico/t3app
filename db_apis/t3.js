@@ -10,6 +10,7 @@ const storeAll = async (data) => {
                     , :activity_data
                     , :manpower_data
                     , :material_data
+                    , :user_id
                     , :output
                 );
             end;`;
@@ -33,11 +34,13 @@ const storeAll = async (data) => {
             activity_data: activity_data,
             manpower_data: manpower_data,
             material_data: material_data,
+            user_id: data.user_id,
             output: {
                 dir: oracle.BIND_OUT,
                 type: oracle.NUMBER
             }
         }
+        console.log('BINDS: ', binds);
         const result = await connect.execute(query, binds, {autoCommit: true})
         .catch(error => { console.log('caught', error.message); });
         return result.outBinds.output;

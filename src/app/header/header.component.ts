@@ -158,7 +158,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     }
 
     async ngOnInit() {
-        // await this.headerService.getData('12345');
+        await this.headerService.getData('163178');
         // this.barcode();
     }
 
@@ -222,9 +222,10 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             header_obj          : this.headerObj,
             material_collection : this.matCollection,
             manpower_collection : this.manPowercollection,
-            activity_collection
+            user_id             : this.activeUser.ID,
+            activity_collection,
         };
-
+        console.log(json);
         await this.apis.header(json).toPromise()
             .then(
                 res => {
@@ -280,9 +281,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
                         this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.FORWARDED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                    } else {
-                        this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.FORWARDED_AT = moment(this.headerObj.FORWARDED_AT).format('DD-MMM-YYYY HH:mm:ss');
                     }
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 3;
@@ -298,13 +296,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
                     } else if (this.headerObj.STATUS === 2) {
                         this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
-                        this.headerObj.FORWARDED_AT = moment(this.headerObj.FORWARDED_AT).format('DD-MMM-YYYY HH:mm:ss');
-                    } else {
-                        this.headerObj.ACTUAL_END = moment(this.headerObj.ACTUAL_END).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.REVIEWED_AT = moment(this.headerObj.REVIEWED_AT).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.FORWARDED_AT = moment(this.headerObj.FORWARDED_AT).format('DD-MMM-YYYY HH:mm:ss');
                     }
                     this.headerObj.APPROVED_BY = this.activeUser.ID;
                     this.headerObj.IS_CHANGED = 1;

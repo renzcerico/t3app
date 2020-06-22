@@ -100,9 +100,9 @@ export class ActivityDowntimeComponent implements OnInit {
       }
     if (this.isChanged === 1) {
       this.activity.IS_CHANGED = 1;
+      // this.activity.LAST_UPDATED_BY = this.userID;
     }
     this.activity.ACTIVITY_DOWNTIME = this.tempActDowntime;
-    this.activity.LAST_UPDATED_BY = this.userID;
     this.isChanged = 0;
     this.activeModal.dismiss('Save');
   }

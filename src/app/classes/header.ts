@@ -35,7 +35,7 @@ export default class Header {
         this.ID = jsonObj.ID || null;
         this.BARCODE = jsonObj.BARCODE || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
         this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');
-        this.ACTUAL_END = jsonObj.ACTUAL_END || '';
+        this.ACTUAL_END = (jsonObj.ACTUAL_END ? moment(jsonObj.ACTUAL_END ).format('DD-MMM-YYYY HH:mm:ss') : '' ) || '';
         this.STATUS = jsonObj.STATUS || 1;
         this.PO_NUMBER = jsonObj.PO_NUMBER || jsonObj.CUST_PO_NUMBER || '';
         this.CONTROL_NUMBER = jsonObj.CONTROL_NUMBER || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
@@ -53,9 +53,9 @@ export default class Header {
         this.FORWARDED_BY = jsonObj.FORWARDED_BY || null;
         this.REVIEWED_BY = jsonObj.REVIEWED_BY || null;
         this.APPROVED_BY = jsonObj.APPROVED_BY || null;
-        this.REVIEWED_AT = jsonObj.REVIEWED_AT || '';
-        this.APPROVED_AT = jsonObj.APPROVED_AT || '';
-        this.FORWARDED_AT = jsonObj.FORWARDED_AT || '';
+        this.REVIEWED_AT = (jsonObj.REVIEWED_AT ? moment(jsonObj.REVIEWED_AT ).format('DD-MMM-YYYY HH:mm:ss') : '') || '';
+        this.APPROVED_AT = (jsonObj.APPROVED_AT ? moment(jsonObj.APPROVED_AT ).format('DD-MMM-YYYY HH:mm:ss') : '') || '';
+        this.FORWARDED_AT = (jsonObj.FORWARDED_AT ? moment(jsonObj.FORWARDED_AT ).format('DD-MMM-YYYY HH:mm:ss') : '') || '';
         (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
         (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }

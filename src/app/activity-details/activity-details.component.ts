@@ -109,9 +109,10 @@ export class ActivityDetailsComponent implements OnInit {
         }
       }
     if (this.isChanged === 1) {
-      console.log(this.userID);
+      this.in_activity.IS_CHANGED = 1;
       this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
-      this.in_activity.LAST_UPDATED_BY = this.userID;
+      // this.in_activity.LAST_UPDATED_BY = this.userID;
+      console.log(this.userID);
     }
     this.isChanged = 0;
     this.activeModal.dismiss('Cross click');
