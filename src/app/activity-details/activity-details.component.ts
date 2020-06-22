@@ -26,8 +26,9 @@ export class ActivityDetailsComponent implements OnInit {
   tempActDetails: Array<any> = [];
   activity: any = {};
   isChanged = 0;
-  userID;
-  isAuthorized: boolean;
+  userType: number;
+  // tslint:disable-next-line: variable-name
+  _isAuthorized: boolean;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
@@ -36,6 +37,7 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAuthorized = this._isAuthorized;
     this.in_activity.ACTIVITY_DETAILS.forEach(el => {
       const actDetail = {};
       Object.assign(actDetail, el);
@@ -65,7 +67,6 @@ export class ActivityDetailsComponent implements OnInit {
       };
       this.isChanged = 1;
       this.tempActDetails.push(newActivityDetail);
-      this.in_activity.LAST_UPDATED_BY = this.userID;
       this.mPacked = 0;
       this.mLotNumber = '';
       elArr[0].nativeElement.focus();
@@ -111,11 +112,36 @@ export class ActivityDetailsComponent implements OnInit {
     if (this.isChanged === 1) {
       this.in_activity.IS_CHANGED = 1;
       this.in_activity.ACTIVITY_DETAILS = this.tempActDetails;
-      // this.in_activity.LAST_UPDATED_BY = this.userID;
-      console.log(this.userID);
     }
     this.isChanged = 0;
     this.activeModal.dismiss('Cross click');
   }
 
+  get isAuthorized(): boolean {
+    return this._isAuthorized;
+  }
+
+  set isAuthorized(authorized: boolean) {
+    if (authorized) {
+      switch (this.userType) {
+        case 1:
+          if (this.selectedActivityIndex > 0) { this._isAuthorized = false; }
+          break;
+      }
+    }
+  }
+
+  get canUpdate(): boolean {
+    if (this.userType === 1) {
+      return false;
+    }
+    return true;
+  }
+
+  get canAdd(): boolean {
+    if (this.userType === 1) {
+      if (this.selectedActivityIndex > 0 ) { return false; }
+    }
+    return true;
+  }
 }

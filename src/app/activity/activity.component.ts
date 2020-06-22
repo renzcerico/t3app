@@ -138,8 +138,8 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
       });
     modalRef.componentInstance.selectedActivityIndex = index;
     modalRef.componentInstance.in_activity = this.activities[index];
-    modalRef.componentInstance.isAuthorized = this.isAuthorized;
-    modalRef.componentInstance.userID = this.activeUser.ID;
+    modalRef.componentInstance._isAuthorized = this.isAuthorized;
+    modalRef.componentInstance.userType = this.activeUser.USER_TYPE;
   }
 
   openDowntimeModal(event, index) {
