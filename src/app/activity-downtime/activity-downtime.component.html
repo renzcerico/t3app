@@ -60,6 +60,7 @@
                         class="form-control input-sm editable-content text-right"
                         #modalHeaderInput
                         (keyup.enter)="modalEnter($event)"
+                        (focus)="$event.target.select()"
                         [(ngModel)]="mMinutes"
                     >
                 </td>
@@ -71,6 +72,7 @@
                         #modalHeaderInput
                         (keyup.enter)="modalEnter($event)"
                         [(ngModel)]="mQuantity"
+                        (focus)="$event.target.select()"
                         class="form-control input-sm editable-content text-right">
                 </td>
                 <td class="td-editable">
@@ -130,6 +132,7 @@
                         min="0"
                         class="form-control input-sm editable-content text-right"
                         (ngModelChange)="setIsChanged(i)"
+                        (focus)="$event.target.select()"
                         [(ngModel)]="tempActDowntime[i].MINUTES">
                 </td>
                 <td *ngIf="!isAuthorized" class="align-middle">
@@ -147,6 +150,7 @@
                         min="0"
                         class="form-control input-sm editable-content text-right"
                         (ngModelChange)="setIsChanged(i)"
+                        (focus)="$event.target.select()"
                         [(ngModel)]="tempActDowntime[i].QUANTITY">
                 </td>
                 <td *ngIf="!isAuthorized" class="align-middle">

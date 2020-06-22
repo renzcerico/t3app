@@ -14,5 +14,5 @@ Status
 Cursor Pointer - OK
 Material - OK
 
-specific status counter for every manpower who is logged in.
+specific status counter for every manpower who is logged in. OK
 auto select/highlight for numbers.

@@ -53,6 +53,7 @@
                         class="form-control input-sm editable-content text-right"
                         #modalHeaderInput
                         required
+                        (focus)="$event.target.select()"
                         [(ngModel)]="mPacked"
                         (keyup.enter)="modalEnter($event)">
                 </td>
@@ -88,6 +89,7 @@
                         min="0"
                         class="form-control input-sm editable-content text-right"
                         (ngModelChange)="setIsChanged(i)"
+                        (focus)="$event.target.select()"
                         [(ngModel)]="tempActDetails[i].ADJ_QTY">
                 </td>
                 <td class="align-middle text-right px-3">
