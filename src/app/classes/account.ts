@@ -30,7 +30,6 @@ export default class Account {
         headerService.header$.subscribe(
             data => {
               const headerObj = new Header(data.header_obj);
-            //   console.log('HEADAER OBJ: ', headerObj);
               this.IS_AUTHORIZED = headerObj;
             }
         );
@@ -41,7 +40,6 @@ export default class Account {
     }
 
     get IS_AUTHORIZED() {
-        // console.log(this._IS_AUTHORIZED);
         return this._IS_AUTHORIZED;
     }
 
@@ -50,8 +48,6 @@ export default class Account {
             if (headerObj.STATUS > this.USER_TYPE) {
                 this._IS_AUTHORIZED = false;
             } else if (headerObj.STATUS < this.USER_TYPE) {
-                // console.log('header: ', headerObj.STATUS);
-                // console.log('user type: ', this.USER_TYPE);
                 this._IS_AUTHORIZED = true;
             } else {
                 switch (headerObj.STATUS) {

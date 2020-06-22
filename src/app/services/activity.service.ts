@@ -120,7 +120,6 @@ export class ActivityService {
         const activity = this.activityFactory.createActivity(element);
         activitiesArr.push(activity);
     });
-    // console.log(activitiesArr[0]);
     this.activitiesSource.next(activitiesArr);
   }
 

@@ -14,8 +14,6 @@ const storeAll = async (data) => {
                     , :output
                 );
             end;`;
-        // console.log('activity: ', data.activity_collection[1]);
-        // console.log('activity: ', data.dummy_activity_collection[0]);
         const headerObj = await connect.getDbObjectClass('T3.HEADER_OBJ')
         .catch(error => { console.log('caught', error.message); });
         const header_obj = new headerObj(data.header_obj);
@@ -40,7 +38,6 @@ const storeAll = async (data) => {
                 type: oracle.NUMBER
             }
         }
-        console.log('BINDS: ', binds);
         const result = await connect.execute(query, binds, {autoCommit: true})
         .catch(error => { console.log('caught', error.message); });
         return result.outBinds.output;
@@ -81,7 +78,6 @@ const getAllByBarcode = async (data) => {
             materials_collection : materials,
         }
     }
-    // console.log(res.activity_collection);
     return res;
 }
 
@@ -153,9 +149,10 @@ const getDowntimeTypes = async () => {
 
 module.exports.getDowntimeTypes = getDowntimeTypes;
 
-const getHeaderCountPerStatus = async () => {
-    const q = `BEGIN T3_PACKAGE.GET_HEADER_COUNT_PER_STATUS (:cursor); END;`;
+const getHeaderCountPerStatus = async (user_id) => {
+    const q = `BEGIN T3_PACKAGE.GET_HEADER_COUNT_PER_STATUS (:user_id, :cursor); END;`;
     let binds = {
+        user_id: user_id,
         cursor: {
             dir: oracle.BIND_OUT,
             type: oracle.CURSOR

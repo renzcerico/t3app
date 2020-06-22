@@ -26,7 +26,6 @@ export class ActivityDowntimeComponent implements OnInit {
   mRemarks = '';
   mQuantity = 0;
   isChanged = 0;
-  userID;
   isAuthorized: boolean;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
@@ -100,7 +99,6 @@ export class ActivityDowntimeComponent implements OnInit {
       }
     if (this.isChanged === 1) {
       this.activity.IS_CHANGED = 1;
-      // this.activity.LAST_UPDATED_BY = this.userID;
     }
     this.activity.ACTIVITY_DOWNTIME = this.tempActDowntime;
     this.isChanged = 0;

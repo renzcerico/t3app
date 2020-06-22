@@ -9,7 +9,6 @@ const getBatchinfo = async () => {
     let connect;
     try {
 
-        // console.log(sql)
         connect = await oracledb.getConnection();
         const t3Header_type = await connect.getDbObjectClass("xxdom.t_t3header_type");
         const t3Material_type = await connect.getDbObjectClass("xxdom.t_t3materials_type");

@@ -31,8 +31,6 @@ const forwardList = async (userLevel) => {
     }
   };
 
-  console.log(bind)
-  
   const result = await database.resultsetExecute(forwardListSql, bind);
 
   return result;

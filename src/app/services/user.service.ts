@@ -20,7 +20,6 @@ export class UserService {
   setUser(user) {
     if (user) {
       const userObj: Account = this.accountFactory.setAccount(user);
-      console.log('user: ', userObj);
       this.user.next(userObj);
     } else {
       this.user.next(user);
@@ -35,7 +34,6 @@ export class UserService {
     this.api.isAuth()
     .subscribe(
         res => {
-          console.log('res: ', res);
           this.setUser(res);
         },
         err => {

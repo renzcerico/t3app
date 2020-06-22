@@ -76,7 +76,6 @@ export class HeaderService {
             }
         );
     }
-    // console.log(this.headerObj);
   }
 
   getUserForwardList() {
@@ -84,7 +83,6 @@ export class HeaderService {
     .subscribe(
         res => {
             this.userForwardList.next(res);
-            // console.log(res);
         },
         err => {
             console.log(err);
@@ -93,7 +91,6 @@ export class HeaderService {
   }
 
   refreshSource() {
-    console.log(this.currentData);
     if (this.currentData) {
       this.setHeaderObj(this.currentData);
     }
