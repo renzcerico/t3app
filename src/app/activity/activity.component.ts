@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivityDetailsComponent } from '../activity-details/activity-details.component';
 import { ActivityDowntimeComponent } from '../activity-downtime/activity-downtime.component';
 import { UserService } from './../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-activity',
@@ -124,12 +125,23 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     const modalRef = this.modalService.open(ActivityDetailsComponent,
       {
         size: 'lg',
-        beforeDismiss: () => {
+        beforeDismiss: async () => {
           if (this.isAuthorized) {
             if (modalRef.componentInstance.isChanged
               || modalRef.componentInstance.mLotNumber !== ''
               || modalRef.componentInstance.mPacked !== 0) {
-            return confirm('You will lose your unsaved changes');
+                let shouldExit: boolean;
+                await Swal.fire({
+                  title: 'Confirm Exit?',
+                  showCancelButton: true,
+                  text: 'You will lose unsaved changes',
+                  icon: 'warning',
+                  confirmButtonText: 'Yes',
+                  cancelButtonText: 'No'
+                }).then((exit) => {
+                  shouldExit = exit.isConfirmed;
+                });
+                return shouldExit;
             }
           }
         }
@@ -144,13 +156,24 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     const modalRef = this.modalService.open(ActivityDowntimeComponent,
       {
         size: 'lg',
-        beforeDismiss: () => {
+        beforeDismiss: async () => {
           if (this.isAuthorized) {
             if (modalRef.componentInstance.isChanged
               || modalRef.componentInstance.mMinutes !== 0
               || modalRef.componentInstance.mQuantity !== 0
               || modalRef.componentInstance.mRemarks !== '') {
-              return confirm('You will lose your unsaved changes');
+                let shouldExit: boolean;
+                await Swal.fire({
+                  title: 'Confirm Exit?',
+                  showCancelButton: true,
+                  text: 'You will lose unsaved changes',
+                  icon: 'warning',
+                  confirmButtonText: 'Yes',
+                  cancelButtonText: 'No'
+                }).then((exit) => {
+                  shouldExit = exit.isConfirmed;
+                });
+                return shouldExit;
             }
           }
         }

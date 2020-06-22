@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-activity-details',
@@ -99,10 +100,21 @@ export class ActivityDetailsComponent implements OnInit {
     return this.packedQty + this.adjQty;
   }
 
-  handleSave() {
+  async handleSave() {
     if ( this.mLotNumber !== ''
       || this.mPacked !== 0) {
-        if (confirm('You will lose your unfinished input, proceed?')) {
+        let isConfirmed: boolean;
+        await Swal.fire({
+            title: 'Confirm Save?',
+            showCancelButton: true,
+            text: 'You will lose your unfinished input, proceed?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+          }).then((confirm) => {
+            isConfirmed = confirm.isConfirmed;
+          });
+        if (isConfirmed) {
           this.mPacked = 0;
           this.mLotNumber = '';
         } else {

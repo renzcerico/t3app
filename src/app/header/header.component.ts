@@ -13,6 +13,7 @@ import Activity from '../classes/activity';
 import Header from '../classes/header';
 import { HeaderService } from '../services/header.service';
 import { UserService } from './../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-home',
@@ -243,15 +244,31 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         }
     }
 
-    updateHeaderStatus(action: number) {
+    async updateHeaderStatus(action: number) {
         if (!this.receiverID && (this.headerObj.STATUS >= this.userType || this.userType < 3) && this.headerObj.STATUS < 3) {
-            alert('Please select receiver');
+            Swal.fire({
+                title: 'Invalid Action',
+                text: 'Please select receiver.',
+                icon: 'error',
+                confirmButtonText: 'Okay',
+            });
             return;
         }
         // actions
         // 1: end production
         // 2: approve
-        if (confirm((action === 1 ? 'Confirm end production?' : 'Confirm approve?'))) {
+        let isConfirmed: boolean;
+        await Swal.fire({
+            title: (action === 1 ? 'Confirm end production?' : 'Confirm approve?'),
+            showCancelButton: true,
+            text: (action === 1 ? 'Confirm end production?' : 'Confirm approve?'),
+            icon: 'question',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+          }).then((confirm) => {
+            isConfirmed = confirm.isConfirmed;
+          });
+        if (isConfirmed) {
             // user types
             // 1 : manpower
             // 2 : supervisor

@@ -8,6 +8,7 @@ import {
   OnInit
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-activity-downtime',
   templateUrl: './activity-downtime.component.html',
@@ -85,11 +86,22 @@ export class ActivityDowntimeComponent implements OnInit {
   handleDowntimeChange() {
     this.mMinutes = this.selectedDowntimeType.DEFAULT_MINUTES;
   }
-  handleSave() {
+  async handleSave() {
     if ( this.mMinutes !== 0
       || this.mQuantity !== 0
       || this.mRemarks !== '') {
-        if (confirm('You will lose your unfinished input, proceed?')) {
+        let isConfirmed: boolean;
+        await Swal.fire({
+          title: 'Confirm Exit?',
+          showCancelButton: true,
+          text: 'You will lose your unfinished input, proceed?',
+          icon: 'warning',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((confirm) => {
+          isConfirmed = confirm.isConfirmed;
+        });
+        if (isConfirmed) {
           this.mMinutes = 0;
           this.mQuantity = 0;
           this.mRemarks = '';
