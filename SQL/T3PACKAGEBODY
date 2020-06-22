@@ -484,36 +484,25 @@ create or replace PACKAGE BODY T3_PACKAGE AS
     qry VARCHAR2(3267);
     BEGIN
         if (user_id > 0) then
-            qry := 'SELECT D.STATUS, COUNT(H.STATUS) AS COUNT
-                    FROM (
-                        SELECT 1 AS STATUS FROM DUAL UNION ALL
-                        SELECT 2 AS STATUS FROM DUAL UNION ALL
-                        SELECT 3 AS STATUS FROM DUAL UNION ALL
-                        SELECT 4 AS STATUS FROM DUAL
-                    ) D LEFT JOIN (
-                        SELECT * FROM tbl_header WHERE
---                        STATUS = 1
-                        FORWARDED_BY = ' || user_id || ' OR 
-                        REVIEWED_BY = ' || user_id || ' OR 
-                        APPROVED_BY = ' || user_id ||
-                    ' ) H
-                    ON H.STATUS = D.STATUS
-                    GROUP BY D.STATUS
-                    ORDER BY D.STATUS';
+            OPEN res FOR
+            SELECT
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
+                SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
+                SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
+                SUM(DECODE(status, 4, 1, 0)) CLOSED    
+            FROM TBL_HEADER
+            WHERE FORWARDED_BY = user_id OR
+                  REVIEWED_BY  = user_id OR
+                  APPROVED_BY  = user_id;
         else
-            qry := 'SELECT D.STATUS, COUNT(H.STATUS) AS COUNT
-                    FROM (
-                        SELECT 1 AS STATUS FROM DUAL UNION ALL
-                        SELECT 2 AS STATUS FROM DUAL UNION ALL
-                        SELECT 3 AS STATUS FROM DUAL UNION ALL
-                        SELECT 4 AS STATUS FROM DUAL
-                    ) D LEFT JOIN tbl_header H
-                    ON H.STATUS = D.STATUS 
-                    GROUP BY D.STATUS
-                    ORDER BY D.STATUS';
+            OPEN res FOR
+            SELECT
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
+                SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
+                SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
+                SUM(DECODE(status, 4, 1, 0)) CLOSED    
+            FROM TBL_HEADER;
         end if;
-        dbms_output.put_line(qry);
-        OPEN res FOR qry;
     END GET_HEADER_COUNT_PER_STATUS;
 
     PROCEDURE GET_HEADER_BY_STATUS(

@@ -28,6 +28,7 @@ export class ActivityDowntimeComponent implements OnInit {
   mQuantity = 0;
   isChanged = 0;
   isAuthorized: boolean;
+  userType;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
 
