@@ -41,7 +41,7 @@ export class MaterialComponent implements OnInit, AfterContentChecked {
 
     valueChanged(index) {
         this.materials[index].IS_CHANGED = 1;
-        this.materials[index].LAST_UPDATED_BY = this.activeUser.ID;
+        // this.materials[index].LAST_UPDATED_BY = this.activeUser.ID;
         console.log(this.materials[index]);
     }
 

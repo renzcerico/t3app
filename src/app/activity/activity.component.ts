@@ -118,7 +118,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
 
   valueChanged(index) {
     this.activities[index].IS_CHANGED = 1;
-    this.activities[index].LAST_UPDATED_BY = this.activeUser.ID;
+    // this.activities[index].LAST_UPDATED_BY = this.activeUser.ID;
   }
 
   openModal(event, index) {
@@ -133,6 +133,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
             return confirm('You will lose your unsaved changes');
             }
           }
+          console.log(this.activities[index].LAST_UPDATED_BY);
         }
       });
     modalRef.componentInstance.selectedActivityIndex = index;

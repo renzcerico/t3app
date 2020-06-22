@@ -5,10 +5,9 @@ const storeAll = async (req = {}, res, next = null) => {
         header_obj          : req.body.header_obj,
         activity_collection : req.body.activity_collection,
         manpower_collection : req.body.manpower_collection,
-        material_collection : req.body.material_collection
+        material_collection : req.body.material_collection,
+        user_id             : req.body.user_id
     };
-    console.log(req.body.header_obj);
-    // console.log(data.header_obj);
     const request = await t3.storeAll(data)
     .catch(error => { console.log('caught', error.message); });
     res.status(201).json(request);

@@ -172,7 +172,7 @@ export class ActivityService {
         HEADER_ID       : this.headerObj.ID,
         START_TIME      : this.expectedTime.start,
         END_TIME        : this.expectedTime.end,
-        LAST_UPDATED_BY : 1,
+        LAST_UPDATED_BY : null,
         DATE_ENTERED    : moment().format('DD/MMM/YY'),
         DATE_UPDATED    : moment().format('DD/MMM/YY'),
         IS_NEW          : 1,
