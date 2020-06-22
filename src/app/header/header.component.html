@@ -18,7 +18,7 @@
         <div class="form-row">           
             <div class="col-12 col-md-3 mt-1">
                 <div class="form-label-group">
-                    <input name="barcode" type="text" id="barcode" class="form-control w-75" [ngModel]="headerObj.CONTROL_NUMBER" name="barcode" placeholder="#" required (change)="handleBarcodeChange()" autofocus>
+                    <input name="barcode" type="text" id="barcode" class="form-control w-75" #barcode [ngModel]="headerObj.CONTROL_NUMBER" name="barcode" placeholder="#" required (change)="handleBarcodeChange(barcode.value)" autofocus>
                     <label for="barcode">Control Number</label>
                 </div>                
             </div>  

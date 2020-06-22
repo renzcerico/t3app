@@ -207,8 +207,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         }
     }
 
-    handleBarcodeChange() {
-        this.headerService.getData('SO35-091319-785915');
+    handleBarcodeChange(barcode) {
+        this.headerService.getData(barcode);
+        console.log(barcode)
     }
 
     async header() {
