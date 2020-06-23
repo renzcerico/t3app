@@ -31,7 +31,8 @@
             <ng-template #elseBlock>
                 <tbody>
                     <tr>
-                        <td colspan="5">Nothing is <span class="text-lowercase">{{currentStatusDesc}}</span></td>
+                        <td *ngIf="loading;" colspan="5">Loading...</td>
+                        <td *ngIf="!loading" colspan="5">Nothing is <span class="text-lowercase">{{currentStatusDesc}}</span></td>
                     </tr>
                 </tbody>
             </ng-template>

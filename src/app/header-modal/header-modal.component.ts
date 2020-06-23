@@ -14,8 +14,9 @@ export class HeaderModalComponent implements OnInit {
   currentStatusDesc = '';
   status: number;
   headerList: Array<any> = [];
-
+  loading: boolean;
   ngOnInit() {
+    this.loading = true;
     if (this.status === 1) {
       this.currentStatus = 'dot status-wip';
       this.currentStatusDesc = 'WIP';
@@ -36,6 +37,7 @@ export class HeaderModalComponent implements OnInit {
     await this.headerService.getHeaderByStatus(statusCode).toPromise()
     .then(
         res => {
+            this.loading = false;
             this.headerList = res;
         }
     );

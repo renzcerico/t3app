@@ -16,7 +16,7 @@ import { LoginComponent } from '../modals/login/login.component';
     styleUrls: ['./top-bar.component.css']
 })
 
-export class TopBarComponent implements OnInit {
+export class TopBarComponent implements OnInit, AfterContentChecked {
     // @ViewChild(HeaderComponent, {static: false}) mainApp: HeaderComponent;
 
     navbarOpen = false;
@@ -45,7 +45,6 @@ export class TopBarComponent implements OnInit {
         headerService.headerCount$.subscribe(
             headerCount => {
               this.headerCount = headerCount;
-              console.log(this.headerCount)
             }
           );
 
@@ -55,6 +54,9 @@ export class TopBarComponent implements OnInit {
     ngOnInit() {
     }
 
+    ngAfterContentChecked() {
+        this.headerService.getHeaderCountPerStatus();
+    }
     userLoggedIn() {
         this.userService.user
             .subscribe(
