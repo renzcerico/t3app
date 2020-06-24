@@ -55,7 +55,7 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
     }
 
     ngAfterContentChecked() {
-        this.headerService.getHeaderCountPerStatus();
+        // this.headerService.getHeaderCountPerStatus();
     }
     userLoggedIn() {
         this.userService.user
@@ -111,9 +111,12 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
     //     );
     // }
 
-    openHeaderModal(statusCode: number) {
+    openHeaderModal(statusCode: number, totalCount: number) {
         const modalRef = this.modalService.open(HeaderModalComponent, { size: 'xl' });
         modalRef.componentInstance.status = statusCode;
+        modalRef.componentInstance.showCount = 1;
+        modalRef.componentInstance.pageNumber = 1;
+        modalRef.componentInstance.totalCount = totalCount;
         // modalRef.componentInstance.in_activity = this.activities[index];
     }
 

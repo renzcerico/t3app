@@ -92,7 +92,6 @@ function resultsetExecute(statement, binds = [], opts = {}) {
       //   Fewer than numRows rows => this was the last set of rows to get
       //   Exactly numRows rows    => there may be more rows to fetch
       const resultSet = result.outBinds.cursor;
-      
       let procJson = [];
       let rows;
       let count = 0;
@@ -115,8 +114,17 @@ function resultsetExecute(statement, binds = [], opts = {}) {
       // always close the ResultSet
       await resultSet.close();
 
-      // console.log(procJson)
-      resolve(procJson)
+      const counter = await withCounter(result);
+      if(counter !== false) {
+        const res = {
+          counter: counter,
+          data: procJson
+        }
+        resolve(res);
+      } else {
+        // console.log(procJson)
+        resolve(procJson)
+      }
   
     } catch (err) {
       console.error(err);
@@ -146,3 +154,16 @@ async function getDbObjectClass(classname) {
       return await connection.getDbObjectClass(classname);
 }
 module.exports.getDbObjectClass = getDbObjectClass;
+
+async function withCounter(result) {
+  let counter_rs = result.outBinds.counter || 0 ;
+  if(counter_rs) {
+    const counter_arr = await counter_rs.getRow();
+    const counter_val = counter_arr[0];
+    await counter_rs.close();
+    return counter_val;
+  }
+  return false;
+}
+
+module.exports.withCounter = withCounter;

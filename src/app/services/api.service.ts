@@ -17,7 +17,8 @@ export class ApiService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
-            })
+            }),
+            withCredentials: true
         };
         return httpOptions;
     }
@@ -79,11 +80,11 @@ export class ApiService {
     }
 
     isAuth(): Observable<any> {
-        return this.http.get(`${ this.url }` + '/api/auth');
+        return this.http.get(`${ this.url }` + '/api/auth', this.setHeaders());
     }
 
     logout(): Observable<any> {
-        return this.http.get(`${ this.url }` + '/api/logout');
+        return this.http.get(`${ this.url }` + '/api/logout', this.setHeaders());
     }
 
     forwardList(): Observable<any> {

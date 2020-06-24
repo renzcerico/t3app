@@ -47,8 +47,8 @@ export class HeaderService {
 
   getHeaderByStatus(data): Observable<any> {
     // const data = 'SO01-022020-818454';
-    data = String(data).toUpperCase();
-    return this.http.get(`${this.url}` + '/api/get_header_by_status/' + data);
+    // data = String(data).toUpperCase();
+    return this.http.post(`${this.url}` + '/api/get_header_by_status/', data);
   }
 
   async getData(barcodeNum) {

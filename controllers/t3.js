@@ -1,5 +1,4 @@
 const t3 = require('../db_apis/t3.js');
-const session = require('express-session');
 
 const storeAll = async (req = {}, res, next = null) => {
     const data = {
@@ -17,6 +16,7 @@ const storeAll = async (req = {}, res, next = null) => {
 module.exports.storeAll = storeAll;
 
 const getAllByBarcode = async (req = {}, res, next = null) => {
+    console.log('USERRRRR', req.session);
     try {
         const request = await t3.getAllByBarcode(req.params.barcode)
         .catch(error => { console.log('caught', error.message); });
@@ -50,7 +50,7 @@ module.exports.getDowntimeTypes = getDowntimeTypes;
 
 const getHeaderCountPerStatus = async (req = {}, res, next = null) => {
     try {
-        const user = session.user;
+        const user = req.session.user;
         let user_id;
         (user ? user_id = user.ID : user_id = 0);
         const request = await t3.getHeaderCountPerStatus(user_id)
@@ -65,7 +65,7 @@ module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
 
 const getHeaderByStatus = async (req = {}, res, next = null) => {
     try {
-        const request = await t3.getHeaderByStatus(req.params.status_code)
+        const request = await t3.getHeaderByStatus(req.body)
         .catch(error => { console.log('caught', error.message); });
         if (Object.entries(request).length > 0) {
             request.isExisting = true;

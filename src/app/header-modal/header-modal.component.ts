@@ -8,13 +8,17 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./header-modal.component.css', '../app.component.css', '../material/material.component.css']
 })
 export class HeaderModalComponent implements OnInit {
-
-  constructor(public activeModal: NgbActiveModal, public headerService: HeaderService) { }
+  searchVal = '';
   currentStatus = '';
   currentStatusDesc = '';
   status: number;
+  showCount: number;
+  pageNumber: number;
   headerList: Array<any> = [];
   loading: boolean;
+  totalCount: number;
+
+  constructor(public activeModal: NgbActiveModal, public headerService: HeaderService) { }
   ngOnInit() {
     this.loading = true;
     if (this.status === 1) {
@@ -30,15 +34,16 @@ export class HeaderModalComponent implements OnInit {
       this.currentStatus = 'dot status-closed';
       this.currentStatusDesc = 'CLOSED';
     }
-    this.getHeaderbyStatus(this.status);
+    this.getHeaderbyStatus(this.paginationData);
   }
 
-  async getHeaderbyStatus(statusCode) {
-    await this.headerService.getHeaderByStatus(statusCode).toPromise()
+  async getHeaderbyStatus(data) {
+    await this.headerService.getHeaderByStatus(data).toPromise()
     .then(
         res => {
             this.loading = false;
-            this.headerList = res;
+            this.headerList = res.data;
+            this.totalCount = res.counter;
         }
     );
   }
@@ -46,6 +51,28 @@ export class HeaderModalComponent implements OnInit {
   openHeader(barcode) {
     this.headerService.getData(barcode);
     this.activeModal.dismiss('Cross click');
+  }
+
+  refreshSource() {
+    this.getHeaderbyStatus(this.paginationData);
+  }
+
+  get paginationData(): object {
+    const data = {
+      status_code: this.status,
+      show_count: this.showCount,
+      page_number: this.pageNumber,
+      search_val: this.searchVal,
+    };
+    return data;
+  }
+
+  get showCountOpts(): Array<number> {
+    const opts = [1];
+    for (let index = 10; index <= 100; index = index + 10) {
+      opts.push(index);
+    }
+    return opts;
   }
 
 }

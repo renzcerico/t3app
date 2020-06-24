@@ -6,7 +6,10 @@ const database = require('./database.js');
 const morgan = require('morgan');
 var path = require("path");
 var bodyParser = require("body-parser");
-
+const session = require('express-session');
+const { v4: uuidv4 } = require('uuid');
+const cookieParser = require('cookie-parser');
+// const cors = require('cors');
 let httpServer;
 
 function initialize() {
@@ -15,7 +18,8 @@ function initialize() {
 
     app.use(function (req, res, next) {
       //Enabling CORS
-      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Credentials', true);
+      res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
       res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization');
       next();
@@ -25,9 +29,26 @@ function initialize() {
 
     app.use(morgan('combined'));
 
+    app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json());
+    app.use(cookieParser());
+
+    app.use(session({
+      genid: (req) => {
+        return uuidv4();
+      },
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: true,
+      // cookie: {
+      //   domain: 'http://localhost:4200/',
+      //   path: '/'
+      // },
+      name: 't3_app'
+    }));
 
     app.use('/api', router);
+    
 
     app.get('/', (req, res) => {
       res.redirect('production.html');

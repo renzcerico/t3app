@@ -21,14 +21,14 @@
                     <a class="nav-link font-weight-500 small" href="javascript:void(0)">DASHBOARD</a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(1)">
+                    <a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(1, headerCount[0].WIP)">
                     WIP
                     <span class="ml-1 badge badge-danger" *ngIf="headerCount[0].WIP">
                         {{ headerCount[0].WIP }}
                     </span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(2)">OPEN<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].OPEN">{{ headerCount[0].OPEN | counterPipe }}</span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(3)">COMPLETED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].COMPLETED">{{ headerCount[0].COMPLETED | counterPipe }}</span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(4)">CLOSED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].CLOSED">{{ headerCount[0].CLOSED | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(2, headerCount[0].OPEN)">OPEN<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].OPEN">{{ headerCount[0].OPEN | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(3, headerCount[0].COMPLETED)">COMPLETED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].COMPLETED">{{ headerCount[0].COMPLETED | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(4, headerCount[0].CLOSED)">CLOSED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].CLOSED">{{ headerCount[0].CLOSED | counterPipe }}</span></a></li>
                 
                 <!-- <li class="nav-item">
                     <a class="nav-link font-weight-500 small" href="javascript:void(0)">TRANSACTION</a>

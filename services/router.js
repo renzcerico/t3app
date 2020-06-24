@@ -32,7 +32,7 @@ router.route('/accounts/:id')
 
 router.route('/get_header_count_per_status').get(t3.getHeaderCountPerStatus);
 
-router.route('/get_header_by_status/:status_code').get(t3.getHeaderByStatus);
+router.route('/get_header_by_status').post(t3.getHeaderByStatus);
 
 router.route('/accounts/reset')
   .post(accounts.resetPassword);
@@ -46,4 +46,6 @@ router.route('/logout')
 router.route('/forward-list')
   .get(login.forwardList);
 
+  router.route('/set-user')
+  .get(login.setUser);
 module.exports = router;

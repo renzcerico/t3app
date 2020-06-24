@@ -174,13 +174,15 @@ const getHeaderCountPerStatus = async () => {
 module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
 
 const getHeaderByStatus = async (data) => {
-    console.log(data);
-    const header_q = `begin T3_PACKAGE.GET_HEADER_BY_STATUS ( :status_code, :cursor); end;`;
-    let header_binds = {
-        status_code: data,
-    }
+    const header_q = `begin T3_PACKAGE.GET_HEADER_BY_STATUS ( :status_code, :show_count, :page_number, :search_val, :cursor, :counter); end;`;
+    let header_binds = data;
 
     header_binds.cursor = {
+        dir: oracle.BIND_OUT,
+        type: oracle.CURSOR
+    }
+
+    header_binds.counter = {
         dir: oracle.BIND_OUT,
         type: oracle.CURSOR
     }

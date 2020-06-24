@@ -1,5 +1,4 @@
 const logins = require('../db_apis/logins.js');
-const session = require('express-session');
 const database = require('../config/database.js');
 
 function getLoginFromRec(req) {
@@ -18,14 +17,16 @@ function getLoginFromRec(req) {
       const user = login[0];
 
       if (login.length > 0) {
-        session.user = user;
+        req.session.user = user;
+        req.session.save();
       }
-
-      // if (login.length > 0) {
+      console.log('LOGIN SESSION ID: ', req.session);
+      if (login.length > 0) {
         res.status(201).json(user);
-      // } else {
-      //   res.status(401).end();
-      // }
+      } else {
+        res.status(401).end();
+      }
+      res.next();
     } catch (err) {
       next(err);
     }
@@ -35,7 +36,8 @@ function getLoginFromRec(req) {
 
   const authenticate = async (req, res, next) => {
     try {
-      const user = session.user;
+      const user = req.session.user;
+      console.log('AUTH SESSION ID: ', req.session);
       res.status(200).json(user);
 
     } catch(err) {
@@ -47,7 +49,7 @@ function getLoginFromRec(req) {
 
   const logout = async (req, res, next) => {
     try {
-      delete session.user;
+      delete req.session.user;
 
       res.status(200).end();
     } catch (err) {
@@ -59,10 +61,10 @@ function getLoginFromRec(req) {
 
   const forwardList = async (req, res, next) => {
     try {
-        if (!session.user) {
+        if (!req.session.user) {
           res.status(200).end();
         } else {
-          const userLevel = session.user.USER_LEVEL;
+          const userLevel = req.session.user.USER_LEVEL;
           result = await logins.forwardList(userLevel);
           res.status(200).json(result);
         }
@@ -72,3 +74,20 @@ function getLoginFromRec(req) {
   };
 
   module.exports.forwardList = forwardList;
+
+  module.exports.logout = logout;
+
+  const setUser = async (req, res, next) => {
+    user = {
+      name: 'diether llenares',
+      username: 'diether',
+      password: 'welcometailin',
+      email: 'llenaresdiether@gmail.com'
+    }
+    req.session.user = user;
+    req.session.save();
+    console.log('SET USER: ', req.session.user);
+    res.end();
+  };
+
+  module.exports.setUser = setUser;
