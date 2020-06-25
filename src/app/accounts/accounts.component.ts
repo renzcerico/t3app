@@ -202,7 +202,7 @@ export class AccountsComponent implements OnInit {
   }
 
   toggleOrder(orderBy: string) {
-    (this.orderBy === orderBy ? this.orderOrder = 'DESC' : this.orderOrder = 'ASC');
+    (this.orderOrder === 'DESC' ? this.orderOrder = 'ASC' : this.orderOrder = 'DESC');
     this.orderBy = orderBy;
     this.refreshSource();
   }
