@@ -48,9 +48,12 @@ export class HeaderService {
             text: 'Transaction modified by another user.',
             icon: 'info',
             confirmButtonText: 'Reload',
+          }).then( val => {
+            this.getData(data.barcode);
           });
+        } else {
+          this.getData(data.barcode);
         }
-        this.getData(data.barcode);
       }
     });
   });
@@ -83,7 +86,7 @@ export class HeaderService {
   getHeaderByStatus(data): Observable<any> {
     // const data = 'SO01-022020-818454';
     // data = String(data).toUpperCase();
-    return this.http.post(`${this.url}` + '/api/get_header_by_status/', data);
+    return this.http.post(`${this.url}` + '/api/get_header_by_status/', data, this.apiService.setHeaders());
   }
 
   async getData(barcodeNum) {

@@ -47,6 +47,7 @@ create or replace PACKAGE T3_PACKAGE AS
     
     PROCEDURE GET_HEADER_BY_STATUS(
         status_code IN NUMBER
+        , user_id IN NUMBER DEFAULT 0
         , show_count IN NUMBER DEFAULT 10
         , page_number IN NUMBER DEFAULT 1
         , search_val IN STRING DEFAULT ' '

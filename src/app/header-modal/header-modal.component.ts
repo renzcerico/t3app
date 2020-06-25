@@ -86,7 +86,8 @@ export class HeaderModalComponent implements OnInit {
   }
 
   get showing(): Array<number> {
-    const first = (this.showCount * (this.pageNumber - 1)) + 1;
+    console.log(this.totalCount);
+    const first = (this.totalCount ? (this.showCount * (this.pageNumber - 1)) + 1 : 0);
     let second = this.pageNumber * this.showCount;
     if (second > this.totalCount) {
       second = this.totalCount;

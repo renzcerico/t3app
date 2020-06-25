@@ -65,6 +65,8 @@ module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
 
 const getHeaderByStatus = async (req = {}, res, next = null) => {
     try {
+        const user = req.session.user;
+        (user ? req.body.user_id = user.ID : req.body.user_id = 0);
         const request = await t3.getHeaderByStatus(req.body)
         .catch(error => { console.log('caught', error.message); });
         if (Object.entries(request).length > 0) {

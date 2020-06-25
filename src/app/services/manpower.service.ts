@@ -110,4 +110,5 @@ export class ManpowerService {
     });
     this.manpowerSource.next(manpowerArr);
   }
+
 }

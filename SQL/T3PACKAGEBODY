@@ -554,6 +554,7 @@ create or replace PACKAGE BODY T3_PACKAGE AS
 
     PROCEDURE GET_HEADER_BY_STATUS(
         status_code IN NUMBER
+        , user_id IN NUMBER DEFAULT 0
         , show_count IN NUMBER DEFAULT 10
         , page_number IN NUMBER DEFAULT 1
         , search_val IN STRING DEFAULT ' '
@@ -569,10 +570,15 @@ create or replace PACKAGE BODY T3_PACKAGE AS
     condition       String(255);
     search_string   varchar2(2000);
     search_val_upper   varchar2(2000);
+    condition1      varchar2(2000);
     BEGIN
         offset_number := (show_count * (page_number - 1)) + 1;
         offset_number1 := (offset_number + show_count) - 1;
         condition := ' WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1;
+        if (user_id > 0) then
+        condition1 := ' AND ( APPROVED_BY = ' || user_id || ' OR 
+                     FORWARDED_BY = ' || user_id || ' OR REVIEWED_BY = ' || user_id || ')';
+        end if;
         if (status_code  =  1) then
             sort_by := ' ORDER BY ID DESC ';
         else
@@ -597,9 +603,9 @@ create or replace PACKAGE BODY T3_PACKAGE AS
                     FROM tbl_header h
                     WHERE h.status = ' ||
                     status_code || search_string || ') ' || 
-                    condition || ' ' || 
+                    condition || condition1 || ' ' || 
                     sort_by;
-        OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || ')';
+        OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || condition1 ||')';
 --        dbms_output.put_line(counter);
         OPEN header_collection FOR qry;
     END GET_HEADER_BY_STATUS;

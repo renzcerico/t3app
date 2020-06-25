@@ -63,8 +63,9 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
               private manpowerService: ManpowerService,
               private userService: UserService) {
     this.manpowerService.manpower$.subscribe(
-      manpower => {
+      async manpower => {
         this.manpowers = manpower;
+        await this.getAllAccounts();
       }
     );
     this.userService.user.subscribe(
@@ -84,7 +85,7 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    this.getAllAccounts();
+    // this.getAllAccounts();
   }
 
   async getAllAccounts() {
@@ -94,8 +95,9 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
         this.accounts = res;
       }
     );
-    console.log(this.accounts);
-    console.log(this.manpowers);
+    if (!this.manpowers) {
+      this.manpowers = this.manpowerService.manpowers;
+    }
     this.manpowers.forEach((el , i) => {
       if (el.MANPOWER_ID > 0) {
         const accIndex = this.accounts.findIndex(x => x.ID === el.MANPOWER_ID);
