@@ -88,12 +88,14 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
   }
 
   async getAllAccounts() {
-    await this.apis.getAllAccounts().toPromise()
+    await this.apis.getManpowerList().toPromise()
     .then (
       res => {
         this.accounts = res;
       }
     );
+    console.log(this.accounts);
+    console.log(this.manpowers);
     this.manpowers.forEach((el , i) => {
       if (el.MANPOWER_ID > 0) {
         const accIndex = this.accounts.findIndex(x => x.ID === el.MANPOWER_ID);

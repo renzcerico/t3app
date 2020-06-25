@@ -41,6 +41,18 @@ const all = async (req, res, next) => {
 
 module.exports.all = all;
 
+const getManpowerList = async (req, res, next) => {
+    try {
+        const result = await accounts.getManpowerList();
+
+        res.status(200).json(result);
+    } catch(err) {
+        next(err);
+    }
+};
+
+module.exports.getManpowerList = getManpowerList;
+
 const getById = async (req, res, next) => {
     try {
         const id = req.params.id;

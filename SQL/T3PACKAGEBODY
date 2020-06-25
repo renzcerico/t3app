@@ -1,5 +1,20 @@
 create or replace PACKAGE BODY T3_PACKAGE AS
     
+    PROCEDURE GET_MANPOWER_LIST(res OUT SYS_REFCURSOR) AS
+    
+    BEGIN
+        OPEN res FOR
+        SELECT a.id
+               , a.first_name
+               , a.middle_name
+               , a.last_name
+               , a.gender
+               , a.user_level
+               , a.created_at
+               , a.username
+        FROM tbl_accounts a ORDER BY a.last_name ASC;
+    END GET_MANPOWER_LIST;
+    
     PROCEDURE FORWARD_LIST(userLevel IN VARCHAR2, res OUT SYS_REFCURSOR) AS
     
     BEGIN
@@ -57,19 +72,51 @@ create or replace PACKAGE BODY T3_PACKAGE AS
         WHERE a.id = acct_id;
     END GET_ACCOUNT_BY_ID;
 
-    PROCEDURE GET_ALL_ACCOUNTS(res OUT SYS_REFCURSOR) AS
-    
+    PROCEDURE GET_ALL_ACCOUNTS(
+        show_count IN NUMBER DEFAULT 10
+        , page_number IN NUMBER DEFAULT 1
+        , search_val IN STRING DEFAULT ' '
+        , order_by IN STRING DEFAULT ' '
+        , order_order IN STRING DEFAULT 'ASC'
+        , res OUT SYS_REFCURSOR
+        , counter OUT SYS_REFCURSOR
+    ) AS
+        sort_by         String(255);
+        offset_number   Number;
+        offset_number1   Number;
+        qry             String(32767);
+        --condition       String(255);
+        search_string   varchar2(2000);
+        search_val_upper   varchar2(2000);
     BEGIN
-        OPEN res FOR
-        SELECT a.id
-               , a.first_name
-               , a.middle_name
-               , a.last_name
-               , a.gender
-               , a.user_level
-               , a.created_at
-               , a.username
-        FROM tbl_accounts a ORDER BY a.last_name ASC;
+        offset_number := (show_count * (page_number - 1)) + 1;
+        offset_number1 := (offset_number + show_count) - 1;
+        --condition := ' WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1;
+        sort_by := ' ORDER BY last_name ASC';
+        if (order_by != ' ') then
+            sort_by := ' ORDER BY ' || order_by || ' ' || order_order;
+        end if;
+        search_string := '';
+        if (search_val != ' ') then
+            search_val_upper := UPPER(search_val);
+            search_string := ' WHERE 
+                                UPPER(a.first_name) LIKE ''' || '%' || search_val_upper || '%' || ''' OR 
+                                UPPER(a.middle_name) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                                UPPER(a.last_name) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                                UPPER(a.gender) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                                UPPER(a.user_level) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                                UPPER(a.created_at) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                                UPPER(a.username) LIKE ''' || '%' || search_val_upper || '%' || '''';
+        end if;
+        qry := 'SELECT * FROM (
+                        SELECT a.*,
+                        row_number() over ( ORDER BY a.last_name ASC ) line_number
+                        FROM tbl_accounts a ' || search_string || '
+                    ) WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1 || 
+                    sort_by;
+        dbms_output.put_line(qry);
+        OPEN res FOR qry;
+        OPEN counter FOR 'SELECT COUNT(*) AS COUNT FROM tbl_accounts a' || search_string;
     END GET_ALL_ACCOUNTS;
 
     PROCEDURE INSERT_ACCOUNTS(OBJ_ACCOUNT IN T3.ACCOUNT_OBJ, ACCT_ID OUT NUMBER) AS
@@ -507,13 +554,54 @@ create or replace PACKAGE BODY T3_PACKAGE AS
 
     PROCEDURE GET_HEADER_BY_STATUS(
         status_code IN NUMBER
+        , show_count IN NUMBER DEFAULT 10
+        , page_number IN NUMBER DEFAULT 1
+        , search_val IN STRING DEFAULT ' '
+        , order_by IN STRING DEFAULT ' '
+        , order_order IN STRING DEFAULT 'ASC'
         , header_collection OUT SYS_REFCURSOR
+        , counter OUT SYS_REFCURSOR
     ) AS
+    sort_by         String(255);
+    offset_number   Number;
+    offset_number1   Number;
+    qry             String(32767);
+    condition       String(255);
+    search_string   varchar2(2000);
+    search_val_upper   varchar2(2000);
     BEGIN
-        OPEN header_collection FOR
-        SELECT *
-        FROM tbl_header
-        WHERE STATUS = status_code; 
+        offset_number := (show_count * (page_number - 1)) + 1;
+        offset_number1 := (offset_number + show_count) - 1;
+        condition := ' WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1;
+        if (status_code  =  1) then
+            sort_by := ' ORDER BY ID DESC ';
+        else
+            sort_by := ' ORDER BY ACTUAL_END';
+        end if;
+        if (order_by != ' ') then
+            sort_by := ' ORDER BY ' || order_by || ' ' || order_order;
+        end if;
+        if (search_val != ' ') then
+            search_val_upper := UPPER(search_val);
+            search_string := ' AND ( 
+                            UPPER(h.barcode) LIKE ''' || '%' || search_val_upper || '%' || ''' OR 
+                            UPPER(h.po_number) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                            UPPER(h.customer) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                            UPPER(h.control_number) LIKE ''' || '%' || search_val_upper || '%' || ''' OR
+                            UPPER(h.shipping_date) LIKE ''' || '%' || search_val_upper || '%' || '''
+                            )';
+        end if;
+        qry := 'SELECT * FROM (
+                    SELECT h.*,
+                    row_number() over ( ORDER BY h.ACTUAL_END ) line_number 
+                    FROM tbl_header h
+                    WHERE h.status = ' ||
+                    status_code || search_string || ') ' || 
+                    condition || ' ' || 
+                    sort_by;
+        OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || ')';
+--        dbms_output.put_line(counter);
+        OPEN header_collection FOR qry;
     END GET_HEADER_BY_STATUS;
 
 END T3_PACKAGE;

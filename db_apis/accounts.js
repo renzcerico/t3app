@@ -46,6 +46,23 @@ const all = async (data) => {
 
 module.exports.all = all;
 
+const sqlGetManpowerList = "BEGIN T3_PACKAGE.GET_MANPOWER_LIST(:cursor); END;";
+
+const getManpowerList = async () => {
+    const binds = {};
+    
+    binds.cursor = {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.CURSOR
+    }
+
+    const result = await database.resultsetExecute(sqlGetManpowerList, binds);
+
+    return result;
+};
+
+module.exports.getManpowerList = getManpowerList;
+
 const sqlGetById = "BEGIN T3_PACKAGE.GET_ACCOUNT_BY_ID(:id, :cursor); END;";
 
 const getById = async (id) => {

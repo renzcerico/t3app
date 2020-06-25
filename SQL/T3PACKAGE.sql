@@ -1,5 +1,7 @@
 create or replace PACKAGE T3_PACKAGE AS 
 
+    PROCEDURE GET_MANPOWER_LIST(res OUT SYS_REFCURSOR);
+
     PROCEDURE STORE_ALL ( 
         obj_header IN T3.HEADER_OBJ
         , activities IN T3.ACTIVITY_COLLECTION
@@ -45,7 +47,13 @@ create or replace PACKAGE T3_PACKAGE AS
     
     PROCEDURE GET_HEADER_BY_STATUS(
         status_code IN NUMBER
+        , show_count IN NUMBER DEFAULT 10
+        , page_number IN NUMBER DEFAULT 1
+        , search_val IN STRING DEFAULT ' '
+        , order_by IN STRING DEFAULT ' '
+        , order_order IN STRING DEFAULT 'ASC'
         , header_collection OUT SYS_REFCURSOR
+        , counter OUT SYS_REFCURSOR
     );
 --    PROCEDURE GET_MANPOWER_BY_HEADER_ID (
 --        headerid IN Number
@@ -54,7 +62,15 @@ create or replace PACKAGE T3_PACKAGE AS
 
     PROCEDURE INSERT_ACCOUNTS(OBJ_ACCOUNT IN T3.ACCOUNT_OBJ, ACCT_ID OUT NUMBER);
     
-    PROCEDURE GET_ALL_ACCOUNTS(res OUT SYS_REFCURSOR);
+    PROCEDURE GET_ALL_ACCOUNTS(
+        show_count IN NUMBER DEFAULT 10
+        , page_number IN NUMBER DEFAULT 1
+        , search_val IN STRING DEFAULT ' '
+        , order_by IN STRING DEFAULT ' '
+        , order_order IN STRING DEFAULT 'ASC'
+        , res OUT SYS_REFCURSOR
+        , counter OUT SYS_REFCURSOR
+    );
     
     PROCEDURE GET_ACCOUNT_BY_ID(acct_id IN NUMBER, res OUT SYS_REFCURSOR);
     

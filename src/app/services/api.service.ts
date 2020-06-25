@@ -65,6 +65,10 @@ export class ApiService {
         return this.http.post(`${this.url}` + '/api/get-all-accounts', data);
     }
 
+    getManpowerList(): Observable<any> {
+        return this.http.get(`${this.url}` + '/api/get-manpower-list');
+    }
+
     getAccountById(id): Observable<any> {
         return this.http.get(`${ this.url }` + '/api/accounts/' + id);
     }

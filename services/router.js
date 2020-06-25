@@ -30,6 +30,8 @@ router.route('/get-all-accounts')
 router.route('/accounts/:id')
   .get(accounts.getById);
 
+router.route('/get-manpower-list').get(accounts.getManpowerList);
+
 router.route('/get_header_count_per_status').get(t3.getHeaderCountPerStatus);
 
 router.route('/get_header_by_status').post(t3.getHeaderByStatus);
