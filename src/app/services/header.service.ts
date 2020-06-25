@@ -1,3 +1,4 @@
+// import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import Header from '../classes/header';
 import { Observable, throwError } from 'rxjs';
@@ -5,6 +6,9 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { ApiService } from './api.service';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import * as io from 'socket.io-client';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +19,51 @@ export class HeaderService {
   header$ = this.headerSource.asObservable();
   headerCount$ = this.headerCountSource.asObservable();
   header: Header;
-  url: any = 'http://localhost:3000';
+  url: string;
   getDataRes: any;
   visibleStatus: any;
   userForwardList = new Subject<any>();
   userForwardList$ = this.userForwardList.asObservable();
+  headerCountObj: Array<object>;
   currentData;
+  socket;
+
+  getHeaderCountPerStatus = new Observable((observer) => {
+    this.socket.on('updateHeaderStatus', (data) => {
+      observer.next(data);
+    });
+  });
+
+  getUpdatedHeader = new Observable((observer) => {
+    this.socket.on('headerUpdated', async (data) => {
+      const user = await this.apiService.isAuth().toPromise();
+      const userID = (user ? user.ID : 0);
+      console.log(user);
+      console.log(userID);
+      console.log(data.user);
+      if (data.barcode === this.currentData.header_obj.BARCODE) {
+        if (data.user !== userID && userID !== 0) {
+          Swal.fire({
+            title: 'Notice',
+            text: 'Transaction modified by another user.',
+            icon: 'info',
+            confirmButtonText: 'Reload',
+          });
+        }
+        this.getData(data.barcode);
+      }
+    });
+  });
+
   constructor(private apiService: ApiService,
               public http: HttpClient,
               ) {
-    this.getHeaderCountPerStatus();
-    this.getUserForwardList();
-    this.header$.subscribe(data => {
-      this.currentData = data;
-    });
+    // this.getHeaderCountPerStatus();
+    this.setUpdatedHeaderCountPerStatus();
+    this.url = environment.BE_SERVER;
+    this.socket = io(this.url);
+
+    this.getUpdatedHeader.subscribe();
   }
 
   setHeaderObj(headerObj) {
@@ -36,11 +71,11 @@ export class HeaderService {
     this.headerSource.next(headerObj);
   }
 
-  async getHeaderCountPerStatus() {
+  async setUpdatedHeaderCountPerStatus() {
     await this.apiService.getHeaderCountPerStatus().toPromise()
     .then(
         res => {
-          this.headerCountSource.next(res);
+          this.socket.emit('headerStatusUpdate', res);
         }
     );
   }
@@ -59,6 +94,7 @@ export class HeaderService {
         }
     );
     if (this.getDataRes.isExisting) {
+        this.currentData = this.getDataRes;
         this.setHeaderObj(this.getDataRes);
         // this.activitiesSource.next(this.getDataRes.activity_collection);
         // this.materialsSource.next(this.getDataRes.materials_collection);
@@ -83,6 +119,7 @@ export class HeaderService {
     .subscribe(
         res => {
             this.userForwardList.next(res);
+            console.log(res);
         },
         err => {
             console.log(err);
@@ -95,4 +132,12 @@ export class HeaderService {
       this.setHeaderObj(this.currentData);
     }
   }
+
+  // getHeaderCountPerStatus(): Observable<Array<object>> {
+  //   return new Observable((observer) => {
+  //     this.socket.on('updateHeaderStatus', (data) => {
+  //       observer.next(data);
+  //     });
+  //   });
+  // }
 }

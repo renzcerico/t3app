@@ -24,8 +24,8 @@ router.route('/get_downtime_types').get(t3.getDowntimeTypes);
 router.route('/accounts')
   .post(accounts.insert);
 
-router.route('/accounts')
-  .get(accounts.all);
+router.route('/get-all-accounts')
+  .post(accounts.all);
 
 router.route('/accounts/:id')
   .get(accounts.getById);

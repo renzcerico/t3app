@@ -20,13 +20,11 @@ function getLoginFromRec(req) {
         req.session.user = user;
         req.session.save();
       }
-      console.log('LOGIN SESSION ID: ', req.session);
       if (login.length > 0) {
         res.status(201).json(user);
       } else {
         res.status(401).end();
       }
-      res.next();
     } catch (err) {
       next(err);
     }
@@ -37,7 +35,6 @@ function getLoginFromRec(req) {
   const authenticate = async (req, res, next) => {
     try {
       const user = req.session.user;
-      console.log('AUTH SESSION ID: ', req.session);
       res.status(200).json(user);
 
     } catch(err) {
@@ -60,12 +57,14 @@ function getLoginFromRec(req) {
   module.exports.logout = logout;
 
   const forwardList = async (req, res, next) => {
+    console.log(req.session);
     try {
         if (!req.session.user) {
           res.status(200).end();
         } else {
           const userLevel = req.session.user.USER_LEVEL;
           result = await logins.forwardList(userLevel);
+          console.log('FORWARDLIST: ', result);
           res.status(200).json(result);
         }
     } catch (err) {
@@ -86,7 +85,6 @@ function getLoginFromRec(req) {
     }
     req.session.user = user;
     req.session.save();
-    console.log('SET USER: ', req.session.user);
     res.end();
   };
 

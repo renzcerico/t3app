@@ -174,7 +174,7 @@ const getHeaderCountPerStatus = async () => {
 module.exports.getHeaderCountPerStatus = getHeaderCountPerStatus;
 
 const getHeaderByStatus = async (data) => {
-    const header_q = `begin T3_PACKAGE.GET_HEADER_BY_STATUS ( :status_code, :show_count, :page_number, :search_val, :cursor, :counter); end;`;
+    const header_q = `begin T3_PACKAGE.GET_HEADER_BY_STATUS ( :status_code, :show_count, :page_number, :search_val, :order_by, :order_order, :cursor, :counter); end;`;
     let header_binds = data;
 
     header_binds.cursor = {

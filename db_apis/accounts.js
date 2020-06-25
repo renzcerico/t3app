@@ -23,12 +23,18 @@ const insert = async (data) => {
 
 module.exports.insert = insert;
 
-const sqlGetAll = "BEGIN T3_PACKAGE.GET_ALL_ACCOUNTS(:cursor); END;";
+const sqlGetAll = "BEGIN T3_PACKAGE.GET_ALL_ACCOUNTS(:show_count, :page_number, :search_val, :order_by, :order_order, :cursor, :counter); END;";
 
-const all = async () => {
-    const binds = {};
+const all = async (data) => {
+    console.log("\x1b[36m",data, "\x1b[0m");
+    const binds = data;
     
     binds.cursor = {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.CURSOR
+    }
+
+    binds.counter = {
         dir: oracledb.BIND_OUT,
         type: oracledb.CURSOR
     }

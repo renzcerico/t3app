@@ -16,6 +16,8 @@ import { UserService } from './../services/user.service';
 import Swal from 'sweetalert2';
 import { HeaderModalComponent } from '../header-modal/header-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../environments/environment';
+import * as io from 'socket.io-client';
 
 @Component({
     selector: 'app-home',
@@ -50,6 +52,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     usersForwardList;
     isAuthorized: boolean;
     receiverID: number;
+    socket;
+    url: string;
+
     get scheduleTime() {
         let res = '';
         if (Object.entries(this.headerObj).length > 0) {
@@ -140,6 +145,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 console.log(err);
             }
         );
+        this.url = environment.BE_SERVER;
+        this.socket = io(this.url);
+        this.headerService.getUserForwardList();
     }
 
     ngAfterContentChecked() {
@@ -255,6 +263,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             .then(
                 res => {
                     if (res) {
+                        this.headerService.setUpdatedHeaderCountPerStatus();
                         Swal.fire({
                             title: 'Success',
                             text: 'Transaction Saved.',
@@ -272,7 +281,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     });
                 }
                 );
-        this.headerService.getData(json.header_obj.BARCODE);
+        const emitData = {
+            barcode: json.header_obj.BARCODE,
+            user:   this.activeUser.ID
+        };
+        this.socket.emit('updatedHeader', emitData);
     }
 
     handleProdMouseOver() {

@@ -9,7 +9,8 @@ var bodyParser = require("body-parser");
 const session = require('express-session');
 const { v4: uuidv4 } = require('uuid');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const io = require('socket.io');
+
 let httpServer;
 
 function initialize() {
@@ -26,13 +27,26 @@ function initialize() {
     });
 
     httpServer = http.createServer(app);
-
     app.use(morgan('combined'));
-
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json());
     app.use(cookieParser());
 
+
+    // socket io setup
+    const socketIO = io.listen(httpServer);
+
+    socketIO.on('connection', (socket) => {
+      socket.on('headerStatusUpdate', (data) => {
+        socketIO.emit('updateHeaderStatus', data);
+      })
+      socket.on('updatedHeader', (data) => {
+        console.log('emitted');
+        socketIO.emit('headerUpdated', data);
+      });
+    });
+
+    //session setup
     app.use(session({
       genid: (req) => {
         return uuidv4();
@@ -40,20 +54,15 @@ function initialize() {
       secret: 'keyboard cat',
       resave: false,
       saveUninitialized: true,
-      // cookie: {
-      //   domain: 'http://localhost:4200/',
-      //   path: '/'
-      // },
       name: 't3_app'
     }));
 
-    app.use('/api', router);
-    
 
+    // routes
+    app.use('/api', router);
     app.get('/', (req, res) => {
       res.redirect('production.html');
     });
-
     app.use(express.static('./www'));
 
     httpServer.listen(webServerConfig.port)

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, Observer } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,11 @@ import { map, catchError, retry } from 'rxjs/operators';
 
 export class ApiService {
 
-  url: any = 'http://localhost:3000';
+  url: string;
   response: any = {};
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) {
+      this.url = environment.BE_SERVER;
+  }
 
     setHeaders() {
         const httpOptions = {
@@ -58,8 +61,8 @@ export class ApiService {
         return this.http.post(`${ this.url }` + '/api/accounts/reset', id);
     }
 
-    getAllAccounts(): Observable<any> {
-        return this.http.get(`${ this.url }` + '/api/accounts');
+    getAllAccounts(data): Observable<any> {
+        return this.http.post(`${this.url}` + '/api/get-all-accounts', data);
     }
 
     getAccountById(id): Observable<any> {
@@ -76,7 +79,7 @@ export class ApiService {
     }
 
     getHeaderCountPerStatus(): Observable<any> {
-        return this.http.get(`${this.url}` + '/api/get_header_count_per_status');
+        return this.http.get(`${this.url}` + '/api/get_header_count_per_status', this.setHeaders());
     }
 
     isAuth(): Observable<any> {
@@ -88,7 +91,7 @@ export class ApiService {
     }
 
     forwardList(): Observable<any> {
-        return this.http.get(`${ this.url }` + '/api/forward-list');
+        return this.http.get(`${ this.url }` + '/api/forward-list', this.setHeaders());
     }
 
 }

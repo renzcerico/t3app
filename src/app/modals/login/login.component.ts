@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     if (this.apiResponse) {
       this.username = this.apiResponse.USERNAME;
       this.headerService.getUserForwardList();
-      this.headerService.getHeaderCountPerStatus();
+      this.headerService.setUpdatedHeaderCountPerStatus();
       this.userService.setUser(this.apiResponse);
       this.headerService.refreshSource();
       this.modalService.dismissAll();

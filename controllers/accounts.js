@@ -31,7 +31,7 @@ module.exports.insert = insert;
 
 const all = async (req, res, next) => {
     try {
-        const result = await accounts.all();
+        const result = await accounts.all(req.body);
 
         res.status(200).json(result);
     } catch(err) {

@@ -17,6 +17,8 @@ export class HeaderModalComponent implements OnInit {
   headerList: Array<any> = [];
   loading: boolean;
   totalCount: number;
+  orderBy = '';
+  orderOrder = 'ASC';
 
   constructor(public activeModal: NgbActiveModal, public headerService: HeaderService) { }
   ngOnInit() {
@@ -62,7 +64,9 @@ export class HeaderModalComponent implements OnInit {
       status_code: this.status,
       show_count: this.showCount,
       page_number: this.pageNumber,
-      search_val: this.searchVal,
+      search_val: this.searchVal.trim(),
+      order_by: this.orderBy,
+      order_order: this.orderOrder
     };
     return data;
   }
@@ -73,6 +77,21 @@ export class HeaderModalComponent implements OnInit {
       opts.push(index);
     }
     return opts;
+  }
+
+  toggleOrder(orderBy: string) {
+    (this.orderBy === orderBy ? this.orderOrder = 'DESC' : this.orderOrder = 'ASC');
+    this.orderBy = orderBy;
+    this.refreshSource();
+  }
+
+  get showing(): Array<number> {
+    const first = (this.showCount * (this.pageNumber - 1)) + 1;
+    let second = this.pageNumber * this.showCount;
+    if (second > this.totalCount) {
+      second = this.totalCount;
+    }
+    return [first, second];
   }
 
 }

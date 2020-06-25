@@ -24,10 +24,13 @@ export class AccountsComponent implements OnInit {
   formButtonTxt;
   acctID = 0;
 
-  page = 1;
-  pageSize = 3;
-  collectionSize = 0;
-  accountsArray;
+  showCount: 10;
+  pageNumber: 1;
+  totalCount: number;
+  orderBy = '';
+  orderOrder = 'ASC';
+  searchVal = '';
+  accounts;
 
   filter = new FormControl('');
 
@@ -35,8 +38,10 @@ export class AccountsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.showCount = 10;
+    this.pageNumber = 1;
     this.resetFields();
-    await this.displayAccounts();
+    this.refreshSource();
   }
 
   resetFields() {
@@ -62,6 +67,7 @@ export class AccountsComponent implements OnInit {
           .then(
               res => {
                 if (res.outBinds.id > 0) {
+                  // tslint:disable-next-line: no-unused-expression
                   this.acctID === 0 ? this.resetFields() : false;
                   this.msgResponse(true);
                 }
@@ -122,23 +128,18 @@ export class AccountsComponent implements OnInit {
 
   }
 
-  getAllAccounts() {
-    return this.api.getAllAccounts().toPromise();
+  async getAllAccounts(data) {
+    await this.api.getAllAccounts(data).toPromise().then(
+      res => {
+        this.accounts = res.data;
+        this.totalCount = res.counter;
+      }
+    );
   }
 
-  async displayAccounts() {
-    // this.accounts = await this.getAllAccounts();
-    // this.collectionSize = this.accounts.length;
-    // this.accounts.map( (accounts, i) => ({id: i + 1 , ...accounts}) )
-    // .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-
-    this.accountsArray = await this.getAllAccounts();
-  }
-
-  get accounts() {
-    this.collectionSize = this.accountsArray.length || 0;
-    return this.accountsArray.map( (res, i) => ({id: 1 + i, ...res}) )
-      .slice( (this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  refreshSource() {
+    this.getAllAccounts(this.paginationData);
+    // cons
   }
 
   formAttribute(isExist) {
@@ -187,6 +188,23 @@ export class AccountsComponent implements OnInit {
             );
       }
     });
+  }
+
+  get paginationData(): object {
+    const data = {
+      show_count: this.showCount,
+      page_number: this.pageNumber,
+      search_val: this.searchVal.trim(),
+      order_by: this.orderBy,
+      order_order: this.orderOrder
+    };
+    return data;
+  }
+
+  toggleOrder(orderBy: string) {
+    (this.orderBy === orderBy ? this.orderOrder = 'DESC' : this.orderOrder = 'ASC');
+    this.orderBy = orderBy;
+    this.refreshSource();
   }
 
 }

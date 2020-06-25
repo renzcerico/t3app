@@ -16,7 +16,6 @@ const storeAll = async (req = {}, res, next = null) => {
 module.exports.storeAll = storeAll;
 
 const getAllByBarcode = async (req = {}, res, next = null) => {
-    console.log('USERRRRR', req.session);
     try {
         const request = await t3.getAllByBarcode(req.params.barcode)
         .catch(error => { console.log('caught', error.message); });
@@ -55,6 +54,7 @@ const getHeaderCountPerStatus = async (req = {}, res, next = null) => {
         (user ? user_id = user.ID : user_id = 0);
         const request = await t3.getHeaderCountPerStatus(user_id)
         .catch(error => { console.log('caught', error.message); });
+        console.log(request);
         res.status(201).json(request);
     } catch (err) {
         next(err);
