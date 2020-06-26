@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 export class ActivityDowntimeComponent implements OnInit {
 
   mLotNumber: string;
+  selectedActivityIndex: number;
   mPacked = 0;
   activity: any = [];
   tempActDowntime: Array<any> = [];
@@ -27,7 +28,7 @@ export class ActivityDowntimeComponent implements OnInit {
   mRemarks = '';
   mQuantity = 0;
   isChanged = 0;
-  isAuthorized: boolean;
+  _isAuthorized: boolean;
   userType;
 
   @ViewChildren('modalHeaderInput') modalHeaderInput !: QueryList<ElementRef>;
@@ -37,6 +38,7 @@ export class ActivityDowntimeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAuthorized = this._isAuthorized;
     this.activity.ACTIVITY_DOWNTIME.forEach(el => {
       const actDowntime = {};
       Object.assign(actDowntime, el);
@@ -153,5 +155,19 @@ export class ActivityDowntimeComponent implements OnInit {
       this.downtimeTypes[newValIndex].DISABLED = true;
     }
     this.setIsChanged(i);
+  }
+
+  get isAuthorized(): boolean {
+    return this._isAuthorized;
+  }
+
+  set isAuthorized(authorized: boolean) {
+    if (authorized) {
+      switch (this.userType) {
+        case 1:
+          if (this.selectedActivityIndex > 0) { this._isAuthorized = false; }
+          break;
+      }
+    }
   }
 }

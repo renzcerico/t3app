@@ -10,7 +10,7 @@ label {
     font-size: 14px !important;
 }
 
-input {
+.floating-label {
     padding-top: 40px !important;
 }
 

@@ -169,8 +169,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.matArr = this.matComponent.materials;
     }
 
-    async ngOnInit() {
-        await this.headerService.getData('163178');
+    ngOnInit() {
+        // this.headerService.getData('163178');
         // this.barcode();
     }
 
@@ -263,13 +263,17 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             .then(
                 res => {
                     if (res) {
-                        this.headerService.setUpdatedHeaderCountPerStatus();
                         Swal.fire({
                             title: 'Success',
                             text: 'Transaction Saved.',
                             icon: 'success',
                             confirmButtonText: 'Okay',
                         });
+                        const emitData = {
+                            barcode: json.header_obj.BARCODE,
+                            user:   this.activeUser.ID
+                        };
+                        this.socket.emit('updatedHeader', emitData);
                     }
                 },
                 err => {
@@ -281,11 +285,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     });
                 }
                 );
-        const emitData = {
-            barcode: json.header_obj.BARCODE,
-            user:   this.activeUser.ID
-        };
-        this.socket.emit('updatedHeader', emitData);
     }
 
     handleProdMouseOver() {

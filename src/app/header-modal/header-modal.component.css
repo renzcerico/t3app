@@ -15,3 +15,7 @@
     appearance: none;
     text-align-last: center;
 }
+
+.no-select {
+    user-select: none;
+}

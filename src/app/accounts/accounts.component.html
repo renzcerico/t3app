@@ -1,54 +1,54 @@
-<div class="container-fluid" *ngIf="!toggleAccount">
-    <div class="p-5">
-        <!-- <a href="javascript:void(0);" (click)="toggle()">Create Account</a> -->
-        <div class="d-flex justify-content-between p-2">
-            <button class="btn btn-dark font-weight-500 border-100 pr-5 pl-5" (click)="toggle(true)">Create Account</button>
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend mr-2">
-                    <p>Search:</p>
-                </div>
-                <input class="form-control" type="text" name="search" id="search" [(ngModel)]="searchVal" (ngModelChange)="refreshSource()">
-            </div>              
+<div class="container py-5" *ngIf="!toggleAccount">
+    <!-- <a href="javascript:void(0);" (click)="toggle()">Create Account</a> -->
+    <div class="d-flex justify-content-between p-2">
+        <div>
+            <button class="btn btn-dark font-weight-500 border-100 px-5" (click)="toggle(true)">Create Account</button>
         </div>
-        <div class="table-responsive mt-2">
-            <table class="table table-bordered table-sm table-hover text-center" id="tblAccounts">
-                <thead class="text-capitalize">
-                    <tr>
-                        <th (click)="toggleOrder('LAST_NAME')">Name</th>
-                        <th (click)="toggleOrder('USERNAME')">Username</th>
-                        <th (click)="toggleOrder('GENDER')">Gender</th>
-                        <th (click)="toggleOrder('USER_LEVEL')">User Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let acct of accounts" (dblclick)="editAccount(acct.ID)">
-                        <td data-label="Name">
-                            <fa-icon [icon]="faEdit" 
-                                    class="float-left d-sm-none d-md-block ml-3" 
-                                    (click)="editAccount(acct.ID)"></fa-icon>
-                            <ngb-highlight [result]="acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase" [term]="filter.value"></ngb-highlight>
-                            <!-- {{ acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase }} -->
-                        </td>
-                        <td data-label="Username">{{ acct.USERNAME | lowercase }}</td>
-                        <td data-label="Gender">{{ acct.GENDER | titlecase }}</td>
-                        <td data-label="User Level">{{ acct.USER_LEVEL | titlecase }}</td>
-                    </tr>
-                    <tr *ngIf="accounts?.length === 0">
-                        <td colspan="4">No records found.</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="input-group input-group-sm w-25">
+            <div class="input-group-prepend mr-2">
+                <p>Search:</p>
+            </div>
+            <input class="form-control py-0" type="text" name="search" id="search" [(ngModel)]="searchVal" (ngModelChange)="refreshSource()">
+        </div>         
+    </div>
+    <div class="table-responsive mt-2">
+        <table class="table table-bordered table-sm table-hover text-center" id="tblAccounts">
+            <thead class="text-capitalize">
+                <tr>
+                    <th (click)="toggleOrder('LAST_NAME')">Name</th>
+                    <th (click)="toggleOrder('USERNAME')">Username</th>
+                    <th (click)="toggleOrder('GENDER')">Gender</th>
+                    <th (click)="toggleOrder('USER_LEVEL')">User Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let acct of accounts" (dblclick)="editAccount(acct.ID)">
+                    <td data-label="Name">
+                        <fa-icon [icon]="faEdit" 
+                                class="float-left d-sm-none d-md-block ml-3" 
+                                (click)="editAccount(acct.ID)"></fa-icon>
+                        <ngb-highlight [result]="acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase" [term]="filter.value"></ngb-highlight>
+                        <!-- {{ acct.LAST_NAME + ', ' + acct.FIRST_NAME | titlecase }} -->
+                    </td>
+                    <td data-label="Username">{{ acct.USERNAME | lowercase }}</td>
+                    <td data-label="Gender">{{ acct.GENDER | titlecase }}</td>
+                    <td data-label="User Level">{{ acct.USER_LEVEL | titlecase }}</td>
+                </tr>
+                <tr *ngIf="accounts?.length === 0">
+                    <td colspan="4">No records found.</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <div class="d-flex justify-content-between p-2">
-                <ngb-pagination class="mx-3" [collectionSize]="totalCount" [(page)]="pageNumber" [pageSize]="showCount" aria-label="Default pagination" (pageChange)="refreshSource()"></ngb-pagination>
-              
-                <select class="custom-select" style="width: auto" [(ngModel)]="showCount" (ngModelChange)="refreshSource()">
-                  <option [ngValue]="3">3 items per page</option>
-                  <option [ngValue]="10">10 items per page</option>
-                  <option [ngValue]="15">15 items per page</option>
-                </select>
-              </div>
-        </div>
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination class="mx-3" [collectionSize]="totalCount" [(page)]="pageNumber" [pageSize]="showCount" aria-label="Default pagination" (pageChange)="refreshSource()"></ngb-pagination>
+            
+            <select class="custom-select" style="width: auto" [(ngModel)]="showCount" (ngModelChange)="refreshSource()">
+                <option [ngValue]="3">3 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+            </select>
+            </div>
     </div>
 </div>
 
@@ -65,7 +65,7 @@
                 <label class="small">Required <span class="text-danger">*</span></label>
                 <div class="form-label-group">
                     <input type="text" 
-                           class="form-control"
+                           class="form-control floating-label "
                            placeholder="" 
                            id="firstName"
                            #firstName
@@ -75,7 +75,7 @@
                 </div>
                 <div class="form-label-group">
                     <input type="text" 
-                           class="form-control" 
+                           class="form-control floating-label" 
                            id="middleName" 
                            placeholder=""
                            formControlName="middleName"
@@ -84,7 +84,7 @@
                 </div>
                 <div class="form-label-group">
                     <input type="text" 
-                           class="form-control" 
+                           class="form-control floating-label" 
                            id="lastName" 
                            placeholder="" 
                            formControlName="lastName"
@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-label-group">
                     <input type="text" 
-                           class="form-control" 
+                           class="form-control floating-label" 
                            placeholder="" 
                            formControlName="username"
                            id="username">

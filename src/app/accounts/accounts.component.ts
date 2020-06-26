@@ -173,8 +173,8 @@ export class AccountsComponent implements OnInit {
 
           this.api.resetPassword(data)
             .subscribe(
-              res => {
-                if (res === 'y') {
+              response => {
+                if (response === 'y') {
                   Swal.fire(
                     'Success',
                     'Password changed to "welcome".',

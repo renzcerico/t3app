@@ -180,7 +180,9 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
       });
     modalRef.componentInstance.activity = this.activities[index];
     modalRef.componentInstance.downtimeTypes = this.downtimeTypes;
-    modalRef.componentInstance.isAuthorized = this.isAuthorized;
+    modalRef.componentInstance._isAuthorized = this.isAuthorized;
+    modalRef.componentInstance.selectedActivityIndex = index;
+    modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
     // modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
     event.stopPropagation();
   }

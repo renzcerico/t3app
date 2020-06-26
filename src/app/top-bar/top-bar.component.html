@@ -2,7 +2,7 @@
         <img src="/assets/img/logo.png" class="img-fluid" width="35px" 
             tooltip="Tailin Abrasives Corporation" 
             placement="bottom" /> &nbsp;
-        <a class="navbar-brand font-weight-bold text-green mr-auto" href="javascript:void(0)">T3 APPLICATION</a>
+        <a class="navbar-brand font-weight-bold text-green mr-auto" href="/">T3 APPLICATION</a>
         <button class="navbar-toggler" type="button" 
             (click)="toggleNavbar()">
             <span class="navbar-toggler-icon"></span>
@@ -21,14 +21,14 @@
                     <a class="nav-link font-weight-500 small" href="javascript:void(0)">DASHBOARD</a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(1, headerCount[0].WIP)">
+                    <a href="javascript:void(0)" [class.updated]="updated[0]" class="nav-link small" (click)="openHeaderModal(1, headerCount[0].WIP)">
                     WIP
                     <span class="ml-1 badge badge-danger" *ngIf="headerCount[0].WIP">
                         {{ headerCount[0].WIP }}
                     </span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(2, headerCount[0].OPEN)">OPEN<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].OPEN">{{ headerCount[0].OPEN | counterPipe }}</span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(3, headerCount[0].COMPLETED)">COMPLETED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].COMPLETED">{{ headerCount[0].COMPLETED | counterPipe }}</span></a></li>
-                <li class="nav-item"><a href="javascript:void(0)" class="nav-link small" (click)="openHeaderModal(4, headerCount[0].CLOSED)">CLOSED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].CLOSED">{{ headerCount[0].CLOSED | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" [class.updated]="updated[1]" class="nav-link small" (click)="openHeaderModal(2, headerCount[0].OPEN)">OPEN<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].OPEN">{{ headerCount[0].OPEN | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" [class.updated]="updated[2]" class="nav-link small" (click)="openHeaderModal(3, headerCount[0].COMPLETED)">COMPLETED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].COMPLETED">{{ headerCount[0].COMPLETED | counterPipe }}</span></a></li>
+                <li class="nav-item"><a href="javascript:void(0)" [class.updated]="updated[3]" class="nav-link small" (click)="openHeaderModal(4, headerCount[0].CLOSED)">CLOSED<span class="ml-1 badge badge-danger" *ngIf="headerCount[0].CLOSED">{{ headerCount[0].CLOSED | counterPipe }}</span></a></li>
                 
                 <!-- <li class="nav-item">
                     <a class="nav-link font-weight-500 small" href="javascript:void(0)">TRANSACTION</a>

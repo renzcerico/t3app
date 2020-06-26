@@ -6,11 +6,10 @@ const database = require('./database.js');
 const morgan = require('morgan');
 var path = require("path");
 var bodyParser = require("body-parser");
-const session = require('express-session');
 const { v4: uuidv4 } = require('uuid');
 const cookieParser = require('cookie-parser');
 const io = require('socket.io');
-
+const sharedsession = require('express-socket.io-session');
 let httpServer;
 
 function initialize() {
@@ -31,11 +30,24 @@ function initialize() {
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json());
     app.use(cookieParser());
+    const session = require('express-session')({
+      genid: (req) => {
+        return uuidv4();
+      },
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: true,
+      name: 't3_app'
+    });
 
+    //session setup
+    app.use(session);
 
+    
     // socket io setup
     const socketIO = io.listen(httpServer);
-
+    
+    socketIO.use(sharedsession(session));
     socketIO.on('connection', (socket) => {
       socket.on('headerStatusUpdate', (data) => {
         socketIO.emit('updateHeaderStatus', data);
@@ -45,18 +57,6 @@ function initialize() {
         socketIO.emit('headerUpdated', data);
       });
     });
-
-    //session setup
-    app.use(session({
-      genid: (req) => {
-        return uuidv4();
-      },
-      secret: 'keyboard cat',
-      resave: false,
-      saveUninitialized: true,
-      name: 't3_app'
-    }));
-
 
     // routes
     app.use('/api', router);

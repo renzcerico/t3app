@@ -77,18 +77,18 @@
                 <tbody>
                     <tr>
                         <td *ngIf="loading;" colspan="5">Loading...</td>
-                        <td *ngIf="!loading" colspan="5">No result</td>
+                        <td *ngIf="!loading" colspan="5">No Records Found</td>
                     </tr>
                 </tbody>
             </ng-template>
         </table>
         <div class="d-flex justify-content-between p-2">
             <div class="p-2">
-                <p>
+                <p *ngIf="totalCount">
                     Showing {{showing[0]}} - {{showing[1]}} of {{totalCount}} records
                 </p>
             </div>
-            <ngb-pagination class="mx-3" [collectionSize]="totalCount" [(page)]="pageNumber" [pageSize]="showCount" aria-label="Default pagination" (pageChange)="refreshSource()"></ngb-pagination>
+            <ngb-pagination class="mx-3 no-select" [collectionSize]="totalCount" [(page)]="pageNumber" [pageSize]="showCount" aria-label="Default pagination" (pageChange)="refreshSource()"></ngb-pagination>
         </div>
     </div>
 </div>

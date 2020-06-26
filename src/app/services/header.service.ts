@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class HeaderService {
   private headerSource = new Subject<any>();
-  private headerCountSource = new Subject<Array<object>>();
+  private headerCountSource = new Subject<any>();
   header$ = this.headerSource.asObservable();
   headerCount$ = this.headerCountSource.asObservable();
   header: Header;
@@ -28,9 +28,9 @@ export class HeaderService {
   currentData;
   socket;
 
-  getHeaderCountPerStatus = new Observable((observer) => {
+  getHeaderCountPerStatus = new Observable<any>((observer) => {
     this.socket.on('updateHeaderStatus', (data) => {
-      observer.next(data);
+      this.setUpdatedHeaderCountPerStatus('reload');
     });
   });
 
@@ -38,21 +38,23 @@ export class HeaderService {
     this.socket.on('headerUpdated', async (data) => {
       const user = await this.apiService.isAuth().toPromise();
       const userID = (user ? user.ID : 0);
-      console.log(user);
-      console.log(userID);
-      console.log(data.user);
-      if (data.barcode === this.currentData.header_obj.BARCODE) {
-        if (data.user !== userID && userID !== 0) {
-          Swal.fire({
-            title: 'Notice',
-            text: 'Transaction modified by another user.',
-            icon: 'info',
-            confirmButtonText: 'Reload',
-          }).then( val => {
+      const currentBarcode = (this.currentData ? this.currentData.header_obj.BARCODE : null);
+      if (currentBarcode !== null) {
+        if (data.barcode === currentBarcode) {
+          if (data.user !== userID && userID !== 0) {
+            Swal.fire({
+              title: 'Notice',
+              text: 'Transaction modified by another user.',
+              icon: 'info',
+              confirmButtonText: 'Reload',
+            }).then( val => {
+              this.getData(data.barcode);
+              this.setUpdatedHeaderCountPerStatus('save');
+            });
+          } else {
             this.getData(data.barcode);
-          });
-        } else {
-          this.getData(data.barcode);
+            this.setUpdatedHeaderCountPerStatus('save');
+          }
         }
       }
     });
@@ -62,11 +64,12 @@ export class HeaderService {
               public http: HttpClient,
               ) {
     // this.getHeaderCountPerStatus();
-    this.setUpdatedHeaderCountPerStatus();
+    this.setUpdatedHeaderCountPerStatus('load');
     this.url = environment.BE_SERVER;
     this.socket = io(this.url);
 
     this.getUpdatedHeader.subscribe();
+    this.getHeaderCountPerStatus.subscribe();
   }
 
   setHeaderObj(headerObj) {
@@ -74,13 +77,21 @@ export class HeaderService {
     this.headerSource.next(headerObj);
   }
 
-  async setUpdatedHeaderCountPerStatus() {
+  async setUpdatedHeaderCountPerStatus(reason: string) {
     await this.apiService.getHeaderCountPerStatus().toPromise()
     .then(
         res => {
-          this.socket.emit('headerStatusUpdate', res);
+          if (reason === 'save') {
+            this.socket.emit('headerStatusUpdate', 1);
+          } else {
+            this.setHeaderCountPerStatus(res);
+          }
         }
     );
+  }
+
+  setHeaderCountPerStatus(data) {
+    this.headerCountSource.next(data);
   }
 
   getHeaderByStatus(data): Observable<any> {

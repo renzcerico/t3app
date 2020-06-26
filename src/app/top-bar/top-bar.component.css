@@ -86,6 +86,7 @@ form select:focus {
     color: #777;
 }
 
-.bold {
+.updated {
     font-weight: 500;
+    color: #28a745!important;
 }

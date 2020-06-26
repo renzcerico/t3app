@@ -97,7 +97,7 @@
                     <td class="align-middle" data-label="Downtime" (dblclick)="openDowntimeModal($event, i)">
                         {{ activity.TOTAL_DOWNTIME }}
                     </td>
-                    <td *ngIf="isAuthorized" class="align-middle td-editable" data-label="Remarks">
+                    <td *ngIf="isAuthorized && (i === 0 || activeUser.USER_TYPE > 1)" class="align-middle td-editable" data-label="Remarks">
                         <textarea
                             name="remarks"
                             id="remarks"
@@ -112,7 +112,7 @@
                         </textarea>
                         <div class="td-indicator"></div>
                     </td>
-                    <td *ngIf="!isAuthorized" class="text-center align-middle" data-label="Remarks">{{ activity.REMARKS }}</td>
+                    <td *ngIf="!isAuthorized || (i > 0 && activeUser.USER_TYPE === 1)" class="text-center align-middle" data-label="Remarks">{{ activity.REMARKS }}</td>
                     <td class="align-middle" data-label="Updated By">{{ activity.LAST_UPDATED_BY_NAME }}</td>
                     <td class="align-middle" data-label="Date Entered">
                         {{ activity.DATE_ENTERED | date : 'MMM d, y HH:mm' }}

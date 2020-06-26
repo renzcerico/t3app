@@ -163,7 +163,10 @@ export class ActivityService {
   }
 
   setFillers() {
-    const diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
+    let diff = this.actualTime.start.diff(this.expectedTime.start, 'hours');
+    if (diff === 0 && !this.activities.length) {
+      diff = 1;
+    }
     let filler;
     for (let index = 0; index < diff; index++) {
       this.logTime();

@@ -22,11 +22,13 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
 
     navbarOpen = false;
     loginHidden = true;
-    userProfile = false;
+    userProfile;
     btnLogin = true;
     faUser = faUser;
     username = '';
     headerCount: any;
+    prevCount: any;
+    updated =  [false, false, false, false];
     // loginForm = new FormGroup({
     //     username: new FormControl(''),
     //     password: new FormControl('')
@@ -38,19 +40,19 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
                 private headerService: HeaderService,
                 public userService: UserService
     ) {
-         this.headerCount = [
+        this.headerCount = [
             {STATUS: 1, COUNT: 0},
             {STATUS: 2, COUNT: 0},
             {STATUS: 3, COUNT: 0},
             {STATUS: 4, COUNT: 0}
         ];
-         headerService.getHeaderCountPerStatus.subscribe(
+        headerService.headerCount$.subscribe(
             headerCount => {
                 this.headerCount = headerCount;
             }
         );
 
-         this.userLoggedIn();
+        this.userLoggedIn();
     }
 
     ngOnInit() {
