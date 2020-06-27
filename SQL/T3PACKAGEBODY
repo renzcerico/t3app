@@ -537,10 +537,12 @@ create or replace PACKAGE BODY T3_PACKAGE AS
                 SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
                 SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
                 SUM(DECODE(status, 4, 1, 0)) CLOSED    
-            FROM TBL_HEADER
-            WHERE FORWARDED_BY = user_id OR
-                  REVIEWED_BY  = user_id OR
-                  APPROVED_BY  = user_id;
+            FROM TBL_HEADER h
+            WHERE h.FORWARDED_BY = user_id OR
+                  h.REVIEWED_BY  = user_id OR
+                  h.APPROVED_BY  = user_id OR
+                  h.STATUS =  1 OR ( h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
+                     WHERE m.MANPOWER_ID = user_id ));
         else
             OPEN res FOR
             SELECT
@@ -575,9 +577,11 @@ create or replace PACKAGE BODY T3_PACKAGE AS
         offset_number := (show_count * (page_number - 1)) + 1;
         offset_number1 := (offset_number + show_count) - 1;
         condition := ' WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1;
-        if (user_id > 0) then
-        condition1 := ' AND ( APPROVED_BY = ' || user_id || ' OR 
-                     FORWARDED_BY = ' || user_id || ' OR REVIEWED_BY = ' || user_id || ')';
+        if (user_id > 0 AND status_code > 1) then
+        condition1 := ' AND ( h.APPROVED_BY = ' || user_id || ' OR 
+                     h.FORWARDED_BY = ' || user_id || ' OR h.REVIEWED_BY = ' || user_id || ' OR H.ID IN 
+                     (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
+                     WHERE m.MANPOWER_ID = ' || user_id || ' ))';
         end if;
         if (status_code  =  1) then
             sort_by := ' ORDER BY ID DESC ';
@@ -600,13 +604,13 @@ create or replace PACKAGE BODY T3_PACKAGE AS
         qry := 'SELECT * FROM (
                     SELECT h.*,
                     row_number() over ( ORDER BY h.ACTUAL_END ) line_number 
-                    FROM tbl_header h
-                    WHERE h.status = ' ||
-                    status_code || search_string || ') ' || 
-                    condition || condition1 || ' ' || 
+                    FROM tbl_header h ' ||
+                    'WHERE h.status = ' ||
+                    status_code || search_string ||  condition1 || ') ' || 
+                    condition || ' ' || 
                     sort_by;
+        dbms_output.put_line(qry);
         OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || condition1 ||')';
---        dbms_output.put_line(counter);
         OPEN header_collection FOR qry;
     END GET_HEADER_BY_STATUS;
 
