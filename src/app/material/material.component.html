@@ -39,7 +39,7 @@
                             type="number" 
                             name="reject" 
                             [(ngModel)]="materials[i].REJECT"
-                            (ngModelChange)="valueChanged(i)"
+                            (ngModelChange)="valueChanged(i, 'reject')"
                             [attr.m-id]="material.ID"
                             class="form-control text-right"
                             (focus)="$event.target.select();"

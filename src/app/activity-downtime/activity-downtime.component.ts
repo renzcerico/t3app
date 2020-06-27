@@ -28,6 +28,7 @@ export class ActivityDowntimeComponent implements OnInit {
   mRemarks = '';
   mQuantity = 0;
   isChanged = 0;
+  // tslint:disable-next-line: variable-name
   _isAuthorized: boolean;
   userType;
 
@@ -168,6 +169,40 @@ export class ActivityDowntimeComponent implements OnInit {
           if (this.selectedActivityIndex > 0) { this._isAuthorized = false; }
           break;
       }
+    }
+  }
+  inputMinutes() {
+    if (this.mMinutes < 0) {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Invalid Value',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      }).then( val => {
+        this.mMinutes = 0;
+      });
+    } else if (this.mMinutes > 60) {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Invalid Value',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      }).then( val => {
+        this.mMinutes = 60;
+      });
+    }
+  }
+
+  inputQuantity() {
+    if (this.mQuantity < 0) {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Invalid Value',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      }).then( val => {
+        this.mQuantity = 0;
+      });
     }
   }
 }

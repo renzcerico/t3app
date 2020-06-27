@@ -75,7 +75,18 @@ export class ActivityDetailsComponent implements OnInit {
 
   }
 
-  setIsChanged(index: number) {
+  setIsChanged(index: number, field: string = '') {
+    console.log(this.tempActDetails[index].ADJ_QTY);
+    // if (field === 'adjustment' && !isNaN(this.tempActDetails[index].ADJ_QTY)) {
+    //   Swal.fire({
+    //     title: 'Warning',
+    //     text: 'Invalid Value',
+    //     icon: 'warning',
+    //     confirmButtonText: 'OK',
+    //   }).then( val => {
+    //     this.tempActDetails[index].ADJ_QTY = 0;
+    //   });
+    // }
     this.tempActDetails[index].IS_CHANGED = 1;
     this.isChanged = 1;
   }
@@ -155,5 +166,18 @@ export class ActivityDetailsComponent implements OnInit {
       if (this.selectedActivityIndex > 0 ) { return false; }
     }
     return true;
+  }
+
+  inputPacked() {
+    if (this.mPacked < 0) {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Invalid Value',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      }).then( val => {
+        this.mPacked = 0;
+      });
+    }
   }
 }

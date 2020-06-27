@@ -57,11 +57,13 @@
                     <input
                         type="number"
                         min="0"
+                        max="60"
                         class="form-control input-sm editable-content text-right"
                         #modalHeaderInput
                         (keyup.enter)="modalEnter($event)"
                         (focus)="$event.target.select()"
                         [(ngModel)]="mMinutes"
+                        (ngModelChange)="inputMinutes()"
                     >
                 </td>
                 <td class="text-right td-editable">
@@ -72,6 +74,7 @@
                         #modalHeaderInput
                         (keyup.enter)="modalEnter($event)"
                         [(ngModel)]="mQuantity"
+                        (ngModelChange)="inputQuantity()"
                         (focus)="$event.target.select()"
                         class="form-control input-sm editable-content text-right">
                 </td>

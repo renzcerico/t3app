@@ -133,7 +133,6 @@ export class HeaderService {
     .subscribe(
         res => {
             this.userForwardList.next(res);
-            console.log(res);
         },
         err => {
             console.log(err);

@@ -55,6 +55,7 @@
                         required
                         (focus)="$event.target.select()"
                         [(ngModel)]="mPacked"
+                        (ngModelChange)="inputPacked()"
                         (keyup.enter)="modalEnter($event)">
                 </td>
                 <td class="align-middle text-right px-3">
@@ -86,9 +87,8 @@
                     <div class="td-indicator"></div>
                     <input
                         type="number"
-                        min="0"
                         class="form-control input-sm editable-content text-right"
-                        (ngModelChange)="setIsChanged(i)"
+                        (ngModelChange)="setIsChanged(i, 'adjustment')"
                         (focus)="$event.target.select()"
                         [(ngModel)]="tempActDetails[i].ADJ_QTY">
                 </td>
