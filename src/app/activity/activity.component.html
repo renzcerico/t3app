@@ -88,7 +88,8 @@
                     <td class="align-middle" data-label="Start">{{ activity.START_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="End">{{ activity.END_TIME | date : 'HH:mm'}}</td>
                     <td class="align-middle" data-label="Packed">
-                        {{ activity.TOTAL_BOXES | number: '' }}
+                        <!-- {{ activity.TOTAL_BOXES | number: '' }} -->
+                        {{ activity.TOTAL | number: '' }}
                     </td>
                     <!-- <td class="align-middle" data-label="Adjustment">
                         {{ activity.ADJ_QTY | number: '' }}

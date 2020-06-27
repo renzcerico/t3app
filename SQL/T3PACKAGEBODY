@@ -546,8 +546,8 @@ create or replace PACKAGE BODY T3_PACKAGE AS
                         WHERE h.FORWARDED_BY = user_id OR
                             h.REVIEWED_BY  = user_id OR
                             h.APPROVED_BY  = user_id OR
-                            h.STATUS =  1 OR ( h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
-                            WHERE m.MANPOWER_ID = ' || user_id || ' ));';
+                            h.STATUS =  1 OR h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
+                            WHERE m.MANPOWER_ID = ' || user_id || ' )';
             else 
                 qry := 'SELECT
                             SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
