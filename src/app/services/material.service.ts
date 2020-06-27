@@ -11,6 +11,82 @@ export class MaterialService {
   private materialsSource = new Subject<Array<Material>>();
   materials$ = this.materialsSource.asObservable();
   materials: Array<Material>;
+
+  defaultMaterial: Array<any> = [
+    {
+      QUANTITY: 100,
+      STANDARD: 100,
+      REQUIREMENTS: 100,
+      USED: 0,
+      ITEM_CATEGORY: 'ADAPTER',
+      BOX_TYPE: null,
+      MAX_QTY: 100,
+      MATERIAL_DESC: 'DEWALT (Box Label large) [TLBOXLADEW] DEWALT 紙箱標簽  大',
+      },
+      {
+      QUANTITY: 20,
+      STANDARD: 20,
+      REQUIREMENTS: 500,
+      USED: 0,
+      ITEM_CATEGORY: 'ADAPTER',
+      BOX_TYPE: null,
+      MAX_QTY: 100,
+      MATERIAL_DESC: 'B&D OFF,CUTTING,FLAP 說 明書',
+      },
+      {
+      QUANTITY: 1,
+      STANDARD: 1,
+      REQUIREMENTS: 10000,
+      USED: 0,
+      ITEM_CATEGORY: 'LABELS',
+      BOX_TYPE: null,
+      MAX_QTY: 1,
+      MATERIAL_DESC: 'FLAT 180mm x 1.6mm x 22.23mm A60T-BF DW44602 (OSA) N179555 PH DEWALT (9) LA4',
+      },
+      {
+      QUANTITY: 1,
+      STANDARD: 1,
+      REQUIREMENTS: 10000,
+      USED: 0,
+      ITEM_CATEGORY: 'CUT SKILL',
+      BOX_TYPE: null,
+      MAX_QTY: 1,
+      MATERIAL_DESC: 'C.S 180*1.6*22 AA46T 2G(套片日期) DEWA [275APDEP]',
+      },
+      {
+      QUANTITY: 100,
+      STANDARD: 100,
+      REQUIREMENTS: 100,
+      USED: 0,
+      MATERIAL_CODE: 'VC716BMBDP',
+      ITEM_CATEGORY: 'BOX',
+      BOX_TYPE: 'B',
+      MAX_QTY: 200,
+      MATERIAL_DESC: 'C180x1.6(正) B 100PC (20片組) DW44602 印刷 PH [VC716BMBDP]',
+      },
+      {
+      QUANTITY: 200,
+      STANDARD: 200,
+      REQUIREMENTS: 50,
+      USED: 0,
+      MATERIAL_CODE: 'VC716CNBBB',
+      ITEM_CATEGORY: 'BOX',
+      BOX_TYPE: 'C',
+      MAX_QTY: 200,
+      MATERIAL_DESC: 'C 180 x 1.6 C 200PCS 40.6 x 20.6 x 29.4 [VC716CNBBB] | C 180 x 1.6(正) C 200PCS',
+      },
+      {
+      QUANTITY: 20,
+      STANDARD: 20,
+      REQUIREMENTS: 500,
+      USED: 0,
+      MATERIAL_CODE: 'VC716AGBDP',
+      ITEM_CATEGORY: 'BOX',
+      BOX_TYPE: 'A',
+      MAX_QTY: 200,
+      MATERIAL_DESC: 'C180x1.6 (正) A 20PC DW44602 印刷 PH [VC716AGBDP]',
+      }
+  ];
   constructor() {
     this.materials$.subscribe(
       materials => {
@@ -21,10 +97,20 @@ export class MaterialService {
 
   setMaterials(materials: Array<any>) {
     const materialsArr = [];
-    materials.forEach(element => {
-        const material = new Material(element);
-        materialsArr.push(material);
+    let materialObj;
+    this.defaultMaterial.forEach(el => {
+      const actualMaterial = materials.filter(e => e.MATERIAL_CODE === el.MATERIAL_CODE);
+      if (actualMaterial.length > 0) {
+        materialObj = new Material(actualMaterial[0]);
+      } else {
+        materialObj = new Material(el);
+      }
+      materialsArr.push(materialObj);
     });
+    // materials.forEach(element => {
+    //     const material = new Material(element);
+    //     materialsArr.push(material);
+    // });
     this.materialsSource.next(materialsArr);
   }
 
