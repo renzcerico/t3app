@@ -12,7 +12,7 @@ export class MaterialService {
   materials$ = this.materialsSource.asObservable();
   materials: Array<Material>;
 
-  defaultMaterial: Array<any> = [
+  defaultMaterial = [
     {
       QUANTITY: 100,
       STANDARD: 100,
@@ -97,20 +97,10 @@ export class MaterialService {
 
   setMaterials(materials: Array<any>) {
     const materialsArr = [];
-    let materialObj;
-    this.defaultMaterial.forEach(el => {
-      const actualMaterial = materials.filter(e => e.MATERIAL_CODE === el.MATERIAL_CODE);
-      if (actualMaterial.length > 0) {
-        materialObj = new Material(actualMaterial[0]);
-      } else {
-        materialObj = new Material(el);
-      }
-      materialsArr.push(materialObj);
+    materials.forEach(element => {
+        const material = new Material(element);
+        materialsArr.push(material);
     });
-    // materials.forEach(element => {
-    //     const material = new Material(element);
-    //     materialsArr.push(material);
-    // });
     this.materialsSource.next(materialsArr);
   }
 
