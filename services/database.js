@@ -83,8 +83,6 @@ function resultsetExecute(statement, binds = [], opts = {}) {
       connection = await oracledb.getConnection();
   
       const result = await connection.execute(statement, binds);
-      // console.log("Cursor metadata:");
-      // console.log(result.outBinds.cursor.metaData);
   
       // Fetch rows from the REF CURSOR.
       // If getRows(numRows) returns:
@@ -98,8 +96,6 @@ function resultsetExecute(statement, binds = [], opts = {}) {
       do {
         rows = await resultSet.getRows(numRows); // get numRows rows at a time
         if (rows.length > 0) {
-          // console.log("getRows(): Got " + rows.length + " rows");
-          // console.log(count);
           
           for (var i = 0; i < rows.length; i++) {
             procJson.push({});
@@ -122,7 +118,6 @@ function resultsetExecute(statement, binds = [], opts = {}) {
         }
         resolve(res);
       } else {
-        // console.log(procJson)
         resolve(procJson)
       }
   

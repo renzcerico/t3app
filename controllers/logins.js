@@ -57,14 +57,12 @@ function getLoginFromRec(req) {
   module.exports.logout = logout;
 
   const forwardList = async (req, res, next) => {
-    console.log(req.session);
     try {
         if (!req.session.user) {
           res.status(200).end();
         } else {
           const userLevel = req.session.user.USER_LEVEL;
           result = await logins.forwardList(userLevel);
-          console.log('FORWARDLIST: ', result);
           res.status(200).json(result);
         }
     } catch (err) {

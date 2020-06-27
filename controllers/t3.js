@@ -54,7 +54,6 @@ const getHeaderCountPerStatus = async (req = {}, res, next = null) => {
         (user ? user_id = user.ID : user_id = 0);
         const request = await t3.getHeaderCountPerStatus(user_id)
         .catch(error => { console.log('caught', error.message); });
-        console.log(request);
         res.status(201).json(request);
     } catch (err) {
         next(err);

@@ -53,7 +53,6 @@ function initialize() {
         socketIO.emit('updateHeaderStatus', data);
       })
       socket.on('updatedHeader', (data) => {
-        console.log('emitted');
         socketIO.emit('headerUpdated', data);
       });
     });
