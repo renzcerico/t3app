@@ -353,6 +353,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     this.headerObj.APPROVED_BY = this.receiverID;
                     break;
                 case 3:
+                case 4:
                     if (this.headerObj.STATUS === 1) {
                         this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');

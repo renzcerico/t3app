@@ -529,20 +529,34 @@ create or replace PACKAGE BODY T3_PACKAGE AS
     
     PROCEDURE GET_HEADER_COUNT_PER_STATUS (user_id NUMBER DEFAULT 0, res OUT SYS_REFCURSOR) AS
     qry VARCHAR2(3267);
+    user_level  varchar2(25);
+
     BEGIN
         if (user_id > 0) then
-            OPEN res FOR
-            SELECT
-                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
-                SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
-                SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
-                SUM(DECODE(status, 4, 1, 0)) CLOSED    
-            FROM TBL_HEADER h
-            WHERE h.FORWARDED_BY = user_id OR
-                  h.REVIEWED_BY  = user_id OR
-                  h.APPROVED_BY  = user_id OR
-                  h.STATUS =  1 OR ( h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
-                     WHERE m.MANPOWER_ID = user_id ));
+            SELECT UPPER(USER_LEVEL) INTO user_level
+            FROM TBL_ACCOUNTS 
+            WHERE ID = user_id;
+            if (user_level  != 'ADMIN') then
+                qry :=   'SELECT
+                            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
+                            SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
+                            SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
+                            SUM(DECODE(status, 4, 1, 0)) CLOSED    
+                        FROM TBL_HEADER
+                        WHERE h.FORWARDED_BY = user_id OR
+                            h.REVIEWED_BY  = user_id OR
+                            h.APPROVED_BY  = user_id OR
+                            h.STATUS =  1 OR ( h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
+                            WHERE m.MANPOWER_ID = ' || user_id || ' ));';
+            else 
+                qry := 'SELECT
+                            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
+                            SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
+                            SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
+                            SUM(DECODE(status, 4, 1, 0)) CLOSED    
+                        FROM TBL_HEADER';
+            end if;
+            OPEN res FOR qry;
         else
             OPEN res FOR
             SELECT
@@ -573,15 +587,21 @@ create or replace PACKAGE BODY T3_PACKAGE AS
     search_string   varchar2(2000);
     search_val_upper   varchar2(2000);
     condition1      varchar2(2000);
+    user_level  varchar2(25);
     BEGIN
         offset_number := (show_count * (page_number - 1)) + 1;
         offset_number1 := (offset_number + show_count) - 1;
         condition := ' WHERE line_number BETWEEN ' || offset_number || ' AND ' || offset_number1;
         if (user_id > 0 AND status_code > 1) then
-        condition1 := ' AND ( h.APPROVED_BY = ' || user_id || ' OR 
+            SELECT UPPER(USER_LEVEL) INTO user_level
+            FROM TBL_ACCOUNTS 
+            WHERE ID = user_id;
+            if (user_level  != 'ADMIN') then
+                condition1 := ' AND ( h.APPROVED_BY = ' || user_id || ' OR 
                      h.FORWARDED_BY = ' || user_id || ' OR h.REVIEWED_BY = ' || user_id || ' OR H.ID IN 
                      (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
                      WHERE m.MANPOWER_ID = ' || user_id || ' ))';
+            end if;
         end if;
         if (status_code  =  1) then
             sort_by := ' ORDER BY ID DESC ';
@@ -609,7 +629,7 @@ create or replace PACKAGE BODY T3_PACKAGE AS
                     status_code || search_string ||  condition1 || ') ' || 
                     condition || ' ' || 
                     sort_by;
-        dbms_output.put_line(qry);
+        dbms_output.put_line(user_level);
         OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || condition1 ||')';
         OPEN header_collection FOR qry;
     END GET_HEADER_BY_STATUS;

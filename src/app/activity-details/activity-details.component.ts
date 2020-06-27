@@ -76,17 +76,6 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   setIsChanged(index: number, field: string = '') {
-    console.log(this.tempActDetails[index].ADJ_QTY);
-    // if (field === 'adjustment' && !isNaN(this.tempActDetails[index].ADJ_QTY)) {
-    //   Swal.fire({
-    //     title: 'Warning',
-    //     text: 'Invalid Value',
-    //     icon: 'warning',
-    //     confirmButtonText: 'OK',
-    //   }).then( val => {
-    //     this.tempActDetails[index].ADJ_QTY = 0;
-    //   });
-    // }
     this.tempActDetails[index].IS_CHANGED = 1;
     this.isChanged = 1;
   }
