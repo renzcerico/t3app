@@ -51,7 +51,8 @@ const getHeaderCountPerStatus = async (req = {}, res, next = null) => {
     try {
         const user = req.session.user;
         let user_id;
-        (user ? user_id = user.ID : user_id = 0);
+        (user ? user_id = user.ID : user_id = 0);   
+        // console.log('USER_ID: ', user_id);
         const request = await t3.getHeaderCountPerStatus(user_id)
         .catch(error => { console.log('caught', error.message); });
         res.status(201).json(request);
@@ -83,3 +84,15 @@ const getHeaderByStatus = async (req = {}, res, next = null) => {
 }
 
 module.exports.getHeaderByStatus = getHeaderByStatus;
+
+const getServerTime = async (req = {}, res, next = null) => {
+    try {
+        const request = await t3.getServerTime()
+        .catch(error => { console.log('caught', error.message); });
+        res.status(201).json(request);
+      } catch (err) {
+        next(err);
+      }
+}
+
+module.exports.getServerTime = getServerTime;

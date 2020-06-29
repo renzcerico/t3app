@@ -10,6 +10,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { HeaderService } from '../services/header.service';
 import { CounterPipePipe } from '../counter-pipe.pipe';
 import { LoginComponent } from '../modals/login/login.component';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-top-bar',
@@ -26,7 +27,6 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
     btnLogin = true;
     faUser = faUser;
     username = '';
-    headerCount: any;
     prevCount: any;
     updated =  [false, false, false, false];
     // loginForm = new FormGroup({
@@ -34,28 +34,29 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
     //     password: new FormControl('')
     // });
     apiResponse: any;
+    headerCount = [
+        {STATUS: 1, COUNT: 0},
+        {STATUS: 2, COUNT: 0},
+        {STATUS: 3, COUNT: 0},
+        {STATUS: 4, COUNT: 0}
+    ];
+    serverTime: string;
 
     constructor(private modalService: NgbModal,
                 public apis: ApiService,
                 private headerService: HeaderService,
                 public userService: UserService
     ) {
-        this.headerCount = [
-            {STATUS: 1, COUNT: 0},
-            {STATUS: 2, COUNT: 0},
-            {STATUS: 3, COUNT: 0},
-            {STATUS: 4, COUNT: 0}
-        ];
         headerService.headerCount$.subscribe(
             headerCount => {
                 this.headerCount = headerCount;
             }
         );
-
         this.userLoggedIn();
     }
 
     ngOnInit() {
+        this.getServerTime();
     }
 
     ngAfterContentChecked() {
@@ -102,5 +103,24 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
                     console.log(err);
                 }
             );
+    }
+
+    set timer(serverTime: string) {
+        let time = moment(serverTime);
+        setInterval(() => {
+            time = time.add(1, 'second');
+            this.serverTime = time.format('HH:mm:ss');
+        }, 1000);
+    }
+
+    get timer(): string {
+        return this.serverTime;
+    }
+
+    getServerTime() {
+        this.apis.getServerTime().toPromise()
+            .then( res => {
+                this.timer = res;
+            });
     }
 }

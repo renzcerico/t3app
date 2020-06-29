@@ -186,3 +186,20 @@ const getHeaderByStatus = async (data) => {
 }
 
 module.exports.getHeaderByStatus = getHeaderByStatus;
+
+const getServerTime = async () => {
+    const q = `begin T3_PACKAGE.GET_SERVER_TIME (:cursor); end;`;
+    let binds ={
+        cursor : {
+            dir: oracle.BIND_OUT,
+            type: oracle.CURSOR
+        }
+    }
+
+    const res = await database.resultsetExecute(q, binds)
+        .catch(error => { console.log('caught', error.message); });
+    const time = res[0].NOW;
+    return time;
+}
+
+module.exports.getServerTime = getServerTime;

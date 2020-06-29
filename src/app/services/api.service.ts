@@ -98,4 +98,8 @@ export class ApiService {
         return this.http.get(`${ this.url }` + '/api/forward-list', this.setHeaders());
     }
 
+    getServerTime(): Observable<any> {
+        return this.http.get(`${this.url}` + '/api/get-server-time');
+    }
+
 }

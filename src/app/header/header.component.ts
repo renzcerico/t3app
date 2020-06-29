@@ -54,6 +54,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     receiverID: number;
     socket;
     url: string;
+    timer: string;
 
     get scheduleTime() {
         let res = '';
@@ -169,7 +170,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.matArr = this.matComponent.materials;
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         // this.headerService.getData('163178');
         // this.barcode();
     }
@@ -330,7 +331,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             // 2 : open
             // 3 : completed
             // 4 : closed
-            const date = new Date();
+            await this.getServerTime();
+            const date = this.timer;
             switch (this.userType) {
                 case 1:
                     this.headerObj.IS_CHANGED = 1;
@@ -392,5 +394,12 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 console.log(err);
             }
         );
+    }
+
+    getServerTime() {
+        this.apis.getServerTime().toPromise()
+            .then( res => {
+                this.timer = res;
+            });
     }
 }

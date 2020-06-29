@@ -536,16 +536,17 @@ create or replace PACKAGE BODY T3_PACKAGE AS
             SELECT UPPER(USER_LEVEL) INTO user_level
             FROM TBL_ACCOUNTS 
             WHERE ID = user_id;
+            dbms_output.put_line(user_level);
             if (user_level  != 'ADMIN') then
                 qry :=   'SELECT
                             SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) WIP,
                             SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) OPEN,
                             SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) COMPLETED,
                             SUM(DECODE(status, 4, 1, 0)) CLOSED    
-                        FROM TBL_HEADER
-                        WHERE h.FORWARDED_BY = user_id OR
-                            h.REVIEWED_BY  = user_id OR
-                            h.APPROVED_BY  = user_id OR
+                        FROM TBL_HEADER h
+                        WHERE h.FORWARDED_BY =  ' || user_id || ' OR
+                            h.REVIEWED_BY  = ' || user_id || ' OR
+                            h.APPROVED_BY  = ' || user_id || 'OR
                             h.STATUS =  1 OR h.ID IN (SELECT m.HEADER_ID FROM TBL_MANPOWER m 
                             WHERE m.MANPOWER_ID = ' || user_id || ' )';
             else 
@@ -633,5 +634,13 @@ create or replace PACKAGE BODY T3_PACKAGE AS
         OPEN counter FOR '(SELECT COUNT(*) AS COUNT FROM tbl_header h WHERE status = ' || status_code ||  search_string || condition1 ||')';
         OPEN header_collection FOR qry;
     END GET_HEADER_BY_STATUS;
+
+    PROCEDURE GET_SERVER_TIME(res OUT SYS_REFCURSOR) AS
+    BEGIN
+        OPEN res FOR
+        SELECT TO_CHAR
+            (SYSDATE, 'MM-DD-YYYY HH24:MI:SS') "NOW"
+        FROM DUAL;
+    END GET_SERVER_TIME;
 
 END T3_PACKAGE;

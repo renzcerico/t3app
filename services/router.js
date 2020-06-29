@@ -48,6 +48,9 @@ router.route('/logout')
 router.route('/forward-list')
   .get(login.forwardList);
 
-  router.route('/set-user')
+router.route('/set-user')
   .get(login.setUser);
+
+router.route('/get-server-time')
+  .get(t3.getServerTime);
 module.exports = router;
