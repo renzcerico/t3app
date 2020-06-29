@@ -95,14 +95,14 @@ const getDataByHeaderId = async (table ,headerid) => {
     }
     let res = await database.resultsetExecute(q, binds)
     .catch(error => { console.log('caught', error.message); });
-    res.forEach(async (el, i) => {
-        if (table == 'TBL_ACTIVITY') {
+    if (table == 'TBL_ACTIVITY') {
+        res.forEach(async (el, i) => {
             const activity_details = await getActivityDetails(res[i].ID);
             res[i].ACTIVITY_DETAILS = activity_details;
             const activity_downtime = await getActivityDowntime(res[i].ID);
             res[i].ACTIVITY_DOWNTIME = activity_downtime;
-        }
-    });
+        });
+    }
     return res;
 }
 

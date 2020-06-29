@@ -381,6 +381,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         this.visibleStatus(this.headerObj.STATUS);
         this.manpowerService.setManpower(data.manpower_collection);
         this.activityService.setActivities(data.activity_collection);
+        console.log(data.activity_collection);
         this.materialService.setMaterials(data.materials_collection);
     }
 

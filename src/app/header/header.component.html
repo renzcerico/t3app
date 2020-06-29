@@ -141,7 +141,7 @@
 </div>
 
 <div class="m-3 position-absolute right-0 d-flex btn-save-container">
-    <select *ngIf="isAuthorized && headerObj.STATUS < 3" name="forwardTo" [(ngModel)]="receiverID" id="forwardTo" class="form-control">
+    <select *ngIf="isAuthorized && headerObj.STATUS < 3 && userType < 3" name="forwardTo" [(ngModel)]="receiverID" id="forwardTo" class="form-control">
         <option value="0" disabled>Forward to</option>
         <option *ngFor="let user of usersForwardList;" [value]="user.ID">
             {{ user.FULL_NAME }}
