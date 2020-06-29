@@ -101,7 +101,6 @@ export class ManpowerComponent implements OnInit, AfterContentChecked {
     this.manpowers.forEach((el , i) => {
       if (el.MANPOWER_ID > 0) {
         const accIndex = this.accounts.findIndex(x => x.ID === el.MANPOWER_ID);
-        console.log(accIndex);
         this.accounts[accIndex].DISABLED = 1;
         this.positions[i].selected = el.MANPOWER_ID;
         this.positions[i].selected_index = accIndex;

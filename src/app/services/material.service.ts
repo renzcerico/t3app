@@ -21,6 +21,7 @@ export class MaterialService {
       ITEM_CATEGORY: 'ADAPTER',
       BOX_TYPE: null,
       MAX_QTY: 100,
+      MATERIAL_CODE: 'TLBOXLADEW',
       MATERIAL_DESC: 'DEWALT (Box Label large) [TLBOXLADEW] DEWALT 紙箱標簽  大',
       },
       {
@@ -31,6 +32,7 @@ export class MaterialService {
       ITEM_CATEGORY: 'ADAPTER',
       BOX_TYPE: null,
       MAX_QTY: 100,
+      MATERIAL_CODE: 'ZTDBSAFEB&D',
       MATERIAL_DESC: 'B&D OFF,CUTTING,FLAP 說 明書',
       },
       {
@@ -41,6 +43,7 @@ export class MaterialService {
       ITEM_CATEGORY: 'LABELS',
       BOX_TYPE: null,
       MAX_QTY: 1,
+      MATERIAL_CODE: 'UC44602DEP',
       MATERIAL_DESC: 'FLAT 180mm x 1.6mm x 22.23mm A60T-BF DW44602 (OSA) N179555 PH DEWALT (9) LA4',
       },
       {
@@ -51,6 +54,7 @@ export class MaterialService {
       ITEM_CATEGORY: 'CUT SKILL',
       BOX_TYPE: null,
       MAX_QTY: 1,
+      MATERIAL_CODE: '20075APDEP1XF',
       MATERIAL_DESC: 'C.S 180*1.6*22 AA46T 2G(套片日期) DEWA [275APDEP]',
       },
       {

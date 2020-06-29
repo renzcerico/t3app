@@ -72,7 +72,7 @@ export class ActivityService {
             start.isBefore(this.shifts[this.headerObj.SHIFT].first_hour )
           )
         ) {
-        start = this.shifts[this.headerObj.SHIFT].first_hour;
+        start = moment(start.format('MM/DD/YYYY') + ' ' + this.shifts[this.headerObj.SHIFT].first_hour.format('HH:mm'));
       }
       if (this.activities.length > 0) {
         start = moment(this.lastActivity.END_TIME);
