@@ -81,7 +81,6 @@ function resultsetExecute(statement, binds = [], opts = {}) {
     try {
 
       connection = await oracledb.getConnection();
-  
       const result = await connection.execute(statement, binds);
   
       // Fetch rows from the REF CURSOR.

@@ -96,12 +96,18 @@ const getDataByHeaderId = async (table ,headerid) => {
     let res = await database.resultsetExecute(q, binds)
     .catch(error => { console.log('caught', error.message); });
     if (table == 'TBL_ACTIVITY') {
-        res.forEach(async (el, i) => {
-            const activity_details = await getActivityDetails(res[i].ID);
+        for ( let i = 0; i <= res.length - 1; i++ ){
+            let activity_details = await getActivityDetails(res[i].ID).then(res => {
+                return res;
+            });
+            let activity_downtime = await getActivityDowntime(res[i].ID).then(res => {
+                return res;
+            });
             res[i].ACTIVITY_DETAILS = activity_details;
-            const activity_downtime = await getActivityDowntime(res[i].ID);
             res[i].ACTIVITY_DOWNTIME = activity_downtime;
-        });
+            consoleSuccess(res[i].ID);
+        };
+        consoleSuccess('DONE');
     }
     return res;
 }
@@ -115,7 +121,7 @@ const getActivityDetails = async (activity_id) => {
         dir: oracle.BIND_OUT,
         type: oracle.CURSOR
     }
-    let res = await database.resultsetExecute(q, binds)
+    const res = await database.resultsetExecute(q, binds)
     .catch(error => { console.log('caught', error.message); });
     return res;
 }
@@ -129,7 +135,7 @@ const getActivityDowntime = async (activity_id) => {
         dir: oracle.BIND_OUT,
         type: oracle.CURSOR
     }
-    let res = await database.resultsetExecute(q, binds)
+    const res = await database.resultsetExecute(q, binds)
     .catch(error => { console.log('caught', error.message); });
     return res;
 }
@@ -203,3 +209,12 @@ const getServerTime = async () => {
 }
 
 module.exports.getServerTime = getServerTime;
+
+const consoleError = (text) => {
+    console.log('\x1b[47m','\x1b[31m', text, '\x1b[0m');
+}
+
+
+const consoleSuccess = (text) => {
+    console.log('\x1b[32m', text, '\x1b[0m');
+}
