@@ -1,3 +1,4 @@
+import { ServertimeService } from './../services/servertime.service';
 import { environment } from './../../environments/environment';
 import { UserService } from './../services/user.service';
 import { HeaderModalComponent } from './../header-modal/header-modal.component';
@@ -41,10 +42,12 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
         {STATUS: 4, COUNT: 0}
     ];
     serverTime: string;
+    timer: any;
 
     constructor(private modalService: NgbModal,
                 public apis: ApiService,
                 private headerService: HeaderService,
+                private servertimeService: ServertimeService,
                 public userService: UserService
     ) {
         headerService.headerCount$.subscribe(
@@ -52,11 +55,16 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
                 this.headerCount = headerCount;
             }
         );
+        servertimeService.time$.subscribe(
+            datetime => {
+                this.timer = datetime.format('HH:mm:ss');
+            }
+        );
         this.userLoggedIn();
     }
 
     ngOnInit() {
-        this.getServerTime();
+        //
     }
 
     ngAfterContentChecked() {
@@ -103,24 +111,5 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
                     console.log(err);
                 }
             );
-    }
-
-    set timer(serverTime: string) {
-        let time = moment(serverTime);
-        setInterval(() => {
-            time = time.add(1, 'second');
-            this.serverTime = time.format('HH:mm:ss');
-        }, 1000);
-    }
-
-    get timer(): string {
-        return this.serverTime;
-    }
-
-    getServerTime() {
-        this.apis.getServerTime().toPromise()
-            .then( res => {
-                this.timer = res;
-            });
     }
 }

@@ -105,9 +105,7 @@ const getDataByHeaderId = async (table ,headerid) => {
             });
             res[i].ACTIVITY_DETAILS = activity_details;
             res[i].ACTIVITY_DOWNTIME = activity_downtime;
-            consoleSuccess(res[i].ID);
         };
-        consoleSuccess('DONE');
     }
     return res;
 }

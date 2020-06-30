@@ -1,3 +1,4 @@
+import { HeaderFactory } from './header-factory';
 import Header from './header';
 import { HeaderService } from './../services/header.service';
 
@@ -18,7 +19,7 @@ export default class Account {
         admin       : 4
     };
     _IS_AUTHORIZED;
-    constructor(jsonObj: any, public headerService: HeaderService) {
+    constructor(jsonObj: any, public headerService: HeaderService, private headerFactory: HeaderFactory) {
         this.ID          = jsonObj.ID || null;
         this.FIRST_NAME  = jsonObj.FIRST_NAME || '';
         this.MIDDLE_NAME = jsonObj.MIDDLE_NAME || '';
@@ -29,7 +30,7 @@ export default class Account {
         this.USERNAME    = jsonObj.USERNAME || '';
         headerService.header$.subscribe(
             data => {
-              const headerObj = new Header(data.header_obj);
+              const headerObj = this.headerFactory.setHeader(data.header_obj);
               this.IS_AUTHORIZED = headerObj;
             }
         );

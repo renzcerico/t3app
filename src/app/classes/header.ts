@@ -1,3 +1,4 @@
+import { ServertimeService } from './../services/servertime.service';
 import { ActivityService } from './../services/activity.service';
 import Activity from './activity';
 import * as moment from 'moment';
@@ -30,11 +31,17 @@ export default class Header {
     REVIEWED_AT: string;
     APPROVED_AT: string;
     FORWARDED_AT: string;
+    servertime: any;
 
-    constructor(jsonObj) {
+    constructor(jsonObj, private servertimeService: ServertimeService) {
+        servertimeService.time$.subscribe(
+            datetime => {
+                this.servertime = datetime;
+            }
+        );
         this.ID = jsonObj.ID || null;
         this.BARCODE = jsonObj.BARCODE || (jsonObj.HEADER_ID ? jsonObj.HEADER_ID.toString() : '') || '';
-        this.ACTUAL_START = jsonObj.ACTUAL_START || moment().subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');
+        this.ACTUAL_START = jsonObj.ACTUAL_START || this.servertime.subtract(2, 'hours').format('DD-MMM-YYYY HH:mm:ss');
         this.ACTUAL_END = (jsonObj.ACTUAL_END ? moment(jsonObj.ACTUAL_END ).format('DD-MMM-YYYY HH:mm:ss') : '' ) || '';
         this.STATUS = jsonObj.STATUS || 1;
         this.PO_NUMBER = jsonObj.PO_NUMBER || jsonObj.CUST_PO_NUMBER || '';
@@ -59,4 +66,36 @@ export default class Header {
         (jsonObj.IS_NEW === 0 ? this.IS_NEW = 0 : this.IS_NEW = 1);
         (jsonObj.IS_CHANGED === 0 ? this.IS_CHANGED = 0 : this.IS_CHANGED = 1);
     }
-}
+
+    getJson() {
+        const obj = {
+            ID: this.ID,
+            BARCODE: this.BARCODE,
+            ACTUAL_START: this.ACTUAL_START,
+            ACTUAL_END: this.ACTUAL_END,
+            STATUS: this.STATUS,
+            PO_NUMBER: this.PO_NUMBER,
+            CONTROL_NUMBER: this.CONTROL_NUMBER,
+            SHIPPING_DATE: this.SHIPPING_DATE,
+            ORDER_QUANTITY: this.ORDER_QUANTITY,
+            CUSTOMER: this.CUSTOMER,
+            CUSTOMER_CODE: this.CUSTOMER_CODE,
+            CUSTOMER_SPEC: this.CUSTOMER_SPEC,
+            OLD_CODE: this.OLD_CODE,
+            INTERNAL_CODE: this.INTERNAL_CODE,
+            PRODUCT_DESCRIPTION: this.PRODUCT_DESCRIPTION,
+            SHIFT: this.SHIFT,
+            SCHEDULE_DATE_START: this.SCHEDULE_DATE_START,
+            SCHEDULE_DATE_END: this.SCHEDULE_DATE_END,
+            FORWARDED_BY: this.FORWARDED_BY,
+            REVIEWED_BY: this.REVIEWED_BY,
+            APPROVED_BY: this.APPROVED_BY,
+            REVIEWED_AT: this.REVIEWED_AT,
+            APPROVED_AT: this.APPROVED_AT,
+            FORWARDED_AT: this.FORWARDED_AT,
+            IS_CHANGED: this.IS_CHANGED,
+            IS_NEW: this.IS_NEW
+        };
+        return obj;
+    }
+ }

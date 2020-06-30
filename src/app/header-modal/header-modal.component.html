@@ -60,9 +60,11 @@
         </table>
         <div class="d-flex justify-content-between p-2">
             <div class="p-2">
-                <p *ngIf="totalCount">
-                    Showing {{showing[0]}} - {{showing[1]}} of {{totalCount}} records
-                </p>
+                <span *ngIf="totalCount">
+                    Showing {{showing[0]}} - {{showing[1]}} of {{totalCount}} 
+                    <span *ngIf="totalCount > 1">records</span>
+                    <span *ngIf="totalCount === 1">record</span>
+                </span>
             </div>
             <ngb-pagination class="mx-3 no-select" [collectionSize]="totalCount" [(page)]="pageNumber" [pageSize]="showCount" aria-label="Default pagination" (pageChange)="refreshSource()"></ngb-pagination>
         </div>

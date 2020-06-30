@@ -1,3 +1,5 @@
+import { HeaderFactory } from './../classes/header-factory';
+import { ServertimeService } from './servertime.service';
 import { ActivityFactory } from './../classes/activity-factory';
 import { HeaderService } from './header.service';
 import { Injectable} from '@angular/core';
@@ -24,8 +26,16 @@ export class ActivityService {
   shifts: Array<any> = [];
   headerObj: any = {};
   downtimeTypes: any = [];
+  timer: any;
+  servertime: any;
 
-  constructor(private apiService: ApiService, private headerService: HeaderService, private activityFactory: ActivityFactory) {
+  constructor(
+    private apiService: ApiService,
+    private headerService: HeaderService,
+    private activityFactory: ActivityFactory,
+    private headerFactory: HeaderFactory,
+    private servertimeService: ServertimeService
+  ) {
     const dayshift = 'dayshift';
     const nightshift = 'nightshift';
     const date = new Date();
@@ -48,9 +58,14 @@ export class ActivityService {
     );
     headerService.header$.subscribe(
       data => {
-        this.headerObj = new Header(data.header_obj);
+        this.headerObj = this.headerFactory.setHeader(data.header_obj).getJson();
       }
     );
+    servertimeService.time$.subscribe(
+      datetime => {
+          this.servertime = datetime;
+      }
+  );
     this.startTimer();
     this.getDowntimeTypes();
   }
@@ -85,14 +100,14 @@ export class ActivityService {
 
   get actualTime() {
     let res = {start: null, end: null, exact: null};
-    let start = moment()/* .subtract(1, 'hours') */.startOf('hour');
+    let start = this.servertime.startOf('hour');
     if (Object.entries(this.headerObj).length > 0) {
       if (start.isSame(this.shifts[this.headerObj.SHIFT].breaktime_start)) {
         start = this.shifts[this.headerObj.SHIFT].breaktime_end;
       }
     }
     const end = moment(start).add(1, 'hours');
-    const exact = moment();
+    const exact = this.servertime;
     res = {start, end, exact};
     this.setActualTime(res);
     return res;
@@ -175,8 +190,8 @@ export class ActivityService {
         START_TIME      : this.expectedTime.start,
         END_TIME        : this.expectedTime.end,
         LAST_UPDATED_BY : null,
-        DATE_ENTERED    : moment().format('DD/MMM/YY'),
-        DATE_UPDATED    : moment().format('DD/MMM/YY'),
+        DATE_ENTERED    : this.servertime.format('DD/MMM/YY'),
+        DATE_UPDATED    : this.servertime.format('DD/MMM/YY'),
         IS_NEW          : 1,
         IS_CHANGED      : 0
       });

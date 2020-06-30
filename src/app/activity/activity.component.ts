@@ -5,7 +5,8 @@ import {
   ViewChildren,
   Input,
   OnInit,
-  AfterContentChecked
+  AfterContentChecked,
+  ChangeDetectorRef,
 } from '@angular/core';
 import * as moment from 'moment';
 import {ActivityService} from '../services/activity.service';
@@ -40,7 +41,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     let subTotal = 0;
     if (this.activities.length) {
       this.activities.forEach( (el) => {
-        subTotal += el.TOTAL_BOXES;
+        subTotal += el.TOTAL;
       });
     }
     return subTotal;
@@ -58,6 +59,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
 
   constructor(
       private activityService: ActivityService,
+      private cdr: ChangeDetectorRef,
       private modalService: NgbModal,
       private userService: UserService) {
     activityService.activities$.subscribe(
@@ -116,7 +118,7 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  valueChanged(index) {
+  valueChanged(index: number) {
     this.activities[index].IS_CHANGED = 1;
     // this.activities[index].LAST_UPDATED_BY = this.activeUser.ID;
   }
@@ -185,6 +187,10 @@ export class ActivityComponent implements OnInit, AfterContentChecked {
     modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
     // modalRef.componentInstance.userType = ( this.activeUser ? this.activeUser.USER_TYPE : 0 );
     event.stopPropagation();
+  }
+
+  detectChange() {
+    this.cdr.detectChanges();
   }
 
 }

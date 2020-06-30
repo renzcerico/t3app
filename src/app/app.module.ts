@@ -1,3 +1,4 @@
+import { HeaderFactory } from './classes/header-factory';
 import { AccountFactory } from './classes/account-factory';
 import { ActivityFactory } from './classes/activity-factory';
 import { NgModule } from '@angular/core';
@@ -64,6 +65,7 @@ providers: [
 ApiService,
 ActivityFactory,
 AccountFactory,
+HeaderFactory,
 // { provide: LocationStrategy, useClass: HashLocationStrategy }
 ],
 bootstrap: [AppComponent]

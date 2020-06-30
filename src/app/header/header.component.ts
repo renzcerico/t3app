@@ -1,3 +1,5 @@
+import { ServertimeService } from './../services/servertime.service';
+import { HeaderFactory } from './../classes/header-factory';
 import { ManpowerService } from './../services/manpower.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, AfterContentChecked, AfterViewInit} from '@angular/core';
@@ -54,7 +56,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
     receiverID: number;
     socket;
     url: string;
-    timer: string;
+    timer: any;
 
     get scheduleTime() {
         let res = '';
@@ -112,9 +114,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         private modalService: NgbModal,
         public apis: ApiService,
         private activityService: ActivityService,
+        private headerFactory: HeaderFactory,
         private materialService: MaterialService,
         private manpowerService: ManpowerService,
         private headerService: HeaderService,
+        private servertimeService: ServertimeService,
         private userService: UserService) {
         activityService.activities$.subscribe(
             activities => {
@@ -144,6 +148,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             },
             err => {
                 console.log(err);
+            }
+        );
+        servertimeService.time$.subscribe(
+            datetime => {
+                this.timer = datetime;
             }
         );
         this.url = environment.BE_SERVER;
@@ -331,53 +340,52 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             // 2 : open
             // 3 : completed
             // 4 : closed
-            await this.getServerTime();
-            const date = this.timer;
             switch (this.userType) {
                 case 1:
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 2;
-                    this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.ACTUAL_END = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     this.headerObj.FORWARDED_BY = this.activeUser.ID;
                     this.headerObj.REVIEWED_BY = this.receiverID;
-                    this.headerObj.FORWARDED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.FORWARDED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     break;
                 case 2:
                     if (this.headerObj.STATUS < this.userType) {
                         this.headerObj.FORWARDED_BY = this.activeUser.ID;
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
-                        this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.FORWARDED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.ACTUAL_END = this.timer.format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.FORWARDED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     }
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 3;
-                    this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.REVIEWED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     this.headerObj.APPROVED_BY = this.receiverID;
                     break;
                 case 3:
                 case 4:
                     if (this.headerObj.STATUS === 1) {
-                        this.headerObj.ACTUAL_END = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                        this.headerObj.FORWARDED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.ACTUAL_END = this.timer.format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.REVIEWED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.FORWARDED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.FORWARDED_BY = this.activeUser.ID;
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
                     } else if (this.headerObj.STATUS === 2) {
-                        this.headerObj.REVIEWED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                        this.headerObj.REVIEWED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                         this.headerObj.REVIEWED_BY = this.activeUser.ID;
                     }
                     this.headerObj.APPROVED_BY = this.activeUser.ID;
                     this.headerObj.IS_CHANGED = 1;
                     this.headerObj.STATUS = 4;
-                    this.headerObj.APPROVED_AT = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    this.headerObj.APPROVED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     break;
             }
+            console.log(this.headerObj);
             this.header(false);
         }
     }
 
     setData(data) {
-        this.headerObj = new Header(data.header_obj);
+        this.headerObj = this.headerFactory.setHeader(data.header_obj).getJson();
         this.visibleStatus(this.headerObj.STATUS);
         this.manpowerService.setManpower(data.manpower_collection);
         this.activityService.setActivities(data.activity_collection);
@@ -394,12 +402,5 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                 console.log(err);
             }
         );
-    }
-
-    getServerTime() {
-        this.apis.getServerTime().toPromise()
-            .then( res => {
-                this.timer = res;
-            });
     }
 }

@@ -102,11 +102,12 @@
                         <textarea
                             name="remarks"
                             id="remarks"
-                            class="form-control editable-content"
+                            class="form-control editable-content ng-touched"
                             [(ngModel)]="activities[i].REMARKS"
                             (ngModelChange)="valueChanged(i)"
                             (keydown.enter)="handleKeyDown($event)"
                             (keyup.enter)="handleTrKeyUp($event)"
+                            (blur)="detectChange()"
                             #editableTd 
                             autosize
                             rows="1">

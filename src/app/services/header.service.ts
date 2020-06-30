@@ -47,6 +47,7 @@ export class HeaderService {
               text: 'Transaction modified by another user.',
               icon: 'info',
               confirmButtonText: 'Reload',
+              allowOutsideClick: false
             }).then( val => {
               this.getData(data.barcode);
               this.setUpdatedHeaderCountPerStatus('save');
