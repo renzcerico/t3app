@@ -96,9 +96,9 @@
                 <td></td>
             </tr>
             <tr *ngFor="let val of tempActDowntime; let i = index">
-                <td *ngIf="!isAuthorized" class="align-middle">
+                <td *ngIf="!isAuthorized" class="align-middle text-right">
                     <span *ngIf="val.DOWNTIME_TYPE_ID">
-                        {{val.DOWNTIME_TYPE_ID}}
+                        {{val.DOWNTIME}}
                     </span>
                     <span *ngIf="!val.DOWNTIME_TYPE_ID">
                         
@@ -120,7 +120,7 @@
                         <option *ngFor="let dtype of downtimeTypes; let i = index;" [ngValue]="dtype.ID" [disabled]="dtype.DISABLED">{{ dtype.NAME }}</option>                
                     </select>
                 </td>
-                <td *ngIf="!isAuthorized" class="align-middle">
+                <td *ngIf="!isAuthorized" class="text-right align-middle">
                     <span *ngIf="val.MINUTES">
                         {{val.MINUTES}}
                     </span>
@@ -138,7 +138,7 @@
                         (focus)="$event.target.select()"
                         [(ngModel)]="tempActDowntime[i].MINUTES">
                 </td>
-                <td *ngIf="!isAuthorized" class="align-middle">
+                <td *ngIf="!isAuthorized" class="align-middle text-right">
                     <span *ngIf="val.QUANTITY">
                         {{val.QUANTITY}}
                     </span>
@@ -156,7 +156,7 @@
                         (focus)="$event.target.select()"
                         [(ngModel)]="tempActDowntime[i].QUANTITY">
                 </td>
-                <td *ngIf="!isAuthorized" class="align-middle">
+                <td *ngIf="!isAuthorized" class="align-middle text-center">
                     <span *ngIf="val.REMARKS">
                         {{val.REMARKS}}
                     </span>
@@ -180,11 +180,11 @@
                 <td></td>
             </tr>            
         </tbody>
-        <tfoot class="text-right">
+        <tfoot class="text-right px-3">
             <tr>
-                <th>Subtotal</th>
-                <th>{{ totalMinutes | number: '' }}</th>
-                <th>{{ totalQuantity | number: '' }}</th>
+                <th class="px-3">Subtotal</th>
+                <th class="px-3">{{ totalMinutes | number: '' }}</th>
+                <th class="px-3">{{ totalQuantity | number: '' }}</th>
                 <td></td>
                 <td></td>
                 <td></td>
