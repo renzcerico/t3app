@@ -152,7 +152,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
         );
         servertimeService.time$.subscribe(
             datetime => {
-                this.timer = datetime;
+                this.timer = moment(datetime);
             }
         );
         this.url = environment.BE_SERVER;
@@ -263,7 +263,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
             activity_collection.push(el.getJson());
         });
         const json = {
-            header_obj          : this.headerObj,
+            header_obj          : this.headerObj.getJson(),
             material_collection : this.matCollection,
             manpower_collection : this.manPowercollection,
             user_id             : this.activeUser.ID,
@@ -379,13 +379,12 @@ export class HeaderComponent implements OnInit, AfterContentChecked, AfterViewIn
                     this.headerObj.APPROVED_AT = this.timer.format('DD-MMM-YYYY HH:mm:ss');
                     break;
             }
-            console.log(this.headerObj);
             this.header(false);
         }
     }
 
     setData(data) {
-        this.headerObj = this.headerFactory.setHeader(data.header_obj).getJson();
+        this.headerObj = this.headerFactory.setHeader(data.header_obj);
         this.visibleStatus(this.headerObj.STATUS);
         this.manpowerService.setManpower(data.manpower_collection);
         this.activityService.setActivities(data.activity_collection);

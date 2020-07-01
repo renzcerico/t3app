@@ -57,7 +57,7 @@ export class TopBarComponent implements OnInit, AfterContentChecked {
         );
         servertimeService.time$.subscribe(
             datetime => {
-                this.timer = datetime.format('HH:mm:ss');
+                this.timer = moment(datetime).format('HH:mm:ss');
             }
         );
         this.userLoggedIn();

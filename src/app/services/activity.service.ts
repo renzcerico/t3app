@@ -63,7 +63,7 @@ export class ActivityService {
     );
     servertimeService.time$.subscribe(
       datetime => {
-          this.servertime = datetime;
+          this.servertime = moment(datetime);
       }
   );
     this.startTimer();

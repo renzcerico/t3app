@@ -36,7 +36,7 @@ export default class Header {
     constructor(jsonObj, private servertimeService: ServertimeService) {
         servertimeService.time$.subscribe(
             datetime => {
-                this.servertime = datetime;
+                this.servertime = moment(datetime);
             }
         );
         this.ID = jsonObj.ID || null;
